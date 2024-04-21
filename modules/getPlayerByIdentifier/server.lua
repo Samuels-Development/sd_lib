@@ -4,18 +4,14 @@ local GetPlayerByIdent = function()
         -- QB-Core logic for getting a player by identifier
         return function(identifier)
             local player = QBCore.Functions.GetPlayerByCitizenId(identifier)
-            if player and player.PlayerData then
-                return Framework.GetPlayer(player.PlayerData.source)
-            end
+            if player then return SD.GetPlayer(player.source) end
             return nil -- Return nil if no player is found
         end
     elseif Framework == 'esx' then
         -- ESX logic for getting a player by identifier
         return function(identifier)
             local player = ESX.GetPlayerFromIdentifier(identifier)
-            if player then
-                return Framework.GetPlayer(player.source)
-            end
+            if player then return SD.GetPlayer(player.source) end
             return nil -- Return nil if no player is found
         end
     else

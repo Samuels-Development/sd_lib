@@ -30,6 +30,8 @@ local ProgressBar = function()
 end
 
 --- The chosen method for starting a progress bar, determined at the time of script initialization.
-SD.StartProgress = ProgressBar()
+local StartProgress = ProgressBar()
+
+SD.StartProgress = StartProgress()
 
 return SD.StartProgress

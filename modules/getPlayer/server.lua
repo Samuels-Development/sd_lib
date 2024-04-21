@@ -30,7 +30,7 @@ local GetPlayerFromId = GetPlayer()
 --- @param source number The server ID of the player to retrieve.
 --- @return Player|nil Returns the player object if found; returns nil if the player is not found or if an error occurs.
 SD.GetPlayer = function(source)
-    return getPlayerFromId(source)
+    return GetPlayerFromId(source)
 end
 
 
