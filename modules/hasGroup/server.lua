@@ -82,6 +82,11 @@ local HasGroup = function()
 end
 
 -- Assign the dynamically selected function to SD.HasGroup.
-SD.HasGroup = HasGroup()
+local PlayerHasGroup = HasGroup()
+
+SD.HasGroup = function(source, filter)
+    local player = SD.GetPlayer(source)
+    return PlayerHasGroup(player, filter)
+end
 
 return SD.HasGroup
