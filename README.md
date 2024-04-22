@@ -4,23 +4,19 @@ This FiveM library/resource enhances native functionalities and facilitates inte
 ## Module Progress
 The table below lists the modules available in `sd_lib`, each marked as "Completed" is to signify that they are fully functional and ready for use.
 
-| Module Name             | Status      | Module Name               | Status      |
-|-------------------------|-------------|----------------------------|-------------|
-| awaitLoad               | Completed   | getIdentifier             | Completed   |
-| callback                | Completed   | getPlayer                 | Completed   |
-| checkVersion            | Completed   | getPlayerByIdentifier     | Completed   |
-| createPed               | Completed   | getPlayers                | Completed   |
-| doorlock                | Completed   | hasGroup                  | Completed   |
-| getClosestEntity        | Completed   | inventory                 | Completed   |
-| getGender               | Completed   | isPlayerDead              | Completed   |
-| loadAnim                | Completed   | loadModel                 | Completed   |
-| loadPtfxAsset           | Completed   | locale                    | Completed   |
-| logger                  | Completed   | math                      | Completed   |
-| money                   | Completed   | name                      | Completed   |
-| policeDispatch          | Completed   | scaleforms                | Completed   |
-| sendEmail               | Completed   | showNotification          | Completed   |
-| startProgress           | Completed   | string                    | Completed   |
-| table                   | Completed   | target                    | Completed   |
+| Module Name             | Status      | Module Name               | Status      | Module Name               | Status      |
+|-------------------------|-------------|----------------------------|-------------|----------------------------|-------------|
+| awaitLoad               | Completed   | loadAnim                  | Completed   | policeDispatch            | Completed   |
+| callback                | Completed   | loadModel                 | Completed   | scaleforms                | Completed   |
+| checkVersion            | Completed   | loadPtfxAsset             | Completed   | sendEmail                 | Completed   |
+| createPed               | Completed   | locale                    | Completed   | showNotification          | Completed   |
+| doorlock                | Completed   | logger                    | Completed   | startProgress             | Completed   |
+| getClosestEntity        | Completed   | math                      | Completed   | string                    | Completed   |
+| getGender               | Completed   | money                     | Completed   | table                     | Completed   |
+| getIdentifier           | Completed   | name                      | Completed   | target                    | Completed   |
+| getPlayer               | Completed   | getPlayerByIdentifier     | Completed   |
+| getPlayers              | Completed   | hasGroup                  | Completed   |
+| inventory               | Completed   | isPlayerDead              | Completed   |
 
 
 ## Contact
