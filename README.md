@@ -1,3 +1,6 @@
+### W.I.P Notice
+The functions in this library may exhibit inconsistent styling, linting issues, and other discrepancies. While this library is fully functional, it is not yet implemented in any of my resources. I plan to release the lib officially once I am confident in its stability and performance.
+
 ## sd_lib
 This FiveM library/resource enhances native functionalities and facilitates integration between various frameworks and popular resources within the FiveM community. It provides developers with essential tools and modules that improve compatibility and extend the capabilities of standard functions.
 
