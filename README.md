@@ -1,38 +1,20 @@
 ## sd_lib
 A FiveM library/resource specializing in expanding upon natives and bridging frameworks as well as common/popular resources.
 
-| Module Name             | Status      |
-|-------------------------|-------------|
-| awaitLoad               | Completed   |
-| callback                | Completed   |
-| checkVersion            | Completed   |
-| createPed               | Completed   |
-| doorlock                | Completed   |
-| getClosestEntity        | Completed   |
-| getGender               | Completed   |
-| getIdentifier           | Completed   |
-| getPlayer               | Completed   |
-| getPlayerByIdentifier   | Completed   |
-| getPlayers              | Completed   |
-| hasGroup                | Completed   |
-| inventory               | Completed   |
-| isPlayerDead            | Completed   |
-| loadAnim                | Completed   |
-| loadModel               | Completed   |
-| loadPtfxAsset           | Completed   |
-| locale                  | Completed   |
-| logger                  | Completed   |
-| math                    | Completed   |
-| money                   | Completed   |
-| name                    | Completed   |
-| policeDispatch          | Completed   |
-| scaleforms              | Completed   |
-| sendEmail               | Completed   |
-| showNotification        | Completed   |
-| startProgress           | Completed   |
-| string                  | Completed   |
-| table                   | Completed   |
-| target                  | Completed   |
+| Module Name             | Status      | Module Name               | Status      | Module Name               | Status      |
+|-------------------------|-------------|----------------------------|-------------|----------------------------|-------------|
+| awaitLoad               | Completed   | loadAnim                  | Completed   | policeDispatch            | Completed   |
+| callback                | Completed   | loadModel                 | Completed   | scaleforms                | Completed   |
+| checkVersion            | Completed   | loadPtfxAsset             | Completed   | sendEmail                 | Completed   |
+| createPed               | Completed   | locale                    | Completed   | showNotification          | Completed   |
+| doorlock                | Completed   | logger                    | Completed   | startProgress             | Completed   |
+| getClosestEntity        | Completed   | math                      | Completed   | string                    | Completed   |
+| getGender               | Completed   | money                     | Completed   | table                     | Completed   |
+| getIdentifier           | Completed   | name                      | Completed   | target                    | Completed   |
+| getPlayer               | Completed   | getPlayerByIdentifier     | Completed   |
+| getPlayers              | Completed   | hasGroup                  | Completed   |
+| inventory               | Completed   | isPlayerDead              | Completed   |
+
 
 ## Contact
 Author: Samuel#0008
