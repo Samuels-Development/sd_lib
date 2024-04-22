@@ -1,5 +1,8 @@
 ## sd_lib
-A FiveM library/resource specializing in expanding upon natives and bridging frameworks as well as common/popular resources.
+This FiveM library/resource enhances native functionalities and facilitates integration between various frameworks and popular resources within the FiveM community. It provides developers with essential tools and modules that improve compatibility and extend the capabilities of standard functions.
+
+## Module Progress
+The table below lists the modules available in `sd_lib`, each marked as "Completed" is to signify that they are fully functional and ready for use.
 
 | Module Name             | Status      | Module Name               | Status      |
 |-------------------------|-------------|----------------------------|-------------|
