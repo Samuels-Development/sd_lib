@@ -1,13 +1,44 @@
 ## sd_lib
 A FiveM library/resource specializing in expanding upon natives and bridging frameworks as well as common/popular resources.
 
-Currently, this serves as a reconstructed version of my original 'library' file, previously utilized as part of my paid resources available at [https://fivem.samueldev.shop](https://fivem.samueldev.shop). The functions in this library may exhibit inconsistent styling, linting issues, and other discrepancies. While this library is fully functional, it is not yet implemented in any of my resources. I plan to release the lib officially once I am confident in its stability and performance.
+| Module Name             | Status      |
+|-------------------------|-------------|
+| awaitLoad               | Completed   |
+| callback                | Completed   |
+| checkVersion            | Completed   |
+| createPed               | Completed   |
+| doorlock                | Completed   |
+| getClosestEntity        | Completed   |
+| getGender               | Completed   |
+| getIdentifier           | Completed   |
+| getPlayer               | Completed   |
+| getPlayerByIdentifier   | Completed   |
+| getPlayers              | Completed   |
+| hasGroup                | Completed   |
+| inventory               | Completed   |
+| isPlayerDead            | Completed   |
+| loadAnim                | Completed   |
+| loadModel               | Completed   |
+| loadPtfxAsset           | Completed   |
+| locale                  | Completed   |
+| logger                  | Completed   |
+| math                    | Completed   |
+| money                   | Completed   |
+| name                    | Completed   |
+| policeDispatch          | Completed   |
+| scaleforms              | Completed   |
+| sendEmail               | Completed   |
+| showNotification        | Completed   |
+| startProgress           | Completed   |
+| string                  | Completed   |
+| table                   | Completed   |
+| target                  | Completed   |
 
 ## Contact
 Author: Samuel#0008
 Discord: https://discord.gg/samueldev
 
-## Documentation.
+## Documentation
 https://docs.samueldev.shop
 
 ## Credits
