@@ -1,5 +1,9 @@
 --- Table of resources for dispatch systems. (custom is a placeholder for your application)
-local resources = { {name = "linden_outlawalert"}, {name = "cd_dispatch"}, {name = "ps-dispatch"}, {name = "ps-dispatch-old"}, {name = "qs-dispatch"}, {name = "core_dispatch"}, {name = "custom"} }
+local resources = { {name = "linden_outlawalert"}, {name = "cd_dispatch"}, {name = "ps-dispatch"}, {name = "qs-dispatch"}, {name = "core_dispatch"}, {name = "custom"} }
+
+-- Common tables for jobs and job types in the case of ps-dispatch.
+local jobs = { 'police' }
+local types = { 'leo' }
 
 --- Selects and returns the most appropriate function for dispatching police alerts.
 -- Based on the configured dispatch system, this function assigns a tailored dispatch method.
@@ -15,7 +19,7 @@ local SelectDispatch = function()
                             displayCode = data.displayCode,
                             description = data.description,
                             isImportant = 0,
-                            recipientList = SD.PoliceJobs,
+                            recipientList = jobs,
                             length = '10000',
                             infoM = 'fa-info-circle',
                             info = data.message
@@ -28,7 +32,7 @@ local SelectDispatch = function()
             elseif resource.name == "cd_dispatch" then
                 return function(data, playerCoords, locationInfo, gender)
                     TriggerServerEvent('cd_dispatch:AddNotification', {
-                        job_table = SD.PoliceJobs,
+                        job_table = jobs,
                         coords = playerCoords,
                         title = data.title,
                         message = data.message .. ' on ' .. locationInfo,
@@ -49,11 +53,11 @@ local SelectDispatch = function()
                         coords = playerCoords,
                         gender = gender,
                         street = locationInfo,
-                        jobs = 'leo'
+                        jobs = types
                     }
                     TriggerServerEvent('ps-dispatch:server:notify', dispatchData)
                 end
-            elseif resource.name == "ps-dispatch-old" then
+           --[[ elseif resource.name == "ps-dispatch-old" then
                 return function(data, playerCoords, locationInfo, gender)
                     TriggerServerEvent("dispatch:server:notify",{
                         dispatchcodename = data.dispatchcodename,
@@ -67,13 +71,13 @@ local SelectDispatch = function()
                         automaticGunfire = false,
                         origin = playerCoords,
                         dispatchMessage = data.title,
-                        job = SD.PoliceJobs
+                        job = types
                     })
-                end
+                end ]] 
             elseif resource.name == "qs-dispatch" then
                 return function(data, playerCoords, locationInfo, gender)
                     TriggerServerEvent('qs-dispatch:server:CreateDispatchCall', {
-                        job = SD.PoliceJobs,
+                        job = jobs,
                         callLocation = playerCoords,
                         callCode = { code = data.displayCode, snippet = data.description },
                         message = data.message .. ' on ' .. locationInfo,
@@ -88,7 +92,7 @@ local SelectDispatch = function()
                         data.description,
                         {{icon = "fa-info-circle", info = data.message}},
                         {playerCoords.x, playerCoords.y, playerCoords.z},
-                        SD.PoliceJobs,
+                        jobs,
                         10000,
                         data.sprite,
                         data.colour
@@ -125,11 +129,7 @@ SD.Dispatch = function(data)
         end
     end
 
-    --[[
-    local gender = 'Unknown'
-    if Config.Dispatch == 'ps-dispatch' and Framework == 'qb' then
-        gender = QBCore and QBCore.Functions.GetPlayerData().charinfo.gender == 1 and "Female" or "Male"
-    end]]
+    local gender = SD.GetGender()
     
     -- Execute the dispatch function with prepared data
     Dispatch(data, playerCoords, locationInfo, gender)

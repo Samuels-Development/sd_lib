@@ -28,4 +28,16 @@ RegisterNetEvent('sd_lib:sendEmail', function(data)
      end
 end)
 
+-- Register a callback to get the identifier of the target player
+SD.Callback.Register('sd_lib:getIdentifier', function(source)
+    local identifier = SD.GetIdentifier(source)
+    return(identifier)
+end)
+
+-- Register a callback to get the gender of the target player
+SD.Callback.Register('sd_lib:getGender', function(source)
+    local gender = SD.GetGender(source)
+    return(gender)
+end)
+
 SD.CheckVersion('sd-versions/sd_lib') -- Check version of specified resource

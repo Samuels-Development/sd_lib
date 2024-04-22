@@ -6,7 +6,6 @@ Description 'A library of functions used to ease the bridge between SD Scripts'
 Version '1.3.1'
 
 client_scripts {
-    'menus/cl_menu.lua',
     'resource/**/client.lua',
 }
 
@@ -20,7 +19,6 @@ files {
     'modules/**/shared.lua',
     'modules/**/client.lua',
     'modules/**/server.lua',
-    'locales/*.json',
 }
 
 shared_scripts {
