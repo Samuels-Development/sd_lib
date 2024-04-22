@@ -21,6 +21,8 @@ local Notification = function()
 end
 
 --- The chosen method for showing notifications, determined at the time of script initialization.
-SD.ShowNotification = Notification()
+local ShowNotification = Notification()
+
+SD.ShowNotification = ShowNotification()
 
 return SD.ShowNotification

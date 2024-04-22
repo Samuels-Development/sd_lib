@@ -75,6 +75,8 @@ local SelectEmail = function()
 end
 
 --- The chosen method for sending an email, determined at the time of script initialization.
-SD.SendEmail = SelectEmail()
+local SendEmail = SelectEmail()
+
+SD.SendEmail = SendEmail()
 
 return SD.SendEmail
