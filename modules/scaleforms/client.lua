@@ -2,8 +2,8 @@
 SD.Scaleforms = {}
 
 --- Load a standard scaleform.
--- @param name string The name of the scaleform movie.
--- @return scaleform The loaded scaleform handle.
+---@param name string The name of the scaleform movie.
+---@return scaleform The loaded scaleform handle.
 SD.Scaleforms.LoadMovie = function(name)
     local scaleform = RequestScaleformMovie(name)
     while not HasScaleformMovieLoaded(scaleform) do Wait(0); end
@@ -11,8 +11,8 @@ SD.Scaleforms.LoadMovie = function(name)
 end
 
 --- Load an interactive scaleform.
--- @param name string The name of the interactive scaleform movie.
--- @return scaleform The loaded scaleform handle.
+---@param name string The name of the interactive scaleform movie.
+---@return scaleform The loaded scaleform handle.
 SD.Scaleforms.LoadInteractive = function(name)
     local scaleform = RequestScaleformMovieInteractive(name)
     while not HasScaleformMovieLoaded(scaleform) do Wait(0); end
@@ -20,14 +20,14 @@ SD.Scaleforms.LoadInteractive = function(name)
 end
 
 --- Unload a scaleform movie.
--- @param scaleform The scaleform handle to unload.
+---@param scaleform The scaleform handle to unload.
 SD.Scaleforms.UnloadMovie = function(scaleform)
     SetScaleformMovieAsNoLongerNeeded(scaleform)
 end
 
 --- Load additional text for scaleforms.
--- @param gxt string The GXT entry.
--- @param count number The number of additional texts to load.
+---@param gxt string The GXT entry.
+---@param count number The number of additional texts to load.
 SD.Scaleforms.LoadAdditionalText = function(gxt, count)
     for i = 0, count, 1 do
         if not HasThisAdditionalTextLoaded(gxt, i) then
@@ -39,8 +39,8 @@ SD.Scaleforms.LoadAdditionalText = function(gxt, count)
 end
 
 --- Set labels on a scaleform movie.
--- @param scaleform The scaleform handle.
--- @param labels table A list of labels to set.
+---@param scaleform The scaleform handle.
+---@param labels table A list of labels to set.
 SD.Scaleforms.SetLabels = function(scaleform, labels)
     PushScaleformMovieFunction(scaleform, "SET_LABELS")
     for _, txt in ipairs(labels) do
@@ -51,9 +51,9 @@ SD.Scaleforms.SetLabels = function(scaleform, labels)
 end
 
 --- Generic method for pushing multiple parameters to a scaleform function.
--- @param scaleform The scaleform handle.
--- @param method string The scaleform method name.
--- @param ... Various parameters of mixed types.
+---@param scaleform The scaleform handle.
+---@param method string The scaleform method name.
+---@param ... Various parameters of mixed types.
 SD.Scaleforms.PopMulti = function(scaleform, method, ...)
     PushScaleformMovieFunction(scaleform, method)
     for _, v in pairs({...}) do
@@ -72,9 +72,9 @@ SD.Scaleforms.PopMulti = function(scaleform, method, ...)
 end
 
 --- Push a floating-point value to a scaleform function.
--- @param scaleform The scaleform handle.
--- @param method string The scaleform method name.
--- @param val float The float value to push.
+---@param scaleform The scaleform handle.
+---@param method string The scaleform method name.
+---@param val float The float value to push.
 function SD.Scaleforms.PopFloat(scaleform, method, val)
     PushScaleformMovieFunction(scaleform, method)
     PushScaleformMovieFunctionParameterFloat(val)
@@ -82,9 +82,9 @@ function SD.Scaleforms.PopFloat(scaleform, method, val)
 end
 
 --- Push an integer value to a scaleform function.
--- @param scaleform The scaleform handle.
--- @param method string The scaleform method name.
--- @param val int The integer value to push.
+---@param scaleform The scaleform handle.
+---@param method string The scaleform method name.
+---@param val int The integer value to push.
 SD.Scaleforms.PopInt = function(scaleform, method, val)
     PushScaleformMovieFunction(scaleform, method)
     PushScaleformMovieFunctionParameterInt(val)
@@ -92,9 +92,9 @@ SD.Scaleforms.PopInt = function(scaleform, method, val)
 end
 
 --- Push a boolean value to a scaleform function.
--- @param scaleform The scaleform handle.
--- @param method string The scaleform method name.
--- @param val bool The boolean value to push.
+---@param scaleform The scaleform handle.
+---@param method string The scaleform method name.
+---@param val bool The boolean value to push.
 SD.Scaleforms.PopBool = function(scaleform, method, val)
     PushScaleformMovieFunction(scaleform, method)
     PushScaleformMovieFunctionParameterBool(val)
@@ -102,39 +102,39 @@ SD.Scaleforms.PopBool = function(scaleform, method, val)
 end
 
 --- Call a scaleform function and return the handle for the return value.
--- @param scaleform The scaleform handle.
--- @param method string The scaleform method name.
--- @return ret The return handle for further processing.
+---@param scaleform The scaleform handle.
+---@param method string The scaleform method name.
+---@return ret The return handle for further processing.
 function SD.Scaleforms.PopRet(scaleform, method)
     PushScaleformMovieFunction(scaleform, method)
     return PopScaleformMovieFunction()
 end
 
 --- Call a scaleform function without expecting any return.
--- @param scaleform The scaleform handle.
--- @param method string The scaleform method name.
+---@param scaleform The scaleform handle.
+---@param method string The scaleform method name.
 function SD.Scaleforms.PopVoid(scaleform, method)
     PushScaleformMovieFunction(scaleform, method)
     PopScaleformMovieFunctionVoid()
 end
 
 --- Retrieve a boolean result from a scaleform return handle.
--- @param ret The return handle.
--- @return bool The boolean result.
+---@param ret The return handle.
+---@return bool The boolean result.
 SD.Scaleforms.RetBool = function(ret)
     return GetScaleformMovieFunctionReturnBool(ret)
 end
 
 --- Retrieve an integer result from a scaleform return handle.
--- @param ret The return handle.
--- @return int The integer result.
+---@param ret The return handle.
+---@return int The integer result.
 SD.Scaleforms.RetInt = function(ret)
     return GetScaleformMovieFunctionReturnInt(ret)
 end
 
 --- Determines the true type of a value, enhancing Lua's native type identification.
--- @param val The value to determine the type of.
--- @return string The determined type ("string", "boolean", "int", or "float").
+---@param val The value to determine the type of.
+---@return string The determined type ("string", "boolean", "int", or "float").
 SD.Scaleforms.TrueType = function(val)
     if type(val) ~= "number" then return type(val) end
 

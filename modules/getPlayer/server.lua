@@ -2,7 +2,7 @@
 --- based on the configured framework. This approach abstracts framework-specific calls
 --- into a unified SD interface, facilitating a clean and maintainable way to interact
 --- with player objects across different frameworks.
---- @return function A function that, when called with a player's server ID, returns the corresponding player object.
+----@return function A function that, when called with a player's server ID, returns the corresponding player object.
 local GetPlayer = function()
     if Framework == 'esx' then
         return function(source)
@@ -27,8 +27,8 @@ local GetPlayerFromId = GetPlayer()
 --- Retrieves a player object using a server ID, abstracting framework-specific retrieval logic.
 --- This function serves as a wrapper that calls a pre-defined function based on the current game framework,
 --- optimized for performance by determining the appropriate function during script initialization.
---- @param source number The server ID of the player to retrieve.
---- @return Player|nil Returns the player object if found; returns nil if the player is not found or if an error occurs.
+----@param source number The server ID of the player to retrieve.
+----@return Player|nil Returns the player object if found; returns nil if the player is not found or if an error occurs.
 SD.GetPlayer = function(source)
     return GetPlayerFromId(source)
 end

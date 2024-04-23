@@ -1,5 +1,5 @@
 --- Loads a particle effects asset into the game with validations and timeout handling using SD.AwaitLoad.
--- @param asset The particle effects asset dictionary name to be loaded.
+---@param asset The particle effects asset dictionary name to be loaded.
 -- @async
 SD.LoadPtfxAsset = function(asset)
     if type(asset) ~= "string" then error("Asset identifier must be a string.") end

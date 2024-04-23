@@ -6,8 +6,8 @@ local timers = {}
 local cbEvent = ('__sd_cb_%s')
 
 --- Registers a network event and associates a callback.
--- @param eventName string The event name to listen for.
--- @param callback function The callback to execute when the event is triggered.
+---@param eventName string The event name to listen for.
+---@param callback function The callback to execute when the event is triggered.
 local function registerNetEvent(eventName, callback)
     RegisterNetEvent(cbEvent:format(eventName), callback)
 end
@@ -18,9 +18,9 @@ registerNetEvent('sd_lib', function(key, ...)
 end)
 
 --- Manages delay timers for events to prevent spamming or rapid calls.
--- @param event string The name of the event.
--- @param delay number | false A delay in milliseconds to enforce between activations, or false to ignore timing.
--- @return boolean True if the event can proceed, false if it is being throttled.
+---@param event string The name of the event.
+---@param delay number | false A delay in milliseconds to enforce between activations, or false to ignore timing.
+---@return boolean True if the event can proceed, false if it is being throttled.
 local function eventTimer(event, delay)
     if delay and type(delay) == 'number' and delay > 0 then
         local time = GetGameTimer()
@@ -36,12 +36,12 @@ local function eventTimer(event, delay)
 end
 
 --- Triggers a server callback and manages its lifecycle.
--- @param _ any
--- @param event string The event name.
--- @param delay number | false Optional delay to throttle the event.
--- @param cb function|false The callback function or false for a promise-based response.
--- @param ... any The arguments to pass to the server event.
--- @return ... The results from the callback or a resolved promise.
+---@param _ any
+---@param event string The event name.
+---@param delay number | false Optional delay to throttle the event.
+---@param cb function|false The callback function or false for a promise-based response.
+---@param ... any The arguments to pass to the server event.
+---@return ... The results from the callback or a resolved promise.
 local function triggerServerCallback(_, event, delay, cb, ...)
     if not eventTimer(event, delay) then return end
 
@@ -74,10 +74,10 @@ end
 
 --- Allows triggering server callbacks directly through the module.
 -- @function call
--- @param event string
--- @param delay number | false
--- @param cb function
--- @param ...
+---@param event string
+---@param delay number | false
+---@param cb function
+---@param ...
 SD.Callback = setmetatable({}, {
     __call = triggerServerCallback
 })

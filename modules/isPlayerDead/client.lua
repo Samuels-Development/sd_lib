@@ -14,7 +14,7 @@ end
 --- based on the configured framework. This approach abstracts framework-specific calls
 --- into a unified SD interface, facilitating a clean and maintainable way to interact
 --- with player objects across different frameworks.
---- @return function A function that, when called with a player's server ID, returns the corresponding player object.
+----@return function A function that, when called with a player's server ID, returns the corresponding player object.
 local IsPlayerDead = function()
     if Framework == 'esx' then
         return function(source)

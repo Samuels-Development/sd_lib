@@ -2,7 +2,7 @@
 --- based on the configured framework. This approach abstracts framework-specific calls
 --- into a unified SD interface, facilitating a clean and maintainable way to interact
 --- with player gender data across different frameworks.
---- @return function A function that, when called with a player object, returns the corresponding gender as 'm' or 'f'.
+----@return function A function that, when called with a player object, returns the corresponding gender as 'm' or 'f'.
 local GetPlayerGender = function()
     if Framework == 'esx' then
         return function(player)
@@ -27,8 +27,8 @@ local GetGenderFromPlayer = GetPlayerGender()
 --- Retrieves a player's gender using a player object, abstracting framework-specific retrieval logic.
 --- This function serves as a wrapper that calls a pre-defined function based on the current game framework,
 --- optimized for performance by determining the appropriate function during script initialization.
---- @param player Player The player object to retrieve the gender from.
---- @return string 'm' or 'f' Returns the gender of the player if found; returns nil if the player is not found or if an error occurs.
+----@param player Player The player object to retrieve the gender from.
+----@return string 'm' or 'f' Returns the gender of the player if found; returns nil if the player is not found or if an error occurs.
 SD.GetPlayerGender = function(source)
     local player = SD.GetPlayer(source)
     return GetGenderFromPlayer(player)

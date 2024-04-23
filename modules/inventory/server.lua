@@ -121,8 +121,8 @@ end
 local RemoveItemFromInventory = RemoveItem()
 
 --- Registers a function to be called when a player uses an item.
--- @param item string The item's name.
--- @param cb function The callback function to execute when the item is used.
+---@param item string The item's name.
+---@param cb function The callback function to execute when the item is used.
 SD.Inventory.RegisterUsableItem = function(item, cb)
     if Framework == 'esx' then
         ESX.RegisterUsableItem(item, cb)
@@ -132,9 +132,9 @@ SD.Inventory.RegisterUsableItem = function(item, cb)
 end
 
 --- Returns the amount of a specific item a player has.
--- @param source number The player's server ID.
--- @param item string The item's name.
--- @return number The amount of the specified item the player has.
+---@param source number The player's server ID.
+---@param item string The item's name.
+---@return number The amount of the specified item the player has.
 SD.Inventory.HasItem = function(source, item)
     local player = SD.GetPlayer(source)
     if player == nil then return 0 end
@@ -143,11 +143,11 @@ SD.Inventory.HasItem = function(source, item)
 end
 
 --- Adds an item to a player's inventory.
--- @param source number The player's server ID.
--- @param item string The item's name.
--- @param count number The amount of the item to add.
--- @param slot number|nil The inventory slot to add the item to, if applicable.
--- @param metadata table|nil Additional metadata for the item, if applicable.
+---@param source number The player's server ID.
+---@param item string The item's name.
+---@param count number The amount of the item to add.
+---@param slot number|nil The inventory slot to add the item to, if applicable.
+---@param metadata table|nil Additional metadata for the item, if applicable.
 SD.Inventory.AddItem = function(source, item, count, slot, metadata)
     local player = SD.GetPlayer(source)
     if player then AddItemToInventory(player, item, count, slot, metadata)  -- Custom internal function to add items.
@@ -155,9 +155,9 @@ SD.Inventory.AddItem = function(source, item, count, slot, metadata)
 end
 
 --- Adds a weapon to a player's inventory.
--- @param source number The player's server ID.
--- @param weapon string The weapon's name.
--- @param ammo number The amount of ammo for the weapon.
+---@param source number The player's server ID.
+---@param weapon string The weapon's name.
+---@param ammo number The amount of ammo for the weapon.
 SD.Inventory.AddWeapon = function(source, weapon, ammo)
     local player = SD.GetPlayer(source)
     if player then AddWeaponToInventory(player, weapon, ammo)  -- Custom internal function to add weapons.
@@ -165,11 +165,11 @@ SD.Inventory.AddWeapon = function(source, weapon, ammo)
 end
 
 --- Removes an item from a player's inventory.
--- @param source number The player's server ID.
--- @param item string The item's name.
--- @param count number The amount of the item to remove.
--- @param slot number|nil The inventory slot to remove the item from, if applicable.
--- @param metadata table|nil Additional metadata for the item, if applicable.
+---@param source number The player's server ID.
+---@param item string The item's name.
+---@param count number The amount of the item to remove.
+---@param slot number|nil The inventory slot to remove the item from, if applicable.
+---@param metadata table|nil Additional metadata for the item, if applicable.
 SD.Inventory.RemoveItem = function(source, item, count, slot, metadata)
     local player = SD.GetPlayer(source)
     if player then RemoveItemFromInventory(player, item, count, slot, metadata)  -- Custom internal function to remove items.

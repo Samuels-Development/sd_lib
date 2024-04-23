@@ -1,7 +1,7 @@
 --- Selects and returns the most appropriate function for getting a player's identifier.
 -- This function checks the active server framework (e.g., ESX, QBCore) to determine the best method for retrieving player identifiers.
 -- If no known framework is detected, it defaults to using the native GetPlayerIdentifiers function.
--- @return function A function tailored to retrieve a player's identifier using the determined method.
+---@return function A function tailored to retrieve a player's identifier using the determined method.
 local Identifier = function()
     if Framework == 'esx' then
         -- For ESX, directly return the player's primary identifier.

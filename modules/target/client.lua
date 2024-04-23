@@ -23,13 +23,13 @@ end
 Initialize() -- Initialize the target system
 
 --- Add a box zone.
--- @param identifier string The identifier for the zone.
--- @param coords table Coordinates where the zone is centered.
--- @param width number The width of the box zone.
--- @param length number The length of the box zone.
--- @param data table Additional data such as heading, options, and distance.
--- @param debugPoly boolean Whether to debug the polygon.
--- @return handler The handle to the created zone.
+---@param identifier string The identifier for the zone.
+---@param coords table Coordinates where the zone is centered.
+---@param width number The width of the box zone.
+---@param length number The length of the box zone.
+---@param data table Additional data such as heading, options, and distance.
+---@param debugPoly boolean Whether to debug the polygon.
+---@return handler The handle to the created zone.
 SD.Target.AddBoxZone = function(identifier, coords, width, length, data, debugPoly)
     local handler = exports[target]:AddBoxZone(identifier, coords, width, length, {
         name = identifier,
@@ -45,12 +45,12 @@ SD.Target.AddBoxZone = function(identifier, coords, width, length, data, debugPo
 end
 
 --- Add a circle zone.
--- @param identifier string The identifier for the zone.
--- @param coords table Coordinates where the zone is centered.
--- @param radius number The radius of the circle zone.
--- @param data table Additional data such as options and distance.
--- @param debugPoly boolean Whether to debug the polygon.
--- @return handler The handle to the created zone.
+---@param identifier string The identifier for the zone.
+---@param coords table Coordinates where the zone is centered.
+---@param radius number The radius of the circle zone.
+---@param data table Additional data such as options and distance.
+---@param debugPoly boolean Whether to debug the polygon.
+---@return handler The handle to the created zone.
 SD.Target.AddCircleZone = function(identifier, coords, radius, data, debugPoly)
     local handler = exports[target]:AddCircleZone(identifier, coords, radius, {
         name = identifier,
@@ -64,8 +64,8 @@ SD.Target.AddCircleZone = function(identifier, coords, radius, data, debugPoly)
 end
 
 --- Add a target entity.
--- @param entityId number The entity ID to target.
--- @param data table Additional data such as options and distance.
+---@param entityId number The entity ID to target.
+---@param data table Additional data such as options and distance.
 SD.Target.AddTargetEntity = function(entityId, data)
     exports[target]:AddTargetEntity(entityId, {
         options = data.options,
@@ -74,8 +74,8 @@ SD.Target.AddTargetEntity = function(entityId, data)
 end
 
 --- Add a target model.
--- @param models table|array Models to target.
--- @param data table Additional data such as options and distance.
+---@param models table|array Models to target.
+---@param data table Additional data such as options and distance.
 SD.Target.AddTargetModel = function(models, data)
     exports[target]:AddTargetModel(models, {
         options = data.options,
@@ -84,13 +84,13 @@ SD.Target.AddTargetModel = function(models, data)
 end
 
 --- Remove a target entity.
--- @param entity number The entity to remove from targeting.
+---@param entity number The entity to remove from targeting.
 SD.Target.RemoveTargetEntity = function(entity)
     exports[target]:RemoveTargetEntity(entity)
 end
 
 --- Remove a zone.
--- @param identifier string The identifier for the zone to remove.
+---@param identifier string The identifier for the zone to remove.
 SD.Target.RemoveZone = function(identifier)
     exports[target]:RemoveZone(identifier)
 end

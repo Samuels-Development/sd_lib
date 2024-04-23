@@ -3,7 +3,7 @@ local resources = { {name = "qb-phone"}, {name = "qs-smartphone"}, {name = "high
 
 --- Selects and returns the most appropriate function for sending an email.
 -- This function determines the best method for sending emails based on the configured phone resource.
--- @return function A function tailored to send emails using the determined method.
+---@return function A function tailored to send emails using the determined method.
 local SelectEmail = function()
     for _, resource in ipairs(resources) do
         if GetResourceState(resource.name) == 'started' then
@@ -77,6 +77,14 @@ end
 --- The chosen method for sending an email, determined at the time of script initialization.
 local SendEmail = SelectEmail()
 
-SD.SendEmail = SendEmail()
+--- Send an email from within the application.
+-- This function is used to send an email with a specified sender, subject, and message content.
+---@param sender string The email address or identifier of the sender.
+---@param subject string The subject line of the email.
+---@param message string The main content of the email.
+SD.SendEmail = function(sender, subject, message)
+    SendEmail(sender, subject, message)
+end
+
 
 return SD.SendEmail

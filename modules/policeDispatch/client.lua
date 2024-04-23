@@ -8,7 +8,7 @@ local types = { 'leo' }
 --- Selects and returns the most appropriate function for dispatching police alerts.
 -- Based on the configured dispatch system, this function assigns a tailored dispatch method.
 -- It facilitates the dynamic use of different alert systems without hardcoding preferences within the alert logic.
--- @return function A dispatch function customized to the active configuration.
+---@return function A dispatch function customized to the active configuration.
 local SelectDispatch = function()
     for _, resource in ipairs(resources) do
         if GetResourceState(resource.name) == 'started' then

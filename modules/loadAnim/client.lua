@@ -2,7 +2,7 @@
 -- Ensures that the animation dictionary is loaded into the game before proceeding, checking its validity
 -- and applying a timeout mechanism to prevent infinite waiting. This function is crucial for operations
 -- requiring animations to ensure smooth execution without runtime errors due to unloaded assets.
--- @param animDict string The animation dictionary name to be loaded.
+---@param animDict string The animation dictionary name to be loaded.
 -- @async
 SD.LoadAnim = function(animDict)
     if type(animDict) ~= "string" then error("Animation dictionary identifier must be a string.") end

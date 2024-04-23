@@ -12,7 +12,7 @@ local deletePed = function(ped)
 end
 
 --- Creates and spawns a ped at the specified location with given attributes.
--- @param payload table A table containing ped creation parameters.
+---@param payload table A table containing ped creation parameters.
 -- @field model Hash|String The model hash or name to be used for the ped.
 -- @field coords Vector3 The coordinates where the ped will be spawned.
 -- @field heading number The heading of the ped.
@@ -22,7 +22,7 @@ end
 -- @field animDict string Optional. The animation dictionary to use.
 -- @field animName string Optional. The animation name to play.
 -- @field scenario string Optional. The scenario for the ped to engage in.
--- @return Ped The handle of the created ped; nil if creation failed.
+---@return Ped The handle of the created ped; nil if creation failed.
 SD.Ped.CreatePed = function(payload)
     if not payload or not payload.coords or not payload.model then
         error("CreatePed: Missing required parameters.")
@@ -65,7 +65,7 @@ SD.Ped.CreatePed = function(payload)
 end
 
 --- Adds a ped to the tracking table and optionally spawns it.
--- @param payload table Contains parameters for ped creation including an optional distance check.
+---@param payload table Contains parameters for ped creation including an optional distance check.
 SD.Ped.AddPed = function(payload)
     if not payload or type(payload) ~= 'table' then return end
     local playerCoords = GetEntityCoords(PlayerPedId())
@@ -81,7 +81,7 @@ SD.Ped.AddPed = function(payload)
 end
 
 --- Removes a ped based on its ID.
--- @param id integer The unique ID of the ped to remove.
+---@param id integer The unique ID of the ped to remove.
 SD.Ped.RemovePed = function(id)
     local pedData = Peds[id]
     if pedData and pedData.ped then
@@ -91,9 +91,9 @@ SD.Ped.RemovePed = function(id)
 end
 
 --- Sets new coordinates for a ped based on its ID.
--- @param id integer The unique ID of the ped to relocate.
--- @param coords vector3 The new coordinates for the ped.
--- @param heading number The new heading for the ped.
+---@param id integer The unique ID of the ped to relocate.
+---@param coords vector3 The new coordinates for the ped.
+---@param heading number The new heading for the ped.
 SD.Ped.SetPedCoords = function(id, coords, heading)
     local pedData = Peds[id]
     if pedData and pedData.ped then
@@ -103,8 +103,8 @@ SD.Ped.SetPedCoords = function(id, coords, heading)
 end
 
 --- Retrieves a ped by its unique ID.
--- @param id integer The unique ID of the ped to retrieve.
--- @return entity|nil The ped entity if found, or nil if not.
+---@param id integer The unique ID of the ped to retrieve.
+---@return entity|nil The ped entity if found, or nil if not.
 SD.Ped.GetPedById = function(id)
     local pedData = Peds[id]
     if pedData then
@@ -114,7 +114,7 @@ SD.Ped.GetPedById = function(id)
 end
 
 --- Removes all peds spawned by a specific resource or the current invoking resource if not specified.
--- @param resource string|nil The name of the resource, or nil to use the invoking resource.
+---@param resource string|nil The name of the resource, or nil to use the invoking resource.
 SD.Ped.RemoveResourcePed = function(resource)
     resource = resource or GetInvokingResource()
     for id, pedData in pairs(Peds) do

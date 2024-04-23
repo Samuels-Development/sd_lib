@@ -65,8 +65,8 @@ end
 local GetPlayerLastName = GetLastName()
 
 --- GetFullName retrieves the full name of a player based on the active framework.
--- @param source number The player's server ID.
--- @return string|nil The full name of the player if available, or nil if not found or unsupported framework.
+---@param source number The player's server ID.
+---@return string|nil The full name of the player if available, or nil if not found or unsupported framework.
 SD.Name.GetFullName = function(source)
     local player = SD.GetPlayer(source)
     if not player then error(string.format("Player not found for source: %s", tostring(source))) end
@@ -74,8 +74,8 @@ SD.Name.GetFullName = function(source)
 end
 
 --- GetFirstName retrieves the first name of a player based on the active framework.
--- @param source number The player's server ID.
--- @return string|nil The first name of the player if available, or nil if not found.
+---@param source number The player's server ID.
+---@return string|nil The first name of the player if available, or nil if not found.
 SD.Name.GetFirstName = function(source)
     local player = SD.GetPlayer(source)
     if not player then error(string.format("Player not found for source: %s", tostring(source))) end
@@ -83,8 +83,8 @@ SD.Name.GetFirstName = function(source)
 end
 
 --- GetLastName retrieves the last name of a player based on the active framework.
--- @param source number The player's server ID.
--- @return string|nil The last name of the player if available, or nil if not found.
+---@param source number The player's server ID.
+---@return string|nil The last name of the player if available, or nil if not found.
 SD.Name.GetLastName = function(source)
     local player = SD.GetPlayer(source)
     if not player then error(string.format("Player not found for source: %s", tostring(source))) end

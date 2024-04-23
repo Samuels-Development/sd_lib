@@ -2,7 +2,7 @@
 --- based on the configured framework. This abstracts framework-specific calls into a unified
 --- SD interface, making the process of getting online players straightforward and consistent
 --- across different frameworks.
---- @return function A function that returns a table of all online players when called.
+----@return function A function that returns a table of all online players when called.
 local GetPlayers = function()
     if Framework == 'esx' then
         return function()

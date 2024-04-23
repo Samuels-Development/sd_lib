@@ -4,7 +4,7 @@ local CheckForDuty = true -- Only count on duty jobs as part of the HasGroup fun
 --- based on the configured framework.
 --- This function caters to different inventory systems and framework specifics,
 --- ensuring that the group check is performed accurately and efficiently.
--- @return function A group function customized to the active configuration.
+---@return function A group function customized to the active configuration.
 local HasGroup = function()
     if Framework == 'esx' then
         return function(player, filter)

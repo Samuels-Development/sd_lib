@@ -1,7 +1,7 @@
 --- Selects and returns the most appropriate function for starting a progress bar.
 -- This function determines the best method for displaying progress bars based on the current game setup
 -- (e.g., availability of ox_lib and configuration settings) or the active framework (ESX, QBCore).
--- @return function A function tailored to start progress bars using the determined method.
+---@return function A function tailored to start progress bars using the determined method.
 local ProgressBar = function()
     -- Return a function tailored to the active framework's method of showing progress bars
     if Framework == 'esx' then
@@ -32,6 +32,12 @@ end
 --- The chosen method for starting a progress bar, determined at the time of script initialization.
 local StartProgress = ProgressBar()
 
+-- Function to start a progress tracking mechanism.
+---@param identifier string The unique identifier for the progress instance.
+---@param label string The label that describes the progress.
+---@param duration number The duration for which the progress should be tracked.
+---@param completed function Callback function to execute when progress completes.
+---@param notfinished function Callback function to execute if progress does not complete.
 SD.StartProgress = function(identifier, label, duration, completed, notfinished)
     StartProgress(identifier, label, duration, completed, notfinished)
 end

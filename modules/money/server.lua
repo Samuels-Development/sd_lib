@@ -2,8 +2,8 @@
 SD.Money = {}
 
 --- Converts MoneyType to framework-specific variant, if needed.
--- @param moneyType string The original money type.
--- @return string The converted money type.
+---@param moneyType string The original money type.
+---@return string The converted money type.
 local ConvertMoneyType = function(moneyType)
     if moneyType == 'money' and Framework == 'qb' then
         return 'cash'
@@ -76,27 +76,27 @@ end
 local GetPlayerAccountFunds = GetPlayerFunds()
 
 --- Adds money to a player's account.
--- @param source number The player's server ID.
--- @param moneyType string The type of money to add.
--- @param amount number The amount of money to add.
+---@param source number The player's server ID.
+---@param moneyType string The type of money to add.
+---@param amount number The amount of money to add.
 SD.Money.AddMoney = function(source, moneyType, amount)
     local player = SD.GetPlayer(source)
     if player then AddMoneyToPlayer(player, moneyType, amount) end
 end
 
 --- Removes money from a player's account.
--- @param source number The player's server ID.
--- @param moneyType string The type of money to remove.
--- @param amount number The amount of money to remove.
+---@param source number The player's server ID.
+---@param moneyType string The type of money to remove.
+---@param amount number The amount of money to remove.
 SD.Money.RemoveMoney = function(source, moneyType, amount)
     local player = SD.GetPlayer(source)
     if player then RemoveMoneyFromPlayer(player, moneyType, amount) end
 end
 
 --- Gets the amount of money in a player's account of a specific type.
--- @param source number The player's server ID.
--- @param moneyType string The type of money to check.
--- @return number The amount of money.
+---@param source number The player's server ID.
+---@param moneyType string The type of money to check.
+---@return number The amount of money.
 SD.Money.GetPlayerAccountFunds = function(source, moneyType)
     local player = SD.GetPlayer(source)
     if player then return GetPlayerAccountFunds(player, moneyType) else return 0 end

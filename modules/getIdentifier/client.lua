@@ -5,7 +5,7 @@
 -- response without blocking the main execution thread. This approach facilitates cleaner and more readable code for
 -- operations that depend on server-side data.
 -- Note: It must be invoked from within a coroutine; otherwise, it will raise an error due to the assertion check.
--- @return string The player's identifier retrieved from the server.
+---@return string The player's identifier retrieved from the server.
 SD.GetIdentifier = function()
     -- Ensure this function is called within a coroutine context
     local thread = coroutine.running()

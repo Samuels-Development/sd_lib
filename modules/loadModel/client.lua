@@ -1,7 +1,7 @@
 --- Loads a model into the game with advanced validations and timeout handling.
 -- This function handles the loading of game models with additional checks for parameter validity, type conversion,
 -- and uses a custom wait function to manage asynchronous loading with a timeout.
--- @param model The model identifier (could be a hash key, name, or number) to be loaded.
+---@param model The model identifier (could be a hash key, name, or number) to be loaded.
 SD.LoadModel = function(model)
     if type(model) ~= 'number' then model = joaat(model) end
 

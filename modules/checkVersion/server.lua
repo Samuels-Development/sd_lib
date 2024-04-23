@@ -1,5 +1,5 @@
 --- Checks for updates by comparing the local version of a resource with its latest version on GitHub.
--- @param repo string The GitHub repository in the format 'owner/repository'.
+---@param repo string The GitHub repository in the format 'owner/repository'.
 SD.CheckVersion = function(repo)
     local resource = GetInvokingResource() or GetCurrentResourceName()
     local currentVersion = GetResourceMetadata(resource, 'Version', 0)

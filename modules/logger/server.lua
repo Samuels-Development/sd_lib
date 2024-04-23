@@ -40,11 +40,11 @@ CreateThread(function()
 end)
 
 --- Public interface for logging, exposed through the SD namespace
--- @param name string A unique name for the log group.
--- @param title string The title of the log message.
--- @param color string The color code or a key for predefined colors.
--- @param message string The log message content.
--- @param tagEveryone boolean Optionally tag everyone in the Discord channel.
+---@param name string A unique name for the log group.
+---@param title string The title of the log message.
+---@param color string The color code or a key for predefined colors.
+---@param message string The log message content.
+---@param tagEveryone boolean Optionally tag everyone in the Discord channel.
 SD.Log = function(name, title, color, message, tagEveryone)
     local tag = tagEveryone or false
 
