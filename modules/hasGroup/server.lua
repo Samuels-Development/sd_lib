@@ -84,6 +84,10 @@ end
 -- Assign the dynamically selected function to SD.HasGroup.
 local PlayerHasGroup = HasGroup()
 
+--- Check if the player belongs to a specific group.
+-- This function determines if the given player, identified by a 'source', belongs to a group specified by 'filter'.
+-- @param source any The identifier for the player, which is used to retrieve player data.
+-- @param filter string The group name to check the player against.
 SD.HasGroup = function(source, filter)
     local player = SD.GetPlayer(source)
     return PlayerHasGroup(player, filter)
