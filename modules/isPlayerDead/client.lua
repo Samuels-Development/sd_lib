@@ -37,7 +37,9 @@ end
 -- Assign the dynamically selected function to isPlayerDead.
 local isPlayerDeath = IsPlayerDead()
 
-SD.IsPlayerDead = isPlayerDeath()
+SD.IsPlayerDead = function(source)
+    return isPlayerDeath(source)
+end
 
 return SD.IsPlayerDead
 

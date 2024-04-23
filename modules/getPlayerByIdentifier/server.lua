@@ -24,7 +24,6 @@ local GetPlayerByIdentifier = GetPlayerByIdent()
 -- It abstracts the retrieval process, depending on the framework used.
 ---@returns a players source for the given identifier
 SD.GetPlayerByIdentifier = function(identifier)
-    print('identifier:', identifier)
     return GetPlayerByIdentifier(identifier)
 end
 

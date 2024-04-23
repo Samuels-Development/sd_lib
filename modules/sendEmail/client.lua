@@ -86,5 +86,4 @@ SD.SendEmail = function(sender, subject, message)
     SendEmail(sender, subject, message)
 end
 
-
 return SD.SendEmail

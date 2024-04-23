@@ -31,5 +31,4 @@ SD.ShowNotification = function(message, type)
     ShowNotification(message, type)
 end
 
-
 return SD.ShowNotification
