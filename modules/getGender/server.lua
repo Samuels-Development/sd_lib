@@ -6,11 +6,11 @@
 local GetPlayerGender = function()
     if Framework == 'esx' then
         return function(player)
-            return player.get("sex") or "m"
+            return player.get("sex") or "Male"
         end
     elseif Framework == 'qb' then
         return function(player)
-            return player.PlayerData.charinfo.gender == 0 and 'm' or 'f'
+            return player.PlayerData.charinfo.gender == 0 and 'Male' or 'Female'
         end
     else
         -- Fallback function for unsupported frameworks. Logs an error message.

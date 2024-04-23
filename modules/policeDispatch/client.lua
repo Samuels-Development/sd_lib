@@ -101,7 +101,7 @@ local SelectDispatch = function()
             elseif resource.name == "custom" then
                 -- Custom dispatch system implementation placeholder
                 return function(data, playerCoords, locationInfo, gender)
-                    error("Custom dispatch system configured. Please implement the dispatch functionality.")
+                    print("Custom dispatch system configured. Please implement the dispatch functionality.")
                 end
             end
         end
@@ -109,7 +109,7 @@ local SelectDispatch = function()
 
     -- Fallback if none of the resources are started
     return function(data, playerCoords, locationInfo, gender)
-        error("No supported dispatch system is currently running.")
+        print("No supported dispatch system is currently running.")
     end
 end
 
