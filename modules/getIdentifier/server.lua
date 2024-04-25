@@ -24,7 +24,14 @@ local Identifier = function()
     end
 end
 
---- The chosen method for getting a player's identifier, determined at the time of script initialization.
-SD.GetIdentifier = Identifier()
+local GetIdentifier = Identifier()
+
+--- Retrieve the unique identifier for a player.
+-- This function is used to get a player's identifier using the 'source' provided.
+-- The method to determine the identifier is set during the initialization of the script.
+-- @param source any The input used to identify and retrieve the player's unique identifier.
+SD.GetIdentifier = function(source)
+    GetIdentifier(source)
+end
 
 return SD.GetIdentifier
