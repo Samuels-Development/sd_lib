@@ -57,7 +57,7 @@ local HasItem = function()
             return false
         end
     -- QBCore system.
-    elseif Framework == 'qb' then
+    elseif Framework == 'qb' or Framework == 'qbx' then
         return function(items, amount)
             local PlayerData = QBCore.Functions.GetPlayerData()
             local isTable = type(items) == 'table'

@@ -6,13 +6,13 @@ local Identifier = function()
     if Framework == 'esx' then
         -- For ESX, directly return the player's primary identifier.
         return function(source)
-            local player = ESX.GetPlayerFromId(source)
+            local player = SD.GetPlayer(source)
             return player.identifier
         end
-    elseif Framework == 'qb' then
+    elseif Framework == 'qb' or Framework == 'qbx' then
         -- For QBCore, return the player's citizenid.
         return function(source)
-            local player = QBCore.Functions.GetPlayer(source)
+            local player = SD.GetPlayer(source)
             return player.PlayerData.citizenid
         end
     else

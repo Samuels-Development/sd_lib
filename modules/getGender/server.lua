@@ -8,7 +8,7 @@ local GetPlayerGender = function()
         return function(player)
             return player.get("sex") or "Male"
         end
-    elseif Framework == 'qb' then
+    elseif Framework == 'qb' or Framework == 'qbx' then
         return function(player)
             return player.PlayerData.charinfo.gender == 0 and 'Male' or 'Female'
         end

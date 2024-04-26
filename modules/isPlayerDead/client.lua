@@ -14,16 +14,16 @@ end
 --- based on the configured framework. This approach abstracts framework-specific calls
 --- into a unified SD interface, facilitating a clean and maintainable way to interact
 --- with player objects across different frameworks.
-----@return function A function that, when called with a player's server ID, returns the corresponding player object.
+---@return function A function that, when called with a player's server ID, returns the corresponding player object.
 local IsPlayerDead = function()
     if Framework == 'esx' then
         return function(source)
             return isDead
         end
-    elseif Framework == 'qb' then
+    elseif Framework == 'qb' or Framework == 'qbx' then
         return function(source)
-            local PlayerData = QBCore.Functions.GetPlayerData()
-            return (PlayerData.metadata['isdead'] or PlayerData.metadata['inlaststand'])
+            local Player = SD.GetPlayer(source)
+            return (Player.PlayerData.metadata['isdead'] or Player.PlayerData.metadata['inlaststand'])
         end
     else
         -- Fallback function for unsupported frameworks. Logs an error message.

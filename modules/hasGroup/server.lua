@@ -31,7 +31,7 @@ local HasGroup = function()
 
             return nil
         end
-    elseif Framework == 'qb' then
+    elseif Framework == 'qb' or Framework == 'qbx' then
         return function(player, filter)
             local typeOfFilter = type(filter)
             local groups = { 'job', 'gang' }

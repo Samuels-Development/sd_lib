@@ -3,20 +3,35 @@
 -- It then returns a function tailored to use that method for showing notifications.
 ---@return function A function configured to show notifications using the determined method.
 local Notification = function()
-    -- Determine the framework and return a corresponding function for showing the notification.
-    if Framework == 'esx' then
-        return function(message, _)
-            ESX.ShowNotification(message)
-        end
-    elseif Framework == 'qb' then
+    -- Check if lib is available and use lib.notify if it is.
+    if lib ~= nil then
         return function(message, type)
-            QBCore.Functions.Notify(message, type)
+            lib.notify({
+                title = type,
+                description = message,
+                type = type or 'inform' -- Default type is 'inform' if not specified
+            })
         end
-    end
+    else
+        -- Determine the framework and return a corresponding function for showing the notification.
+        if Framework == 'esx' then
+            return function(message, _)
+                ESX.ShowNotification(message)
+            end
+        elseif Framework == 'qb' then
+            return function(message, type)
+                QBCore.Functions.Notify(message, type or 'info')
+            end
+        elseif Framework == 'qbx' then 
+            return function(message, type)
+                exports.qbx_core:Notify(message, type or 'info')
+            end
+        end
 
-    -- As a fallback, return a function that does nothing or logs a warning/error.
-    return function(message, type)
-        error(string.format("Notification system not supported. Message was: %s, Type was: %s", message, type))
+        -- As a fallback, return a function that does nothing or logs a warning/error.
+        return function(message, type)
+            error(string.format("Notification system not supported. Message was: %s, Type was: %s", message, type))
+        end
     end
 end
 

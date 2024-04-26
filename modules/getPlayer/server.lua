@@ -12,6 +12,10 @@ local GetPlayer = function()
         return function(source)
             return QBCore.Functions.GetPlayer(source)
         end
+    elseif Framework == 'qbx' then
+        return function(source)
+            return exports.qbx_core:GetPlayer(source)
+        end
     else
         -- Fallback function for unsupported frameworks. Logs an error message.
         return function(source)

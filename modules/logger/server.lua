@@ -1,192 +1,83 @@
-local webhookURL = "Your_Webhook_URL" -- Replace with your actual webhook URL
-local colors = {['default'] = 14423100}
-local logQueue = {}
-local logTime = 60 -- Time in seconds to flush the log queue
-
---- Sends the queued logs for a given log group.
-local sendQueue = function(name)
-    if #logQueue[name] > 0 then
-        local postData = {username = 'SD Logs', embeds = {}}
-        
-        if logQueue[name][1].content then
-            postData.content = '@everyone'
-        end
-
-        for _, log in ipairs(logQueue[name]) do
-            table.insert(postData.embeds, log.data)
-        end
-
-        PerformHttpRequest(logQueue[name][1].webhook, function(err, text, headers)
-            -- Optional: Handle the response if needed
-        end, 'POST', json.encode(postData), {['Content-Type'] = 'application/json'})
-
-        logQueue[name] = {}
-    end
-end
-
--- Background thread for automatic log sending
-CreateThread(function()
-    local timer = 0
-    while true do
-        Wait(1000)
-        timer = timer + 1
-        if timer >= logTime then
-            timer = 0
-            for name, _ in pairs(logQueue) do
-                sendQueue(name)
-            end
-        end
-    end
-end)
-
---- Public interface for logging, exposed through the SD namespace
----@param name string A unique name for the log group.
----@param title string The title of the log message.
----@param color string The color code or a key for predefined colors.
----@param message string The log message content.
----@param tagEveryone boolean Optionally tag everyone in the Discord channel.
-SD.Log = function(name, title, color, message, tagEveryone)
-    local tag = tagEveryone or false
-
-    if not webhookURL or webhookURL == "" then
-        error("Webhook URL is not defined. Please define a webhook URL to receive logs.")
-        return
-    end
-
-    local embedData = {
-        title = title,
-        color = colors[color] or colors['default'],
-        footer = {text = os.date('%c')},
-        description = message,
-        author = {
-            name = 'SD Logs',
-            icon_url = 'https://cdn.discordapp.com/attachments/1002646303139958784/1137442128310567002/samueldevelopment-logo.png',
-        },
-    }
-
-    logQueue[name] = logQueue[name] or {}
-    table.insert(logQueue[name], {webhook = webhookURL, data = embedData, content = tag})
-
-    if #logQueue[name] >= 10 then
-        sendQueue(name)
-    end
-end
-
-return SD.Log
-
---[[
-    local Config = {
-    webhookURL = "Your_Webhook_URL", -- For Discord or similar services
-    logServices = {
-        fivemmanage = {
-            enabled = false,
-            endpoint = 'https://api.fivemanage.com/api/logs/batch',
-            key = 'Your_FiveM_Manage_API_Key'
-        },
-        datadog = {
-            enabled = false,
-            endpoint = 'https://http-intake.logs.datadoghq.com/api/v2/logs',
-            apiKey = 'Your_Datadog_API_Key'
-        },
-        loki = {
-            enabled = false,
-            endpoint = 'https://loki-instance/api/v1/push',
-            user = 'Your_Loki_User',
-            password = 'Your_Loki_Password'
-        },
-        grafana = {
-            enabled = true,
-            endpoint = 'https://logs-prod-012.grafana.net',
-            basicAuth = {
-                username = "867431",
-                password = "glc_eyJvIjoiMTEwMzM3NiIsIm4iOiJzdGFjay05MDk2NTAtaGwtd3JpdGUtc2FtdWVsIiwiayI6IjhlOTQ1Smk0N1diYjY2ZU0zZjBkbGFLUiIsIm0iOnsiciI6InByb2QtZXUtd2VzdC0yIn19",
-            }
-        }
+Config = {
+    service = 'datadog', -- Default service; can be changed to 'datadog', 'fivemanage', or 'loki'
+    webhookURL = "Your_Webhook_URL", -- Replace with your actual webhook URL
+    datadog = {
+        key = '7670d5dfaf0895b19060cc1706b44648',
+        site = 'datadoghq.eu'
     },
-    buffer = {},
-    bufferSize = 0,
-    maxBuffer = 20,
-    flushInterval = 500
+    fivemanage = {
+        key = 'your-fivemanage-api-key',
+    },
+    loki = {
+        user = '867431',
+        password = 'glc_eyJvIjoiMTEwMzM3NiIsIm4iOiJzdGFjay05MDk2NTAtaGwtd3JpdGUtc2FtdWVsMiIsImsiOiIxM3YzV0tFMHd1VUZzN0k1MnlUNjFkeTIiLCJtIjp7InIiOiJwcm9kLWV1LXdlc3QtMiJ9fQ==',
+        endpoint = 'https://logs-prod-012.grafana.net/loki/api/v1/push',
+        tenant = 'glc_eyJvIjoiMTEwMzM3NiIsIm4iOiJzdGFjay05MDk2NTAtaGwtd3JpdGUtc2FtdWVsMiIsImsiOiIxM3YzV0tFMHd1VUZzN0k1MnlUNjFkeTIiLCJtIjp7InIiOiJwcm9kLWV1LXdlc3QtMiJ9fQ==',
+    }
 }
 
-local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+local buffer = {}
+local bufferSize = 0
+local hostname = "YourServerName" -- Placeholder for your server's hostname
 
-local base64encode = function(data)
-    return ((data:gsub('.', function(x)
-        local r, b = '', x:byte()
-        for i = 8, 1, -1 do r = r .. (b % 2 ^ i - b % 2 ^ (i - 1) > 0 and '1' or '0') end
-        return r;
-    end)..'0000'):gsub('%d%d%d?%d?%d?%d?', function(x)
-        if (#x < 6) then return '' end
-        local c = 0
-        for i = 1, 6 do c = c + (x:sub(i, i) == '1' and 2 ^ (6 - i) or 0) end
-        return b:sub(c + 1, c + 1)
-    end)..({ '', '==', '=' })[#data % 3 + 1])
+-- Utility to remove color codes
+local function removeColorCodes(str)
+    return str:gsub("%^%d", ""):gsub("%^#[%dA-Fa-f]+", ""):gsub("~[%a]~", "")
 end
 
-local sendLogs = function()
-    if Config.bufferSize == 0 then
-        return
-    end
+hostname = removeColorCodes(hostname)
 
-    for service, settings in pairs(Config.logServices) do
-        if settings.enabled then
-            local headers = {['Content-Type'] = 'application/json'}
-            if service == 'fivemmanage' then
-                headers['Authorization'] = settings.key
-            elseif service == 'datadog' then
-                headers['DD-API-KEY'] = settings.apiKey
-            elseif service == 'loki' or service == 'grafana' then
-                headers['Authorization'] = 'Basic ' .. base64encode(settings.user .. ':' .. settings.password)
-            end
+-- Define headers and endpoint dynamically based on the service
+local function getServiceConfig()
+    local service = Config.service
+    local headers = {}
+    local endpoint = ""
 
-            local body = json.encode(Config.buffer)
-            PerformHttpRequest(settings.endpoint, function(status, response, headers)
-                -- Optional: Add logging or error handling based on the response
-            end, 'POST', body, headers)
+    if service == 'datadog' then
+        endpoint = ('https://http-intake.logs.%s/api/v2/logs'):format(Config.datadog.site)
+        headers = {['Content-Type'] = 'application/json', ['DD-API-KEY'] = Config.datadog.key}
+    elseif service == 'fivemanage' then
+        endpoint = 'https://api.fivemanage.com/api/logs/batch'
+        headers = {['Content-Type'] = 'application/json', ['Authorization'] = Config.fivemanage.key}
+    elseif service == 'loki' then
+        endpoint = ('%s/loki/api/v1/push'):format(Config.loki.endpoint)
+        headers = {['Content-Type'] = 'application/json', ['Authorization'] = getAuthorizationHeader(Config.loki.user, Config.loki.password)}
+        if Config.loki.tenant ~= '' then
+            headers['X-Scope-OrgID'] = Config.loki.tenant
         end
+    else
+        endpoint = Config.webhookURL -- Fallback to Discord webhook if no service is selected
+        headers = {['Content-Type'] = 'application/json'}
     end
 
-    Config.buffer = {}
-    Config.bufferSize = 0
+    return endpoint, headers
 end
 
-SetTimeout(Config.flushInterval, sendLogs)
-
-local formatTags = function(source, ...)
-    local tagString = ''
-    if type(source) == 'number' and source > 0 then
-        tagString = ('player:%s'):format(GetPlayerName(source))
-        for i = 0, GetNumPlayerIdentifiers(source) - 1 do
-            local identifier = GetPlayerIdentifier(source, i)
-            tagString = tagString .. ',' .. identifier
-        end
-    end
-
-    local additionalTags = {...}
-    if #additionalTags > 0 then
-        tagString = tagString .. ',' .. table.concat(additionalTags, ',')
-    end
-
-    return tagString
-end
-
-SD.Log = function(source, event, message, ...)
-    local tags = formatTags(source, ...)
-    local logEntry = {
-        hostname = GetConvar('sv_projectName', 'default-server'),
-        service = event,
+-- Generic log function for all services
+local function logMessage(message, tags)
+    local endpoint, headers = getServiceConfig()
+    table.insert(buffer, {
+        level = "info",
         message = message,
+        hostname = hostname,
         tags = tags
-    }
+    })
 
-    table.insert(Config.buffer, logEntry)
-    Config.bufferSize = Config.bufferSize + 1
+    bufferSize = bufferSize + 1
 
-    if Config.bufferSize >= Config.maxBuffer then
-        sendLogs()
+    if bufferSize >= 10 then
+        PerformHttpRequest(endpoint, function(status, text, headers)
+            -- Optionally handle the response
+        end, 'POST', json.encode(buffer), headers)
+
+        buffer = {}
+        bufferSize = 0
     end
 end
 
-return SD.Log
---]]
+-- Public logging interface
+function SD.Log(message, tags)
+    logMessage(message, tags)
+end
+
+return SD

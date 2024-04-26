@@ -20,7 +20,7 @@ local HasItem = function()
                 local item = player.getInventoryItem(item)
                 return item.count or item.amount
             end
-        elseif Framework == 'qb' then
+        elseif Framework == 'qb' or Framework == 'qbx' then
             return function(player, item)
                 -- QB-Core inventory check.
                 local item = player.Functions.GetItemByName(item)
@@ -51,7 +51,7 @@ local AddItem = function()
             return function(player, item, count, metadata, slot)
                 player.addInventoryItem(item, count, metadata, slot)
             end
-        elseif Framework == 'qb' then
+        elseif Framework == 'qb' or Framework == 'qbx' then
             return function(player, item, count, metadata, slot)
                 player.Functions.AddItem(item, count, slot, metadata)
                 TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[item], 'add', count)
@@ -74,7 +74,7 @@ local AddWeapon = function()
         return function(player, weapon, ammo)
             player.addWeapon(weapon, ammo)
         end
-    elseif Framework == 'qb' then
+    elseif Framework == 'qb' or Framework == 'qbx' then
         return function(player, weapon, ammo)
             -- Example: player.Functions.AddWeapon(weapon, ammo)
             error("AddWeapon function for QB-Core needs customization.")
@@ -103,7 +103,7 @@ local RemoveItem = function()
             return function(player, item, count, metadata, slot)
                 player.removeInventoryItem(item, count, metadata, slot)
             end
-        elseif Framework == 'qb' then
+        elseif Framework == 'qb' or Framework == 'qbx' then
             return function(player, item, count, slot, metadata)
                 player.Functions.RemoveItem(item, count, slot, metadata)
                 TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[item], "remove", count)
@@ -128,6 +128,8 @@ SD.Inventory.RegisterUsableItem = function(item, cb)
         ESX.RegisterUsableItem(item, cb)
     elseif Framework == 'qb' then
         QBCore.Functions.CreateUseableItem(item, cb)
+    elseif Framework == 'qbx' then
+        exports.qbx_core:CreateUseableItem(item, cb)
     end
 end
 

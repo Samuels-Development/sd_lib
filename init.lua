@@ -12,12 +12,20 @@ local function QBCoreInit()
     end
 end
 
+local function QBXInit()
+    if GetResourceState('qbx_core') == 'started' then
+        _G.QBCore = exports['qb-core']:GetCoreObject()
+        _G.Framework = 'qbx'
+    end
+end
+
+
 local Config = {
     Framework = {
         ESX = ESXInit,
         QBCore = QBCoreInit,
         DetectFramework = function()
-            local frameworks = {'es_extended', 'qb-core'}
+            local frameworks = {'es_extended', 'qb-core', 'qbx_core'}
             for _, fw in ipairs(frameworks) do
                 if GetResourceState(fw) == 'started' then
                     if fw == 'es_extended' then
@@ -26,6 +34,9 @@ local Config = {
                     elseif fw == 'qb-core' then
                         QBCoreInit()
                         return 'qb'
+                    elseif fw == 'qbx_core' then
+                        QBXInit()
+                        return 'qbx'
                     end
                 end
             end

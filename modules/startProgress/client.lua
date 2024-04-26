@@ -3,29 +3,53 @@
 -- (e.g., availability of ox_lib and configuration settings) or the active framework (ESX, QBCore).
 ---@return function A function tailored to start progress bars using the determined method.
 local ProgressBar = function()
-    -- Return a function tailored to the active framework's method of showing progress bars
-    if Framework == 'esx' then
-        return function(identifier, label, duration, completed, notfinished)
-            exports.esx_progressbar:Progressbar(identifier, label, duration, {
-                FreezePlayer = true,
-                onFinish = completed
+    -- Check if lib is available and use lib.progressBar if it is.
+    if lib ~= nil then
+        return function(identifier, label, duration, completed, notfinished, options)
+            options = options or {}
+            lib.progressBar({
+                duration = duration,
+                label = label,
+                useWhileDead = options.useWhileDead,
+                canCancel = options.canCancel,
+                disable = {
+                    move = options.disableMovement,
+                    car = options.disableCarMovement,
+                    combat = options.disableCombat,
+                    mouse = options.disableMouse,
+                },
+                anim = options.anim,
+                prop = options.prop,
+                scenario = options.scenario,
+                onFinish = completed,
+                onCancel = notfinished
             })
         end
-    elseif Framework == 'qb' then
-        return function(identifier, label, duration, completed, notfinished)
-            QBCore.Functions.Progressbar(identifier, label, duration, false, true, {
-                disableMovement = true,
-                disableCarMovement = true,
-                disableMouse = false,
-                disableCombat = true,
-            }, {}, {}, {}, completed, notfinished)
+    else
+        -- Return a function tailored to the active framework's method of showing progress bars
+        if Framework == 'esx' then
+            return function(identifier, label, duration, completed, notfinished)
+                exports.esx_progressbar:Progressbar(identifier, label, duration, {
+                    FreezePlayer = true,
+                    onFinish = completed
+                })
+            end
+        elseif Framework == 'qb' then
+            return function(identifier, label, duration, completed, notfinished)
+                QBCore.Functions.Progressbar(identifier, label, duration, false, true, {
+                    disableMovement = true,
+                    disableCarMovement = true,
+                    disableMouse = false,
+                    disableCombat = true,
+                }, {}, {}, {}, completed, notfinished)
+            end
         end
-    end
-    
-    -- Fallback function in case no method is configured
-    return function(identifier, label, duration, completed, notfinished)
-        error(string.format("No progress bar method configured. Unable to start progress for: %s", label))
-        -- Optionally, call notfinished callback here if needed
+        
+        -- Fallback function in case no method is configured
+        return function(identifier, label, duration, completed, notfinished)
+            error(string.format("No progress bar method configured. Unable to start progress for: %s", label))
+            -- Optionally, call notfinished callback here if needed
+        end
     end
 end
 
@@ -38,8 +62,9 @@ local StartProgress = ProgressBar()
 ---@param duration number The duration for which the progress should be tracked.
 ---@param completed function Callback function to execute when progress completes.
 ---@param notfinished function Callback function to execute if progress does not complete.
-SD.StartProgress = function(identifier, label, duration, completed, notfinished)
-    StartProgress(identifier, label, duration, completed, notfinished)
+---@param options table Optional parameters to customize the progress behavior.
+SD.StartProgress = function(identifier, label, duration, completed, notfinished, options)
+    StartProgress(identifier, label, duration, completed, notfinished, options)
 end
 
 return SD.StartProgress

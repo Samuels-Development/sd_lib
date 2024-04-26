@@ -7,7 +7,7 @@ local GetFullName = function()
         return function(player)
             return player.get('firstName') .. ' ' .. player.get('lastName')
         end
-    elseif Framework == 'qb' then
+    elseif Framework == 'qb' or Framework == 'qbx' then
         return function(player)
             if player.PlayerData and player.PlayerData.charinfo then
                 return player.PlayerData.charinfo.firstname .. ' ' .. player.PlayerData.charinfo.lastname
@@ -28,7 +28,7 @@ local GetFirstName = function()
         return function(player)
             return player.get('firstName')
         end
-    elseif Framework == 'qb' then
+    elseif Framework == 'qb' or Framework == 'qbx' then
         return function(player)
             if player.PlayerData and player.PlayerData.charinfo then
                 return player.PlayerData.charinfo.firstname
@@ -49,7 +49,7 @@ local GetLastName = function()
         return function(player)
             return player.get('lastName')
         end
-    elseif Framework == 'qb' then
+    elseif Framework == 'qb' or Framework == 'qbx' then
         return function(player)
             if player.PlayerData and player.PlayerData.charinfo then
                 return player.PlayerData.charinfo.lastname

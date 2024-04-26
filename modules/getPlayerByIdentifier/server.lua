@@ -1,14 +1,16 @@
 -- Internal function to select the appropriate method for retrieving a player by identifier based on the framework.
 local GetPlayerByIdent = function()
     if Framework == 'qb' then
-        -- QB-Core logic for getting a player by identifier
         return function(identifier)
             return SD.GetPlayer(QBCore.Functions.GetPlayerByCitizenId(identifier)?.PlayerData?.source)
         end
     elseif Framework == 'esx' then
-        -- ESX logic for getting a player by identifier
         return function(identifier)
             return SD.GetPlayer(ESX.GetPlayerFromIdentifier(identifier)?.source)
+        end
+    elseif Framework == 'qbx' then
+        return function(identifier)
+            return SD.GetPlayer(exports.qbx_core:GetPlayerByCitizenId(identifier)?.PlayerData?.source)
         end
     else
         -- Fallback for unsupported frameworks

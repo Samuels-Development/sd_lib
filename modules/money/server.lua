@@ -5,7 +5,7 @@ SD.Money = {}
 ---@param moneyType string The original money type.
 ---@return string The converted money type.
 local ConvertMoneyType = function(moneyType)
-    if moneyType == 'money' and Framework == 'qb' then
+    if moneyType == 'money' and Framework == 'qb' or Framework == 'qbx' then
         return 'cash'
     elseif moneyType == 'cash' and Framework == 'esx' then
         return 'money'
@@ -20,7 +20,7 @@ local AddMoney = function()
         return function(player, moneyType, amount)
             player.addAccountMoney(ConvertMoneyType(moneyType), amount)
         end
-    elseif Framework == 'qb' then
+    elseif Framework == 'qb' or Framework == 'qbx' then
         return function(player, moneyType, amount)
             player.Functions.AddMoney(ConvertMoneyType(moneyType), amount)
         end
@@ -40,7 +40,7 @@ local RemoveMoney = function()
         return function(player, moneyType, amount)
             player.removeAccountMoney(ConvertMoneyType(moneyType), amount)
         end
-    elseif Framework == 'qb' then
+    elseif Framework == 'qb' or Framework == 'qbx' then
         return function(player, moneyType, amount)
             player.Functions.RemoveMoney(ConvertMoneyType(moneyType), amount)
         end
@@ -61,7 +61,7 @@ local GetPlayerFunds = function()
             local account = player.getAccount(ConvertMoneyType(moneyType))
             return account and account.money or 0
         end
-    elseif Framework == 'qb' then
+    elseif Framework == 'qb' or Framework == 'qbx' then
         return function(player, moneyType)
             return player.PlayerData.money[ConvertMoneyType(moneyType)] or 0
         end
