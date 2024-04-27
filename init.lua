@@ -8,8 +8,12 @@ local InitFramework = function(framework)
     if GetResourceState(framework) == 'started' and objectName then
         if objectName == 'es_extended' then
             return 'esx', exports[objectName]:getSharedObject()
-        else
-            return 'qb', exports[objectName]:GetCoreObject()
+        elseif objectName == 'qb-core' then
+            if framework == 'qbx_core' then
+                return 'qbx', exports[objectName]:GetCoreObject()
+            else
+                return 'qb', exports[objectName]:GetCoreObject()
+            end
         end
     end
     return nil, nil
