@@ -1,5 +1,5 @@
 ### W.I.P Notice
-This is a complete refactor from my original library, this should not yet be used in conjuction with my resources!
+This is a complete refactor from my original library, this should not yet be used in conjuction with my resources! For the most up-to-date and compatible sd_lib version, please download it from your keymaster!
 
 The functions in this library may exhibit inconsistent styling, linting issues, and other discrepancies. While this library is fully functional, it is not yet implemented in any of my resources. I plan to release the lib officially once I am confident in its stability and performance.
 
