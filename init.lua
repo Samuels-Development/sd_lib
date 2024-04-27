@@ -1,49 +1,35 @@
-local function ESXInit()
-    if GetResourceState('es_extended') == 'started' then
-        _G.ESX = exports['es_extended']:getSharedObject()
-        _G.Framework = 'esx'
-    end
-end
+-- Global variable to store framework details
+local frameworkId, frameworkObj
 
-local function QBCoreInit()
-    if GetResourceState('qb-core') == 'started' then
-        _G.QBCore = exports['qb-core']:GetCoreObject()
-        _G.Framework = 'qb'
-    end
-end
+-- Initiliaze a framework and return it's name and object.
+local InitFramework = function(framework)
+    local objectName if framework == 'es_extended' then objectName = 'es_extended' elseif framework == 'qb-core' or framework == 'qbx_core' then objectName = 'qb-core' end
 
-local function QBXInit()
-    if GetResourceState('qbx_core') == 'started' then
-        _G.QBCore = exports['qb-core']:GetCoreObject()
-        _G.Framework = 'qbx'
-    end
-end
-
-
-local Config = {
-    Framework = {
-        ESX = ESXInit,
-        QBCore = QBCoreInit,
-        DetectFramework = function()
-            local frameworks = {'es_extended', 'qb-core', 'qbx_core'}
-            for _, fw in ipairs(frameworks) do
-                if GetResourceState(fw) == 'started' then
-                    if fw == 'es_extended' then
-                        ESXInit()
-                        return 'esx'
-                    elseif fw == 'qb-core' then
-                        QBCoreInit()
-                        return 'qb'
-                    elseif fw == 'qbx_core' then
-                        QBXInit()
-                        return 'qbx'
-                    end
-                end
-            end
-            return nil
+    if GetResourceState(framework) == 'started' and objectName then
+        if objectName == 'es_extended' then
+            return 'esx', exports[objectName]:getSharedObject()
+        else
+            return 'qb', exports[objectName]:GetCoreObject()
         end
-    }
-}
+    end
+    return nil, nil
+end
+
+-- Function to automatically detect a framework and initialize the 'id' and object of said framework.
+local DetectFramework = function()
+    local frameworks = {'es_extended', 'qb-core', 'qbx_core'}
+    for _, fw in ipairs(frameworks) do
+        local id, obj = InitFramework(fw)
+        if id then
+            return id, obj
+        end
+    end
+    return nil, nil
+end
+
+-- Detect and store the framework at the start
+frameworkId, frameworkObj = DetectFramework()
+if frameworkId == 'qb' then _ENV['QBCore'] = frameworkObj elseif frameworkId == 'esx' then _ENV['ESX'] = frameworkObj end
 
 local sd_lib = 'sd_lib'
 
@@ -59,7 +45,6 @@ local function noop() end
 
 -- Define a function to load modules with the ability to use the framework information
 local function loadModule(self, module)
-    local frameworkName = Config.Framework.DetectFramework() -- Get the framework from Config
     local dir = ('modules/%s'):format(module)
     local chunk = LoadResourceFile(sd_lib, ('%s/%s.lua'):format(dir, context))
     local shared = LoadResourceFile(sd_lib, ('%s/shared.lua'):format(dir))
@@ -70,12 +55,11 @@ local function loadModule(self, module)
 
     if chunk then
         -- Define an environment for the module with framework access and global access
-        local env = {Framework = frameworkName}
+        local env = { Framework = frameworkId }
         setmetatable(env, {__index = _G})  -- Use _G to provide access to all global variables and libraries
 
         -- Load the module code with the specific environment
         local fn, err = load(chunk, ('@@sd_lib/modules/%s/%s.lua'):format(module, context), 't', env)
-
         if not fn or err then
             return error(('\n^1Error importing module (%s): %s^0'):format(dir, err), 3)
         end
@@ -85,8 +69,6 @@ local function loadModule(self, module)
         return self[module]
     end
 end
-
--- SD.Locale.LoadLocale('en') -- Load the respective locale file.
 
 -- Define API for module calling
 local function call(self, index, ...)
