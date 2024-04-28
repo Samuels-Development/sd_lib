@@ -2,8 +2,8 @@ fx_version 'cerulean'
 game 'gta5'
 
 Author 'Samuel#0008'
-Description 'A library of functions used to ease the bridge between SD Scripts'
-Version '1.3.1'
+Description 'A library of functions, that also bridges frameworks and common 3rd party resources.'
+Version '1.0.0'
 
 client_scripts {
     'resource/**/client.lua',
@@ -28,4 +28,4 @@ shared_scripts {
 
 lua54 'yes'
 
-escrow_ignore { 'client/*.lua', 'server/*.lua', 'shared/*.lua', 'export/export.lua', 'sh_config.lua', 'sv_config.lua', 'client/menu/cl_menu.lua' }
+escrow_ignore { 'init.lua', 'modules/**/*.lua', 'resource/init.lua', 'resource/**/client.lua', 'resource/**/server.lua' }
