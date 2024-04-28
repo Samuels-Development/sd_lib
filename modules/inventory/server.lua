@@ -120,17 +120,39 @@ end
 -- Utilize the dynamically selected function for removing items to the inventory.
 local RemoveItemFromInventory = RemoveItem()
 
+-- Function to dynamically select the appropriate RegisterUsableItem function based on the current framework.
+local RegisterUsableItem = function()
+    if Framework == 'esx' then
+        -- ESX framework item registration
+        return function(item, cb)
+            ESX.RegisterUsableItem(item, cb)
+        end
+    elseif Framework == 'qb' then
+        -- QB-Core framework item registration
+        return function(item, cb)
+            QBCore.Functions.CreateUseableItem(item, cb)
+        end
+    elseif Framework == 'qbx' then
+        -- QBX-Core framework item registration
+        return function(item, cb)
+            exports.qbx_core:CreateUseableItem(item, cb)
+        end
+    else
+        -- Fallback or error for unsupported frameworks
+        return function(item, cb)
+            error("RegisterUsableItem function is not supported in the current framework.")
+        end
+    end
+end
+
+-- Utilize the dynamically selected function for registering usable items.
+local RegisterUsableItemInInventory = RegisterUsableItem()
+
 --- Registers a function to be called when a player uses an item.
 ---@param item string The item's name.
 ---@param cb function The callback function to execute when the item is used.
 SD.Inventory.RegisterUsableItem = function(item, cb)
-    if Framework == 'esx' then
-        ESX.RegisterUsableItem(item, cb)
-    elseif Framework == 'qb' then
-        QBCore.Functions.CreateUseableItem(item, cb)
-    elseif Framework == 'qbx' then
-        exports.qbx_core:CreateUseableItem(item, cb)
-    end
+    RegisterUsableItemInInventory(item, cb)
 end
 
 --- Returns the amount of a specific item a player has.
