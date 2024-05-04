@@ -40,4 +40,4 @@ SD.Callback.Register('sd_lib:getGender', function(source)
     return(gender)
 end)
 
-SD.CheckVersion('sd-versions/sd_lib') -- Check version of specified resource
+SD.CheckVersion('Samuels-Development/sd_lib') -- Check version of specified resource
