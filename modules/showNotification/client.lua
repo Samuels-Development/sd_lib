@@ -6,10 +6,11 @@ local Notification = function()
     -- Check if lib is available and use lib.notify if it is.
     if lib ~= nil then
         return function(message, type)
+            local title = SD.String.CapitalizeFirst(type or 'inform')
             lib.notify({
-                title = type,
+                title = title,
                 description = message,
-                type = type or 'inform' -- Default type is 'inform' if not specified
+                type = type or 'inform'
             })
         end
     else
