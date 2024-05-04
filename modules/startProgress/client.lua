@@ -5,25 +5,19 @@
 local ProgressBar = function()
     -- Check if lib is available and use lib.progressBar if it is.
     if lib ~= nil then
-        return function(identifier, label, duration, completed, notfinished, options)
-            options = options or {}
-            lib.progressBar({
-                duration = duration,
-                label = label,
-                useWhileDead = options.useWhileDead,
-                canCancel = options.canCancel,
-                disable = {
-                    move = options.disableMovement,
-                    car = options.disableCarMovement,
-                    combat = options.disableCombat,
-                    mouse = options.disableMouse,
-                },
-                anim = options.anim,
-                prop = options.prop,
-                scenario = options.scenario,
-                onFinish = completed,
-                onCancel = notfinished
-            })
+        return function(identifier, label, duration, completed, notfinished)
+            if lib.progressBar({
+                duration = duration,  
+                label = label,      
+                useWhileDead = false,
+                allowSwimming = true, 
+                canCancel = true,  
+                disable = { move = true } 
+            }) then 
+                completed()
+            else 
+                notfinished()
+            end
         end
     else
         -- Return a function tailored to the active framework's method of showing progress bars
