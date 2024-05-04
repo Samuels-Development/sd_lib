@@ -162,16 +162,7 @@ end
 SD.Inventory.HasItem = function(source, item)
     local player = SD.GetPlayer(source)
     if player == nil then return 0 end
-
-    if SD.Array.IsArray(item) then
-        local counts = {}
-        for index, itemName in ipairs(item) do
-            counts[index] = CheckInventory(player, itemName)
-        end
-        return counts
-    else
-        return CheckInventory(player, item)
-    end
+    return CheckInventory(player, item)
 end
 
 --- Adds an item to a player's inventory.
@@ -183,16 +174,7 @@ end
 SD.Inventory.AddItem = function(source, item, count, slot, metadata)
     local player = SD.GetPlayer(source)
     if player then
-        if SD.Array.IsArray(item) and SD.Array.IsArray(count) then
-            for index, itemName in ipairs(item) do
-                local itemCount = count[index]
-                if itemCount then
-                    AddItemToInventory(player, itemName, itemCount, slot, metadata)
-                end
-            end
-        else
-            AddItemToInventory(player, item, count, slot, metadata)
-        end
+        AddItemToInventory(player, item, count, slot, metadata)
     end
 end
 
@@ -203,16 +185,7 @@ end
 SD.Inventory.AddWeapon = function(source, weapon, ammo)
     local player = SD.GetPlayer(source)
     if player then
-        if SD.Array.IsArray(weapon) and SD.Array.IsArray(ammo) then
-            for index, weaponName in ipairs(weapon) do
-                local weaponAmmo = ammo[index]
-                if weaponAmmo then
-                    AddWeaponToInventory(player, weaponName, weaponAmmo)
-                end
-            end
-        else
-            AddWeaponToInventory(player, weapon, ammo)
-        end
+        AddWeaponToInventory(player, weapon, ammo)
     end
 end
 
@@ -225,16 +198,7 @@ end
 SD.Inventory.RemoveItem = function(source, item, count, slot, metadata)
     local player = SD.GetPlayer(source)
     if player then
-        if SD.Array.IsArray(item) and SD.Array.IsArray(count) then
-            for index, itemName in ipairs(item) do
-                local itemCount = count[index]
-                if itemCount then
-                    RemoveItemFromInventory(player, itemName, itemCount, slot, metadata)
-                end
-            end
-        else
-            RemoveItemFromInventory(player, item, count, slot, metadata)
-        end
+        RemoveItemFromInventory(player, item, count, slot, metadata)
     end
 end
 
