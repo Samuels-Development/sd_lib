@@ -17,6 +17,13 @@ SD.String.EndsWith = function(str, ending)
     return ending == "" or str:sub(-#ending) == ending
 end
 
+--- Capitalizes the first letter of a string and lowercases the rest.
+---@param str string The string to capitalize.
+---@return string The capitalized string.
+SD.String.CapitalizeFirst = function(str)
+    return str:sub(1, 1):upper() .. str:sub(2):lower()
+end
+
 --- Splits a string by a specified delimiter.
 ---@param str string The string to split.
 ---@param delim string The delimiter to use for splitting.
