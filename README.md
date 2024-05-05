@@ -9,4 +9,4 @@ Discord: https://discord.gg/samueldev
 https://docs.samueldev.shop
 
 ## Credits
-Special thanks to [Linden](https://github.com/thelindat) and the amazing team at [@overextended](https://github.com/overextended), who developed `ox_lib`. I've adopted their `init.lua`, particularly the module initialization method, with a few modifications of my own.
+Special thanks to [Linden](https://github.com/thelindat) and the amazing team at [@overextended](https://github.com/overextended), who developed `ox_lib`. I've adopted their `init.lua`, particularly the module initialization method, with a few modifications of my own and their callback module, which I've stripped down and slightly altered to suit my purposes.
