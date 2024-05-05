@@ -8,8 +8,8 @@ Author: Samuel#0008
 Discord: https://discord.gg/samueldev
 
 ## Installation
-1. Download the latest [release](https://github.com/Samuels-Development/sd_lib/releases)
-2. Rename the folder from 'sd_lib-(version)' to just 'sd_lib'
+1. Download/Clone the Repository.
+2. Rename the folder from 'sd_lib-main' to just 'sd_lib'
 3. Put it into your servers resources and make sure, that the resource is ensured/started in the server.cfg
 
 ## Documentation
