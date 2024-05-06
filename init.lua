@@ -48,7 +48,7 @@ local context = IsDuplicityVersion() and 'server' or 'client'
 local function noop() end
 
 -- Define a function to load modules with the ability to use the framework information
-local function loadModule(self, module)
+local loadModule = function(self, module)
     local dir = ('modules/%s'):format(module)
     local chunk = LoadResourceFile(sd_lib, ('%s/%s.lua'):format(dir, context))
     local shared = LoadResourceFile(sd_lib, ('%s/shared.lua'):format(dir))
@@ -75,7 +75,7 @@ local function loadModule(self, module)
 end
 
 -- Define API for module calling
-local function call(self, index, ...)
+local call = function(self, index, ...)
     local module = rawget(self, index)
 
     if not module then
