@@ -14,6 +14,7 @@ SD.GetIdentifier = function()
     -- Trigger server callback and pass a function to handle the response
     SD.Callback('sd_lib:getIdentifier', false, function(identifier)
         -- Resume the coroutine from which this function was called, providing the identifier
+        -- print('Resuming coroutine with identifier:', identifier)
         coroutine.resume(thread, identifier)
     end)
 

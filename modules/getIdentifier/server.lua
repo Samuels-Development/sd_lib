@@ -31,7 +31,7 @@ local GetIdentifier = Identifier()
 -- The method to determine the identifier is set during the initialization of the script.
 -- @param source any The input used to identify and retrieve the player's unique identifier.
 SD.GetIdentifier = function(source)
-    GetIdentifier(source)
+    return GetIdentifier(source)
 end
 
 return SD.GetIdentifier
