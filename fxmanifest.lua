@@ -11,8 +11,10 @@ client_scripts {
 
 server_scripts {
     'modules/callback/server.lua',
+    'modules/checkVersion/server.lua',
     'resource/**/server.lua',
 }
+
 
 files {
     'init.lua',
