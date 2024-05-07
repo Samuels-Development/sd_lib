@@ -10,8 +10,6 @@ client_scripts {
 }
 
 server_scripts {
-    'modules/Callback/server.lua',
-    'modules/CheckVersion/server.lua',
     'resource/**/server.lua',
 }
 
