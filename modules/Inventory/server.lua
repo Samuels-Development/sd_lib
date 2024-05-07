@@ -18,13 +18,13 @@ local HasItem = function()
             return function(player, item)
                 -- ESX inventory check.
                 local item = player.getInventoryItem(item)
-                return item.count or item.amount
+                if item then return item.count or item.amount else return false end
             end
         elseif Framework == 'qb' or Framework == 'qbx' then
             return function(player, item)
                 -- QB-Core inventory check.
                 local item = player.Functions.GetItemByName(item)
-                return item.amount or item.count
+                if item then return item.amount or item.count else return 0 end
             end
         else
             -- Fallback for unsupported frameworks or configurations.
