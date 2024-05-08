@@ -72,7 +72,7 @@ SD.Log = function(name, title, color, message, tagEveryone)
     end
 end
 
-return SD.Log
+return SD.Logger
 
 --[[
     local Config = {
