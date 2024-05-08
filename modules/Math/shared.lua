@@ -63,26 +63,4 @@ SD.Math.Round = function(num, numDecimalPlaces)
     return math.floor(num * mult + 0.5) / mult
 end
 
---- Calculates the distance between two points in 2D space.
----@param x1 number The x coordinate of the first point.
----@param y1 number The y coordinate of the first point.
----@param x2 number The x coordinate of the second point.
----@param y2 number The y coordinate of the second point.
----@return number The distance between the two points.
-SD.Math.Distance2D = function(x1, y1, x2, y2)
-    return math.sqrt((x2 - x1)^2 + (y2 - y1)^2)
-end
-
---- Calculates the distance between two points in 3D space.
----@param x1 number The x coordinate of the first point.
----@param y1 number The y coordinate of the first point.
----@param z1 number The z coordinate of the first point.
----@param x2 number The x coordinate of the second point.
----@param y2 number The y coordinate of the second point.
----@param z2 number The z coordinate of the second point.
----@return number The distance between the two points.
-SD.Math.Distance3D = function(x1, y1, z1, x2, y2, z2)
-    return math.sqrt((x2 - x1)^2 + (y2 - y1)^2 + (z2 - z1)^2)
-end
-
 return SD.Math
