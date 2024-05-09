@@ -13,7 +13,7 @@ Discord: https://discord.gg/samueldev
 3. Put it into your servers resources and make sure, that the resource is ensured/started in the server.cfg
 
 ## Documentation
-https://docs.samueldev.shop (Not written yet)
+[https://docs.samueldev.shop](https://docs.samueldev.shop/overview/library)
 
 ## Credits
 Special thanks to [Linden](https://github.com/thelindat) and the amazing team at [@overextended](https://github.com/overextended), who developed `ox_lib`. I've adopted their `init.lua`, particularly the module initialization method, with a few modifications of my own and their callback module, which I've stripped down and slightly altered to suit my purposes.
