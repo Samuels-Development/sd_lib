@@ -90,6 +90,7 @@ local PlayerHasGroup = HasGroup()
 -- @param filter string The group name to check the player against.
 SD.HasGroup = function(source, filter)
     local player = SD.GetPlayer(source)
+    if not player then return end
     return PlayerHasGroup(player, filter)
 end
 
