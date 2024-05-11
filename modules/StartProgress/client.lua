@@ -23,7 +23,7 @@ local ProgressBar = function()
         -- Return a function tailored to the active framework's method of showing progress bars
         if Framework == 'esx' then
             return function(identifier, label, duration, completed, notfinished)
-                exports.esx_progressbar:Progressbar(identifier, label, duration, {
+                exports.esx_progressbar:Progressbar(label, duration, {
                     FreezePlayer = true,
                     onFinish = completed
                 })
