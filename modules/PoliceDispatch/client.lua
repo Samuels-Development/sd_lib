@@ -39,7 +39,15 @@ local SelectDispatch = function()
                         flash = 0,
                         unique_id = math.random(999999999),
                         sound = 1,
-                        blip = data.blip
+                        blip = {
+                            sprite = data.sprite,
+                            scale = data.scale,
+                            colour = data.colour,
+                            flashes = false,
+                            text = data.blipText,
+                            time = 5,
+                            radius = 0,
+                        }
                     })
                 end
             elseif resource.name == "ps-dispatch" then
@@ -82,7 +90,14 @@ local SelectDispatch = function()
                         callCode = { code = data.displayCode, snippet = data.description },
                         message = data.message .. ' on ' .. locationInfo,
                         flashes = false,
-                        blip = data.blip
+                        blip = {
+                            sprite = data.sprite,
+                            scale = data.scale,
+                            colour = data.colour,
+                            flashes = true,
+                            text = data.blipText,
+                            time = (6 * 60 * 1000),
+                        }
                     })
                 end
             elseif resource.name == "core_dispatch" then
