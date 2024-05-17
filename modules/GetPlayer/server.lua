@@ -37,5 +37,4 @@ SD.GetPlayer = function(source)
     return GetPlayerFromId(source)
 end
 
-
 return SD.GetPlayer
