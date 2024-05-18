@@ -1,5 +1,5 @@
 --- Table of supported inventory systems.
-local inventories = { {name = "ox_inventory"}, {name = "qs-inventory"}, {name = "qb-inventory"} }
+local inventories = { {name = "ox_inventory"}, {name = "qs-inventory"}, {name = "qb-inventory"}, {name = "ps-inventory"}, {name = "lj-inventory"} }
 
 --- Selects and returns the most appropriate function for retrieving item image paths
 -- based on the configured inventory system. This approach abstracts inventory-specific paths
@@ -11,15 +11,15 @@ local SelectInventoryImagePath = function()
         if GetResourceState(resource.name) == 'started' then
             if resource.name == "ox_inventory" then
                 return function(item)
-                    return string.format("nui://ox_inventory/web/images/items/%s.png", item)
+                    return string.format("nui://%s/web/images/items/%s.png", resource.name, item)
                 end
             elseif resource.name == "qs-inventory" then
                 return function(item)
-                    return string.format("nui://qs-inventory/html/images/%s.png", item)
+                    return string.format("nui://%s/html/images/%s.png", resource.name, item)
                 end
-            elseif resource.name == "qb-inventory" then
+            elseif resource.name == "qb-inventory" or resource.name == "lj-inventory" or resource.name == "ps-inventory" then
                 return function(item)
-                    return string.format("nui://qb-inventory/html/images/%s.png", item)
+                    return string.format("nui://%s/html/images/%s.png", resource.name, item)
                 end
             end
         end
