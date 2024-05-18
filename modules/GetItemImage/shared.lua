@@ -13,11 +13,7 @@ local SelectInventoryImagePath = function()
                 return function(item)
                     return string.format("nui://%s/web/images/items/%s.png", resource.name, item)
                 end
-            elseif resource.name == "qs-inventory" then
-                return function(item)
-                    return string.format("nui://%s/html/images/%s.png", resource.name, item)
-                end
-            elseif resource.name == "qb-inventory" or resource.name == "lj-inventory" or resource.name == "ps-inventory" then
+            elseif resource.name == "qb-inventory" or resource.name == "lj-inventory" or resource.name == "ps-inventory" or resource.name == "qs-inventory" then
                 return function(item)
                     return string.format("nui://%s/html/images/%s.png", resource.name, item)
                 end
