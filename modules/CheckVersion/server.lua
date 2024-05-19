@@ -43,7 +43,8 @@ SD.CheckVersion = function(repo)
                 local current, minimum = tonumber(cv[i]), tonumber(lv[i])
                 if current < minimum then
                     local releaseNotes = response.body or "No release notes available."
-                    print('^3An update is available for ^2' .. resource .. '^3 (current version: ^2' .. currentVersion .. '^3)\r\nLatest version: ^2' .. latestVersion .. '^3\r\nRelease Notes: ^7' .. releaseNotes .. '\r\n^3Update here: ^0https://keymaster.fivem.net')
+                    print('^3An update is available for ^2' .. resource .. '^3 (current version: ^2' .. currentVersion .. '^3)\r\nLatest version: ^2' .. latestVersion .. '^3\r\nRelease Notes: ^7' .. releaseNotes)
+
                     break
                 elseif current > minimum then
                     print('^2' .. resource .. ' ^3has a newer local version (^2' .. currentVersion .. '^3) than the latest public release (^2' .. latestVersion .. '^3).^0')
