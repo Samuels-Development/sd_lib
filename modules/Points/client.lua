@@ -76,13 +76,13 @@ end)
 
 --- Gets all the active points.
 ---@return table The table of active points.
-function SD.Points.GetAllPoints()
+SD.Points.GetAllPoints = function()
     return points
 end
 
 --- Gets the closest point to the player's current location.
 ---@return table The closest point.
-function SD.Points.GetClosestPoint()
+SD.Points.GetClosestPoint = function()
     local closest, minDist = nil, math.huge
     local playerCoords = GetEntityCoords(PlayerPedId())
     for _, point in pairs(points) do

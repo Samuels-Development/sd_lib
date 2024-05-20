@@ -1,5 +1,5 @@
 --- Table of resources for dispatch systems. (custom is a placeholder for your application)
-local resources = { {name = "linden_outlawalert"}, {name = "cd_dispatch"}, {name = "ps-dispatch"}, {name = "qs-dispatch"}, {name = "core_dispatch"}, {name = "custom"}, {name = "origen_police"} }
+local resources = { {name = "linden_outlawalert"}, {name = "cd_dispatch"}, {name = "ps-dispatch"}, {name = "qs-dispatch"}, {name = "core_dispatch"}, {name = "origen_police"}, {name = "custom"} }
 
 -- Common tables for jobs and job types in the case of ps-dispatch.
 local jobs = { 'police' }
@@ -120,7 +120,7 @@ local SelectDispatch = function()
                         title = data.message,
                         type = data.displayCode,
                         message = data.description,
-                        job = 'police',
+                        job = jobs
                     })
                 end
             elseif resource.name == "custom" then
