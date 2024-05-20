@@ -27,5 +27,3 @@ shared_scripts {
 } 
 
 lua54 'yes'
-
-escrow_ignore { 'init.lua', 'modules/**/*.lua', 'resource/init.lua', 'resource/**/client.lua', 'resource/**/server.lua' }
