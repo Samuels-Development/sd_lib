@@ -1,5 +1,5 @@
 --- Table of resources for dispatch systems. (custom is a placeholder for your application)
-local resources = { {name = "linden_outlawalert"}, {name = "cd_dispatch"}, {name = "ps-dispatch"}, {name = "qs-dispatch"}, {name = "core_dispatch"}, {name = "custom"} }
+local resources = { {name = "linden_outlawalert"}, {name = "cd_dispatch"}, {name = "ps-dispatch"}, {name = "qs-dispatch"}, {name = "core_dispatch"}, {name = "custom"}, {name = "origen_police"} }
 
 -- Common tables for jobs and job types in the case of ps-dispatch.
 local jobs = { 'police' }
@@ -112,6 +112,16 @@ local SelectDispatch = function()
                         data.sprite,
                         data.colour
                     )
+                end
+            elseif resource.name == "origen_police" then
+                return function(data, playerCoords, locationInfo, gender)
+                    TriggerServerEvent("SendAlert:police", {
+                        coords = playerCoords,
+                        title = data.message,
+                        type = data.displayCode,
+                        message = data.description,
+                        job = 'police',
+                    })
                 end
             elseif resource.name == "custom" then
                 -- Custom dispatch system implementation placeholder
