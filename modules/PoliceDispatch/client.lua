@@ -120,7 +120,7 @@ local SelectDispatch = function()
                         title = data.message,
                         type = data.displayCode,
                         message = data.description,
-                        job = jobs
+                        job = 'police',
                     })
                 end
             elseif resource.name == "custom" then
