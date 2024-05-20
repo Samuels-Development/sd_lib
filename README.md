@@ -13,7 +13,7 @@ Discord: https://discord.gg/samueldev
 3. Put it into your servers resources and make sure, that the resource is ensured/started in the server.cfg
 
 ## Documentation
-The documentation is not actively maintained.
+(due to the frequency of updates made to my library and me being the sole developer of this project, documentation might be inaccurate or missing information on newer modules)
 [https://docs.samueldev.shop](https://docs.samueldev.shop/overview/library)
 
 ## Credits
