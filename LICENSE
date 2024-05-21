@@ -5,31 +5,30 @@
  Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed.
 
-### Attribution Notice
+Attribution Notice
 
-This software includes components that are derived from the `ox_lib` project (version 3.21.0), originally developed and distributed under its respective license by Overextended. 
+This software includes components derived from ox_lib (version 3.21.0), which is licensed under the GNU Lesser General Public License (LGPL) v3, as published by the Free Software Foundation.
 
-**Original Project**: [ox_lib](https://github.com/overextended/ox_lib)
+Original Project: https://github.com/overextended/ox_lib
 
-#### Components Used and Modified:
+Components Used and Modified:
 
-1. **Callback Module**: 
-   - **Original Source**: [callback module](https://github.com/overextended/ox_lib/tree/master/imports/callback)
-   - **Usage**: The structure and implementation of the callback module in this project were originally based on the `ox_lib` callback module.
+1. Callback Module: 
+   - Original Source: https://github.com/overextended/ox_lib/tree/master/imports/callback
+   - Usage: The structure and implementation of the callback module in this project were originally based on the `ox_lib` callback module.
 
 2. **Points Module**:
-   - **Original Source**: [points module](https://github.com/overextended/ox_lib/blob/master/imports/points/client.lua)
-   - **Usage**: The points module in this project was heavily modified but originally based on the `ox_lib` points client module.
+   - Original Source: https://github.com/overextended/ox_lib/blob/master/imports/points/client.lua
+   - Usage: The points module in this project was heavily modified but originally based on the `ox_lib` points client module.
 
-3. **Initialization Method for Dynamic Loading of Modules**:
-   - **Original Sources**:
-     - [init.lua](https://github.com/overextended/ox_lib/blob/master/init.lua) (link placeholder, as direct link not provided)
-     - [resource/init.lua](https://github.com/overextended/ox_lib/blob/master/resource/init.lua) (link placeholder, as direct link not provided)
-   - **Usage**: The methodology used for the dynamic loading of modules, such as the `init.lua` and `resource/init.lua`, was adapted and modified from the initialization methods found in `ox_lib`.
+3. Initialization Method for Dynamic Loading of Modules:
+   - Original Sources:
+     - https://github.com/overextended/ox_lib/blob/master/init.lua
+     - https://github.com/overextended/ox_lib/blob/master/resource/init.lua
+   - Usage: The methodology used for the dynamic loading of modules, such as the `init.lua` and `resource/init.lua`, was adapted and modified from the initialization methods found in `ox_lib`.
 
-### License Acknowledgment
-
-The use of the `ox_lib` components within this project is in compliance with the original licensing of the `ox_lib` project. The specific sections of the `ox_lib` utilized herein are redistributed under their original license.
+License Acknowledgment
+In compliance with the LGPL v3 under which ox_lib is licensed, this project uses the aforementioned components under the same terms. For each modified or combined use of ox_lib components, we provide prominent notice and include a copy of the LGPL v3 documentation as required by the license terms. This ensures all modifications or combined uses are fully compliant with the original license of ox_lib.
 
                             Preamble
 
