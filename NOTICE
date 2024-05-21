@@ -8,10 +8,10 @@ Components Derived from ox_lib
 The following components in this project are based on code from ox_lib:
 
 Callback Module:
-Source: This module's structure and implementation are based on the Callback module found in the ox_lib at: Callback module from ox_lib.
+Source: This module's structure and implementation are based on the Callback module found in the ox_lib at: https://github.com/overextended/ox_lib/tree/master/imports/callback.
 
 Points Module:
-Source: Originally based on the Points client module from ox_lib, found here: Points module from ox_lib.
+Source: Originally based on the Points client module from ox_lib, found here: https://github.com/overextended/ox_lib/blob/master/imports/points/client.lua.
 Modifications: The module has been slightly altered to fit the specific needs of this project.
 
 Dynamic Module Loading:
