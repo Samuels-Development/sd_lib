@@ -21,7 +21,7 @@ Discord: https://discord.gg/samueldev
 Special thanks to Linden and the exceptional team at [@overextended](https://github.com/overextended), the developers of [ox_lib](https://github.com/overextended/ox_lib). I have adopted several elements from their comprehensive library, enhancing the functionality and diversity of my project:
 
 - **Module Initialization Method**: I've incorporated and modified the module initialization method from their `init.lua`, tailoring it to better serve the specific needs of my project.
-- **Callback Module**: This crucial component has been streamlined and adjusted to better fit our objectives, drawing directly from the robust implementation provided by [ox_lib](https://github.com/overextended/ox_lib/tree/master/imports/callback).
-- **Points Module**: Originally based on the points client module from [ox_lib](https://github.com/overextended/ox_lib/blob/master/imports/points/client.lua), it has undergone significant alterations to meet our unique requirements while maintaining the foundational structure provided by ox_lib.
+- **Callback Module**: This crucial component has been slightly adjusted, however remains largely the same as the original here: [ox_lib](https://github.com/overextended/ox_lib/tree/master/imports/callback).
+- **Points Module**: Originally based on the points client module from [ox_lib](https://github.com/overextended/ox_lib/blob/master/imports/points/client.lua), it has undergone significant alterations while maintaining the foundational structure provided by ox_lib.
 
 
