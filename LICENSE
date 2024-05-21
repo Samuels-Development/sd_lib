@@ -5,6 +5,32 @@
  Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed.
 
+### Attribution Notice
+
+This software includes components that are derived from the `ox_lib` project (version 3.21.0), originally developed and distributed under its respective license by Overextended. 
+
+**Original Project**: [ox_lib](https://github.com/overextended/ox_lib)
+
+#### Components Used and Modified:
+
+1. **Callback Module**: 
+   - **Original Source**: [callback module](https://github.com/overextended/ox_lib/tree/master/imports/callback)
+   - **Usage**: The structure and implementation of the callback module in this project were originally based on the `ox_lib` callback module.
+
+2. **Points Module**:
+   - **Original Source**: [points module](https://github.com/overextended/ox_lib/blob/master/imports/points/client.lua)
+   - **Usage**: The points module in this project was heavily modified but originally based on the `ox_lib` points client module.
+
+3. **Initialization Method for Dynamic Loading of Modules**:
+   - **Original Sources**:
+     - [init.lua](https://github.com/overextended/ox_lib/blob/master/init.lua) (link placeholder, as direct link not provided)
+     - [resource/init.lua](https://github.com/overextended/ox_lib/blob/master/resource/init.lua) (link placeholder, as direct link not provided)
+   - **Usage**: The methodology used for the dynamic loading of modules, such as the `init.lua` and `resource/init.lua`, was adapted and modified from the initialization methods found in `ox_lib`.
+
+### License Acknowledgment
+
+The use of the `ox_lib` components within this project is in compliance with the original licensing of the `ox_lib` project. The specific sections of the `ox_lib` utilized herein are redistributed under their original license.
+
                             Preamble
 
   The GNU General Public License is a free, copyleft license for
