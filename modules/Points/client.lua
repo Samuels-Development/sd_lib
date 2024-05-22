@@ -3,20 +3,6 @@ SD.Points = {}
 
 local points = {}  -- Active points tracked by the system.
 
---- Converts a table or coordinates to a vector3.
----@param coords any The coordinates to convert.
----@return vector3
-local toVector = function(coords)
-    local _type = type(coords)
-    if _type == 'vector3' then
-        return coords
-    elseif _type == 'table' or _type == 'vector4' then
-        return vector3(coords[1] or coords.x, coords[2] or coords.y, coords[3] or coords.z)
-    else
-        error(("expected type 'vector3' or 'table', received %s"):format(_type))
-    end
-end
-
 --- Draws a debug marker for the point.
 ---@param point table The point to draw debug information for.
 local drawDebug = function(point)
@@ -33,7 +19,7 @@ end
 SD.Points.New = function(args)
     local point = {
         id = #points + 1,
-        coords = toVector(args.coords),
+        coords = SD.Vector.ToVector(args.coords),
         distance = args.distance,
         onEnter = args.onEnter,
         onExit = args.onExit,
