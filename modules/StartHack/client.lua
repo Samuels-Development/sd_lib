@@ -21,7 +21,6 @@ SD.StartHack = function(type, callback, ...)
         ['sn-thermite'] = function(cb, ...) cb(exports['SN-Hacking']:Thermite(...)) end,
         ['sn-keypad'] = function(cb, ...) cb(exports['SN-Hacking']:KeyPad(...)) end,
         ['sn-colorpicker'] = function(cb, ...) cb(exports['SN-Hacking']:ColorPicker(...)) end,
-        ['sn-mines'] = function(cb, ...) cb(exports['SN-Hacking']:Mines(...)) end,
         ['rm-typinggame'] = function(cb, ...) cb(exports['rm_minigames']:typingGame(...)) end,
         ['rm-timedlockpick'] = function(cb, ...) cb(exports['rm_minigames']:timedLockpick(...)) end,
         ['rm-timedaction'] = function(cb, ...) cb(exports['rm_minigames']:timedAction(...)) end,
