@@ -1,5 +1,4 @@
 SD.GetGender = function()
-    print('Retrieves the player')
     -- Ensure this function is called within a coroutine context
     local thread = coroutine.running()
     assert(thread, "SD.GetIdentifier must be called from within a coroutine.")
