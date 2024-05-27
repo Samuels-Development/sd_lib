@@ -1,10 +1,12 @@
+local EnableOX = false -- Enable use of ox_lib for progressbars if available
+
 --- Selects and returns the most appropriate function for starting a progress bar.
 -- This function determines the best method for displaying progress bars based on the current game setup
 -- (e.g., availability of ox_lib and configuration settings) or the active framework (ESX, QBCore).
 ---@return function A function tailored to start progress bars using the determined method.
 local ProgressBar = function()
     -- Check if lib is available and use lib.progressBar if it is.
-    if lib ~= nil then
+    if lib ~= nil and EnableOX then
         return function(identifier, label, duration, completed, notfinished)
             if lib.progressBar({
                 duration = duration,  

@@ -1,4 +1,4 @@
-local EnableOX = true -- Enable use of ox_lib for notifications if available
+local EnableOX = false -- Enable use of ox_lib for notifications if available
 
 --- Selects and returns the most appropriate notification function based on the current game setup.
 -- This function checks the available libraries and configurations to determine which notification method to use.
