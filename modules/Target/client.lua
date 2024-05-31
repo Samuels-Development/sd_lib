@@ -95,4 +95,21 @@ SD.Target.RemoveZone = function(identifier)
     exports[target]:RemoveZone(identifier)
 end
 
+--- Add a global ped target.
+---@param identifier string The identifier for the global ped.
+---@param data table Additional data such as options and distance.
+SD.Target.AddGlobalPed = function(identifier, data)
+    exports[target]:AddGlobalPed({
+        name = identifier,
+        options = data.options,
+        distance = data.distance,
+    })
+end
+
+--- Remove a global ped target.
+---@param identifier string The identifier for the global ped to remove.
+SD.Target.RemoveGlobalPed = function(identifier)
+    exports[target]:RemoveGlobalPed(identifier)
+end
+
 return SD.Target
