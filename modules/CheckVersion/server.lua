@@ -45,7 +45,7 @@ SD.CheckVersion = function(repo)
                     local releaseNotes = response.body or "No release notes available."
                     
                     -- Check if release notes exceed one line
-                    local standardizedMessage = "Check release or changelog channel on Discord!"
+                    local standardizedMessage = "Check release page or changelog channel on Discord for more information!"
                     local message = releaseNotes:find("\n") and standardizedMessage or releaseNotes
                     
                     print('^3An update is available for ^2' .. resource .. '^3 (current version: ^2' .. currentVersion .. '^3)\r\nLatest version: ^2' .. latestVersion .. '^3\r\nRelease Notes: ^7' .. message)
