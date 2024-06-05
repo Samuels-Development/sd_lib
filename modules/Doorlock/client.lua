@@ -2,7 +2,7 @@
 SD.Doorlock = {}
 
 -- Table of resources for toggling doors.
-local resources = { {name = "ox_doorlock"}, {name = "qb-doorlock"}, {name = "nui-doorlock"}, {name = "cd_doorlock"} }
+local resources = { {name = "ox_doorlock"}, {name = "qb-doorlock"}, {name = "nui-doorlock"}, {name = "cd_doorlock"}, {name = "doors_creator"} }
 
 -- Function to automatically detect the running door lock resource and return the appropriate update function.
 local SelectDoorLock = function()
@@ -16,7 +16,7 @@ local SelectDoorLock = function()
                 return function(data)
                     TriggerServerEvent('nui_doorlock:server:updateState', data.id, data.locked, false, false, data.enablesounds)
                 end
-            elseif resource.name == "cd_doorlock" or resource.name == "ox_doorlock" then
+            elseif resource.name == "cd_doorlock" or resource.name == "ox_doorlock" or resource.name == "doors_creator" then
                 return function(data)
                     TriggerServerEvent('sd_lib:doorToggle', data)
                 end
