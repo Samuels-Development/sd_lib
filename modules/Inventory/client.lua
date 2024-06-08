@@ -4,7 +4,7 @@ SD.Inventory = {}
 local invState = GetResourceState('ox_inventory') -- Check if ox_inventory is started.
 
 -- Dynamic selection function to determine how to check for item existence.
-local function HasItem()
+local HasItem = function()
     if invState == 'started' then
         -- 'ox_inventory' system.
         return function(items, amount)
@@ -17,7 +17,7 @@ local function HasItem()
                 local returnedItems = exports.ox_inventory:Search('count', itemArray)
                 local count = 0
                 for k, v in pairs(items) do
-                    if returnedItems[k] and returnedItems[k] >= v then
+                    if returnedItems[k] and (returnedItems[k] >= v or returnedItems[k] >= items[k].amount) then
                         count = count + 1
                     end
                 end
@@ -34,14 +34,14 @@ local function HasItem()
             if type(items) == 'table' then
                 local count = 0
                 for _, itemData in pairs(inventory) do
-                    if items[itemData.name] and itemData.count >= items[itemData.name] then
+                    if items[itemData.name] and ((itemData.count or itemData.amount) >= items[itemData.name]) then
                         count = count + 1
                     end
                 end
                 return count == table.count(items)
             else
                 for _, itemData in pairs(inventory) do
-                    if itemData.name == items and itemData.count >= amount then
+                    if itemData.name == items and ((itemData.count or itemData.amount) >= amount) then
                         return true
                     end
                 end
@@ -57,7 +57,7 @@ local function HasItem()
                 for itemName, requiredAmount in pairs(items) do
                     local item = nil
                     for _, inventoryItem in ipairs(inventory) do
-                        if inventoryItem.name == itemName and inventoryItem.amount >= requiredAmount then
+                        if inventoryItem.name == itemName and ((inventoryItem.amount or inventoryItem.count) >= requiredAmount) then
                             item = inventoryItem
                             break
                         end
@@ -67,7 +67,7 @@ local function HasItem()
                 return true
             else
                 for _, inventoryItem in ipairs(inventory) do
-                    if inventoryItem.name == items and inventoryItem.amount >= amount then
+                    if inventoryItem.name == items and ((inventoryItem.amount or inventoryItem.count) >= amount) then
                         return true
                     end
                 end
