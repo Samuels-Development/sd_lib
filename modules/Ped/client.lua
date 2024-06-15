@@ -9,7 +9,8 @@ local activePeds = {}  -- Active peds tracked by the system
 ---@param freeze boolean If true, freezes the ped in place.
 ---@param scenario string The scenario for the ped to enact.
 ---@param targetOptions table The options for the target interaction.
-local CreatePed = function(modelHash, coords, freeze, scenario, targetOptions)
+---@param interactionType string The type of interaction ('target' or 'textui').
+local CreatePed = function(modelHash, coords, freeze, scenario, targetOptions, interactionType)
     local ped = CreatePed(0, modelHash, coords.x, coords.y, coords.z, coords.w, false, false)
     if freeze then FreezeEntityPosition(ped, true) end
     if scenario then TaskStartScenarioInPlace(ped, scenario, 0, true) end
@@ -20,7 +21,7 @@ local CreatePed = function(modelHash, coords, freeze, scenario, targetOptions)
     
     -- Add target interaction
     if targetOptions then
-        SD.Target.AddTargetEntity(ped, targetOptions)
+        SD.Interaction.AddTargetEntity(interactionType, ped, targetOptions)
     end
 
     -- Clean up the ped on resource stop
@@ -41,7 +42,7 @@ end
 SD.Ped.CreatePed = function(data)
     local pedModel = type(data.model) == "string" and GetHashKey(data.model) or data.model
     SD.LoadModel(pedModel)
-    local ped = CreatePed(pedModel, SD.Vector.ToVector(data.coords), data.freeze or false, data.scenario, data.targetOptions)
+    local ped = CreatePed(pedModel, SD.Vector.ToVector(data.coords), data.freeze or false, data.scenario, data.targetOptions, data.interactionType)
     local id = #activePeds + 1
     activePeds[id] = ped
     return id
