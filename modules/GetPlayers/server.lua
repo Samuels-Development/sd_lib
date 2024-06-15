@@ -25,6 +25,10 @@ local GetPlayers = function()
 end
 
 -- Assign the dynamically selected function to SD.GetPlayers.
-SD.GetPlayers = GetPlayers()
+local GetAllPlayers = GetPlayers()
+
+SD.GetPlayers = function(source)
+    return GetAllPlayers()
+end
 
 return SD.GetPlayers
