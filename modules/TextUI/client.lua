@@ -41,13 +41,46 @@ SD.TextUI.Models = {}
 SD.TextUI.Entities = {}
 
 --- Adds a point to the list of points.
+---@param name string The unique name of the point.
 ---@param coords vector3 The coordinates of the point.
----@param message string The message to display at the point.
----@param action string|function The event to trigger or the function to call when the key is pressed.
----@param canInteract function A function that returns true/false to determine if interaction is allowed.
+---@param message string|nil The message to display at the point.
+---@param action string|function|nil The event to trigger or the function to call when the key is pressed.
+---@param canInteract function|nil A function that returns true/false to determine if interaction is allowed.
 ---@param distance number The distance within which the interaction is allowed.
-SD.TextUI.AddPoint = function(coords, message, action, canInteract, distance)
+---@param options table|nil The options for interaction if multiple are available.
+SD.TextUI.AddPoint = function(name, coords, message, action, canInteract, distance, options)
     table.insert(SD.TextUI.Points, { coords = coords, message = message, action = action, canInteract = canInteract, distance = distance, inside = false, secondaryThread = nil })
+end
+
+--- Adds a scrollable point to the list of points.
+---@param name string The unique name of the point.
+---@param coords vector3 The coordinates of the point.
+---@param options table The options for interaction.
+---@param distance number The distance within which the interaction is allowed.
+SD.TextUI.AddScrollablePoint = function(name, coords, options, distance)
+    SD.TextUI.Points[name] = {
+        coords = coords,
+        options = options,
+        currentIndex = 1,
+        distance = distance,
+        inside = false,
+        secondaryThread = nil
+    }
+end
+
+--- Removes a point from the list of points.
+---@param name string The unique name of the point to remove.
+SD.TextUI.RemovePoint = function(name)
+    local point = SD.TextUI.Points[name]
+    if point then
+        if point.secondaryThread then
+            TerminateThread(point.secondaryThread)
+            point.secondaryThread = nil
+        end
+        SD.TextUI.Hide()
+        point.inside = false
+        SD.TextUI.Points[name] = nil
+    end
 end
 
 --- Adds a target for specific entities.
@@ -90,7 +123,7 @@ CreateThread(function()
         local closestEntity = nil
 
         -- Check points
-        for _, point in pairs(SD.TextUI.Points) do
+        for name, point in pairs(SD.TextUI.Points) do
             local distance = #(coords - point.coords)
             if distance <= point.distance and (not point.canInteract or point.canInteract()) then
                 closestPoint = point
@@ -102,30 +135,6 @@ CreateThread(function()
                     TerminateThread(point.secondaryThread)
                     point.secondaryThread = nil
                 end
-            end
-        end
-
-        if closestPoint then
-            if not closestPoint.inside then
-                closestPoint.inside = true
-                local displayText = string.format("[E] %s", closestPoint.message)
-                SD.TextUI.Show(displayText, { position = 'right-center' })
-                closestPoint.secondaryThread = CreateThread(function()
-                    while closestPoint.inside do
-                        if IsControlJustReleased(0, 38) then -- E key
-                            local currentTime = GetGameTimer()
-                            if currentTime - lastInteractionTime >= cooldownTime then
-                                lastInteractionTime = currentTime
-                                if type(closestPoint.action) == "string" then
-                                    TriggerEvent(closestPoint.action)
-                                elseif type(closestPoint.action) == "function" then
-                                    closestPoint.action()
-                                end
-                            end
-                        end
-                        Wait(0) -- Check every frame
-                    end
-                end)
             end
         end
 
@@ -155,17 +164,63 @@ CreateThread(function()
             end
         end
 
-        if closestEntity then
+        if closestPoint then
+            if not closestPoint.inside then
+                closestPoint.inside = true
+                if closestPoint.options then
+                    local displayText = string.format("[E] %s  %s", closestPoint.options[closestPoint.currentIndex].label, "↕")
+                    SD.TextUI.Show(displayText, { position = 'right-center' })
+                    closestPoint.secondaryThread = CreateThread(function()
+                        while closestPoint.inside do
+                            if IsControlJustReleased(0, 38) then -- E key
+                                local currentTime = GetGameTimer()
+                                if currentTime - lastInteractionTime >= cooldownTime then
+                                    lastInteractionTime = currentTime
+                                    local selectedOption = closestPoint.options[closestPoint.currentIndex]
+                                    if type(selectedOption.event) == "string" then
+                                        TriggerEvent(selectedOption.event)
+                                    elseif type(selectedOption.action) == "function" then
+                                        selectedOption.action()
+                                    end
+                                end
+                            elseif IsControlJustReleased(0, 241) then -- Scroll Wheel Up
+                                closestPoint.currentIndex = (closestPoint.currentIndex - 2) % #closestPoint.options + 1
+                                SD.TextUI.Show(string.format("[E] %s  %s", closestPoint.options[closestPoint.currentIndex].label, "↕"), { position = 'right-center' })
+                            elseif IsControlJustReleased(0, 242) then -- Scroll Wheel Down
+                                closestPoint.currentIndex = closestPoint.currentIndex % #closestPoint.options + 1
+                                SD.TextUI.Show(string.format("[E] %s  %s", closestPoint.options[closestPoint.currentIndex].label, "↕"), { position = 'right-center' })
+                            end
+                            Wait(0) -- Check every frame
+                        end
+                    end)
+                else
+                    local displayText = string.format("[E] %s", closestPoint.message)
+                    SD.TextUI.Show(displayText, { position = 'right-center' })
+                    closestPoint.secondaryThread = CreateThread(function()
+                        while closestPoint.inside do
+                            if IsControlJustReleased(0, 38) then -- E key
+                                local currentTime = GetGameTimer()
+                                if currentTime - lastInteractionTime >= cooldownTime then
+                                    lastInteractionTime = currentTime
+                                    if type(closestPoint.action) == "string" then
+                                        TriggerEvent(closestPoint.action or closestPoint.event)
+                                    elseif type(closestPoint.action) == "function" then
+                                        closestPoint.action()
+                                    end
+                                end
+                            end
+                            Wait(0) -- Check every frame
+                        end
+                    end)
+                end
+            end
+        elseif closestEntity then
             if not closestEntity.options.inside then
                 closestEntity.options.inside = true
                 local displayText = string.format("[E] %s", closestEntity.options.label)
                 SD.TextUI.Show(displayText, { position = 'right-center' })
                 closestEntity.options.secondaryThread = CreateThread(function()
                     while closestEntity.options.inside do
-                        -- Check if entity is still in the Entities table
-                        if not SD.TextUI.Entities[closestEntity.entity] then
-                            break
-                        end
                         if IsControlJustReleased(0, 38) then -- E key
                             local currentTime = GetGameTimer()
                             if currentTime - lastInteractionTime >= cooldownTime then
