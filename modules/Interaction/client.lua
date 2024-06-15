@@ -14,8 +14,12 @@ SD.Entities = {} -- Table to store entities
 ---@param debug boolean Enable debugging for the zone.
 SD.Interaction.AddBoxZone = function(interactType, name, coords, length, width, options, debug)
     if interactType == 'textui' then
-        local interaction = options.options[1]
-        SD.TextUI.AddPoint(coords, interaction.label, interaction.action or interaction.event, interaction.canInteract, math.max(length, width))
+        if #options.options > 1 then
+            SD.TextUI.AddScrollablePoint(name, coords, options.options, math.max(length, width))
+        else
+            local interaction = options.options[1]
+            SD.TextUI.AddPoint(name, coords, interaction.label, interaction.action or interaction.event, interaction.canInteract, math.max(length, width))
+        end
     else
         local handler = SD.Target.AddBoxZone(name, coords, length, width, options, debug)
         SD.Zones[name] = handler
@@ -32,8 +36,12 @@ end
 ---@param debug boolean Enable debugging for the zone.
 SD.Interaction.AddCircleZone = function(interactType, name, coords, radius, options, debug)
     if interactType == 'textui' then
-        local interaction = options.options[1]
-        SD.TextUI.AddPoint(coords, interaction.label, interaction.action or interaction.event, interaction.canInteract, radius)
+        if #options.options > 1 then
+            SD.TextUI.AddScrollablePoint(name, coords, options.options, radius)
+        else
+            local interaction = options.options[1]
+            SD.TextUI.AddPoint(name, coords, interaction.label, interaction.action or interaction.event, interaction.canInteract, radius)
+        end
     else
         local handler = SD.Target.AddCircleZone(name, coords, radius, options, debug)
         SD.Zones[name] = handler
@@ -67,6 +75,18 @@ SD.Interaction.RemoveTargetEntity = function(entity)
         SD.TextUI.RemoveTargetEntity(entity)
         SD.Target.RemoveTargetEntity(entity)
         SD.Entities[entity] = nil
+    end
+end
+
+-- Function to remove a specific zone
+---@param name string The name of the zone to remove.
+SD.Interaction.RemoveZone = function(name)
+    if SD.Zones[name] then
+        SD.Target.RemoveZone(SD.Zones[name])
+        SD.Zones[name] = nil
+    elseif SD.TextUI.Points[name] then
+        SD.TextUI.RemovePoint(SD.TextUI.Points[name].coords)
+        SD.TextUI.Points[name] = nil
     end
 end
 
