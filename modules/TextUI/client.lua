@@ -61,6 +61,12 @@ end
 ---@param entity number The entity to remove.
 SD.TextUI.RemoveTargetEntity = function(entity)
     if SD.TextUI.Entities[entity] then
+        if SD.TextUI.Entities[entity].secondaryThread then
+            TerminateThread(SD.TextUI.Entities[entity].secondaryThread)
+            SD.TextUI.Entities[entity].secondaryThread = nil
+        end
+        SD.TextUI.Hide()
+        SD.TextUI.Entities[entity].inside = false
         SD.TextUI.Entities[entity] = nil
     end
 end
@@ -156,11 +162,8 @@ CreateThread(function()
                 SD.TextUI.Show(displayText, { position = 'right-center' })
                 closestEntity.options.secondaryThread = CreateThread(function()
                     while closestEntity.options.inside do
+                        -- Check if entity is still in the Entities table
                         if not SD.TextUI.Entities[closestEntity.entity] then
-                            closestEntity.options.inside = false
-                            SD.TextUI.Hide()
-                            TerminateThread(closestEntity.options.secondaryThread)
-                            closestEntity.options.secondaryThread = nil
                             break
                         end
                         if IsControlJustReleased(0, 38) then -- E key
