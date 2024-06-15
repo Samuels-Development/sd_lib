@@ -2,8 +2,6 @@
 SD.TextUI = {}
 
 local EnableOX = true -- Enable use of ox_lib for TextUI if available
-local lastInteractionTime = 0
-local cooldownTime = 1000 -- 1 second cooldown
 
 -- Function to dynamically select the appropriate show and hide functions based on the current configuration.
 local TextUI = function()
@@ -24,20 +22,6 @@ local TextUI = function()
             exports['qb-core']:DrawText(text, options and options.position or 'left')
         end, function()
             exports['qb-core']:HideText()
-        end
-    elseif GetResourceState('envi-interact') == 'started' then
-        return function(text, options)
-            -- Convert options to envi-interact format
-            local enviOptions = {}
-            for _, option in ipairs(options) do
-                table.insert(enviOptions, {
-                    label = option.label,
-                    selected = option.action or option.event
-                })
-            end
-            exports['envi-interact']:InteractionPoint(vector3(text.x, text.y, text.z), enviOptions, 'envi_point', options.distance, options.margin or 0.5)
-        end, function()
-            exports['envi-interact']:CloseMenu()
         end
     else
         return function(text)
@@ -71,14 +55,6 @@ SD.TextUI.AddTargetEntity = function(entity, options)
     SD.TextUI.Entities[entity] = options
 end
 
---- Removes a target entity.
----@param entity number The entity to remove.
-SD.TextUI.RemoveTargetEntity = function(entity)
-    if SD.TextUI.Entities[entity] then
-        SD.TextUI.Entities[entity] = nil
-    end
-end
-
 --- Shows the TextUI with the given text and options.
 ---@param text string The text to display.
 ---@param options table|nil Options for displaying the text.
@@ -91,6 +67,7 @@ SD.TextUI.Hide = function()
     HideTextUI()
 end
 
+--- Starts checking for player proximity and manages TextUI display.
 CreateThread(function()
     while true do
         local coords = GetEntityCoords(PlayerPedId())
@@ -121,14 +98,10 @@ CreateThread(function()
                 closestPoint.secondaryThread = CreateThread(function()
                     while closestPoint.inside do
                         if IsControlJustReleased(0, 38) then -- E key
-                            local currentTime = GetGameTimer()
-                            if currentTime - lastInteractionTime >= cooldownTime then
-                                lastInteractionTime = currentTime
-                                if type(closestPoint.action) == "string" then
-                                    TriggerEvent(closestPoint.action)
-                                elseif type(closestPoint.action) == "function" then
-                                    closestPoint.action()
-                                end
+                            if type(closestPoint.action) == "string" then
+                                TriggerEvent(closestPoint.action)
+                            elseif type(closestPoint.action) == "function" then
+                                closestPoint.action()
                             end
                         end
                         Wait(0) -- Check every frame
@@ -166,20 +139,12 @@ CreateThread(function()
         if closestEntity then
             if not closestEntity.options.inside then
                 closestEntity.options.inside = true
-                local displayText = string.format("[E] %s", closestEntity.options.label)
+                local displayText = string.format("[E] %s", closestEntity.options.options[1].label)
                 SD.TextUI.Show(displayText, { position = 'right-center' })
                 closestEntity.options.secondaryThread = CreateThread(function()
                     while closestEntity.options.inside do
                         if IsControlJustReleased(0, 38) then -- E key
-                            local currentTime = GetGameTimer()
-                            if currentTime - lastInteractionTime >= cooldownTime then
-                                lastInteractionTime = currentTime
-                                if type(closestEntity.options.action) == "string" then
-                                    TriggerEvent(closestEntity.options.action)
-                                elseif type(closestEntity.options.action) == "function" then
-                                    closestEntity.options.action(closestEntity.entity)
-                                end
-                            end
+                            closestEntity.options.options[1].action(closestEntity.entity)
                         end
                         Wait(0) -- Check every frame
                     end

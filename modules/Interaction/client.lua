@@ -1,8 +1,20 @@
 --- @class SD.Interaction
 SD.Interaction = {}
 
-SD.Zones = {} -- Table to store zones
-SD.Entities = {} -- Table to store entities
+-- Function to add a circle zone
+---@param interactType string The interaction type ('textui' or 'target').
+---@param name string The name of the zone.
+---@param coords vector3 The coordinates of the zone.
+---@param radius number The radius of the circle zone.
+---@param options table The options for interaction.
+---@param debug boolean Enable debugging for the zone.
+SD.Interaction.AddCircleZone = function(interactType, name, coords, radius, options, debug)
+    if interactType == 'textui' then
+        SD.TextUI.AddPoint(coords, options.options[1].label, options.options[1].action, options.options[1].canInteract, radius)
+    else
+        SD.Target.AddCircleZone(name, coords, radius, options, debug)
+    end
+end
 
 -- Function to add a box zone
 ---@param interactType string The interaction type ('textui' or 'target').
@@ -14,30 +26,21 @@ SD.Entities = {} -- Table to store entities
 ---@param debug boolean Enable debugging for the zone.
 SD.Interaction.AddBoxZone = function(interactType, name, coords, length, width, options, debug)
     if interactType == 'textui' then
-        local interaction = options.options[1]
-        SD.TextUI.AddPoint(coords, interaction.label, interaction.action or interaction.event, interaction.canInteract, math.max(length, width))
+        SD.TextUI.AddPoint(coords, options.options[1].label, options.options[1].action, options.options[1].canInteract, math.max(length, width))
     else
-        local handler = SD.Target.AddBoxZone(name, coords, length, width, options, debug)
-        SD.Zones[name] = handler
-        return handler
+        SD.Target.AddBoxZone(name, coords, length, width, options, debug)
     end
 end
 
--- Function to add a circle zone
+-- Function to add a target model
 ---@param interactType string The interaction type ('textui' or 'target').
----@param name string The name of the zone.
----@param coords vector3 The coordinates of the zone.
----@param radius number The radius of the circle zone.
+---@param models table The models to target.
 ---@param options table The options for interaction.
----@param debug boolean Enable debugging for the zone.
-SD.Interaction.AddCircleZone = function(interactType, name, coords, radius, options, debug)
+SD.Interaction.AddTargetModel = function(interactType, models, options)
     if interactType == 'textui' then
-        local interaction = options.options[1]
-        SD.TextUI.AddPoint(coords, interaction.label, interaction.action or interaction.event, interaction.canInteract, radius)
+        SD.TextUI.AddTargetModel(models, options)
     else
-        local handler = SD.Target.AddCircleZone(name, coords, radius, options, debug)
-        SD.Zones[name] = handler
-        return handler
+        SD.Target.AddTargetModel(models, options)
     end
 end
 
@@ -47,44 +50,10 @@ end
 ---@param options table The options for interaction.
 SD.Interaction.AddTargetEntity = function(interactType, entity, options)
     if interactType == 'textui' then
-        SD.TextUI.AddTargetEntity(entity, {
-            label = options.options[1].label,
-            action = options.options[1].action or options.options[1].event,
-            canInteract = options.options[1].canInteract,
-            distance = options.distance
-        })
-        SD.Entities[entity] = true
+        SD.TextUI.AddTargetEntity(entity, options)
     else
         SD.Target.AddTargetEntity(entity, options)
-        SD.Entities[entity] = true
     end
 end
-
--- Function to remove a target entity
----@param entity number The entity to remove.
-SD.Interaction.RemoveTargetEntity = function(entity)
-    if SD.Entities[entity] then
-        SD.TextUI.RemoveTargetEntity(entity)
-        SD.Target.RemoveTargetEntity(entity)
-        SD.Entities[entity] = nil
-    end
-end
-
--- Function to remove all zones
-SD.Interaction.RemoveAllZones = function()
-    if next(SD.Zones) ~= nil then
-        for name, handler in pairs(SD.Zones) do
-            SD.Target.RemoveZone(handler)
-        end
-        SD.Zones = {}
-    end
-end
-
--- Event handler to remove zones on resource stop
-AddEventHandler('onResourceStop', function(resource)
-    if resource == GetCurrentResourceName() then
-        SD.Interaction.RemoveAllZones()
-    end
-end)
 
 return SD.Interaction
