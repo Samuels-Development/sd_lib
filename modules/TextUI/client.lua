@@ -3,7 +3,6 @@ SD.TextUI = {}
 
 local EnableOX = true -- Enable use of ox_lib for TextUI if available
 local lastInteractionTime = 0
-local cooldownTime = 1500 -- 1.5 second cooldown
 
 -- Function to dynamically select the appropriate show and hide functions based on the current configuration.
 local TextUI = function()
@@ -174,7 +173,7 @@ CreateThread(function()
                         while closestPoint.inside do
                             if IsControlJustReleased(0, 38) then -- E key
                                 local currentTime = GetGameTimer()
-                                if currentTime - lastInteractionTime >= cooldownTime then
+                                if currentTime - lastInteractionTime >= 5000 then
                                     lastInteractionTime = currentTime
                                     local selectedOption = closestPoint.options[closestPoint.currentIndex]
                                     if type(selectedOption.event) == "string" then
@@ -200,7 +199,7 @@ CreateThread(function()
                         while closestPoint.inside do
                             if IsControlJustReleased(0, 38) then -- E key
                                 local currentTime = GetGameTimer()
-                                if currentTime - lastInteractionTime >= cooldownTime then
+                                if currentTime - lastInteractionTime >= 5000 then
                                     lastInteractionTime = currentTime
                                     if type(closestPoint.action) == "string" then
                                         TriggerEvent(closestPoint.action or closestPoint.event)
@@ -223,7 +222,7 @@ CreateThread(function()
                     while closestEntity.options.inside do
                         if IsControlJustReleased(0, 38) then -- E key
                             local currentTime = GetGameTimer()
-                            if currentTime - lastInteractionTime >= cooldownTime then
+                            if currentTime - lastInteractionTime >= 5000 then
                                 lastInteractionTime = currentTime
                                 if type(closestEntity.options.action) == "string" then
                                     TriggerEvent(closestEntity.options.action)
@@ -245,7 +244,7 @@ CreateThread(function()
             end
         end
 
-        Wait(300) -- Check every 300 ms.
+        Wait(500) -- Check every 500 ms.
     end
 end)
 
