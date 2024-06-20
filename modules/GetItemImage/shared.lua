@@ -11,7 +11,7 @@ local SelectInventoryImagePath = function()
         if GetResourceState(resource.name) == 'started' then
             if resource.name == "ox_inventory" then
                 return function(item)
-                    return string.format("nui://%s/web/images/items/%s.png", resource.name, item)
+                    return string.format("nui://%s/web/images/%s.png", resource.name, item)
                 end
             elseif resource.name == "qb-inventory" or resource.name == "lj-inventory" or resource.name == "ps-inventory" or resource.name == "qs-inventory" then
                 return function(item)
