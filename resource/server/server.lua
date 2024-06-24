@@ -16,16 +16,28 @@ RegisterNetEvent('sd_lib:sendEmail', function(data)
             subject = data.subject,
             message = data.message,
         })
+    elseif data.resource == 'yseries' then
+        local emailData = {
+            title = data.subject,
+            sender = 'email@example.com',
+            senderDisplayName = data.sender,
+            content = data.message,
+            actions = {}, -- Optional actions
+            attachments = {} -- Optional attachments
+        }
+        local receiverType = 'source'
+        local receiver = src
+        exports["yseries"]:SendMail(emailData, receiverType, receiver)
     elseif data.resource == 'yflip-phone' then
         local playerId = SD.GetIdentifier(src)
         local number = exports["yflip-phone"]:GetPhoneNumberByIdentifier(playerId)
-         exports["yflip-phone"]:SendMail({
+        exports["yflip-phone"]:SendMail({
             title = data.subject,
             sender = 'https://fivem.samueldev.shop',
-           senderDisplayName = data.sender,
+            senderDisplayName = data.sender,
             content = data.message,
         }, 'phoneNumber', number)
-     end
+    end
 end)
 
 -- Register a callback to get the identifier of the target player

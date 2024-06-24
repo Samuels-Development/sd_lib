@@ -1,5 +1,17 @@
 --- Table of resources for detecting the phone resource.
-local resources = { {name = "qb-phone"}, {name = "qs-smartphone"}, {name = "high-phone"}, {name = "npwd-phone"}, {name = "lb-phone"}, {name = "yflip-phone"}, {name = "gks-phone"} }
+local resources = { 
+    {name = "qb-phone"}, 
+    {name = "qs-smartphone"}, 
+    {name = "qs-smartphonepro"}, 
+    {name = "high-phone"}, 
+    {name = "npwd-phone"}, 
+    {name = "lb-phone"}, 
+    {name = "yseries"}, 
+    {name = "yflip-phone"}, 
+    {name = "gks-phone"}, 
+    {name = "gksphone"},
+    {name = "roadphone"}
+}
 
 --- Selects and returns the most appropriate function for sending an email.
 -- This function determines the best method for sending emails based on the configured phone resource.
@@ -24,6 +36,15 @@ local SelectEmail = function()
                         button = {}
                     })
                 end
+            elseif resource.name == "qs-smartphonepro" then
+                return function(sender, subject, message)
+                    local mailData = { 
+                        sender = sender, 
+                        subject = subject, 
+                        message = message 
+                    }
+                    TriggerServerEvent('phone:sendNewMail', mailData)
+                end
             elseif resource.name == "high-phone" then
                 return function(sender, subject, message)
                     local senderData = {
@@ -45,7 +66,7 @@ local SelectEmail = function()
                         path = "/email",
                     })
                 end
-            elseif resource.name == "lb-phone" or resource.name == "yflip-phone" then
+            elseif resource.name == "lb-phone" or resource.name == "yseries" or resource.name == "yflip-phone" then
                 return function(sender, subject, message)
                     TriggerServerEvent('sd_lib:sendEmail', {
                         sender = sender,
@@ -54,7 +75,7 @@ local SelectEmail = function()
                         resource = resource.name
                     })
                 end
-            elseif resource.name == "gks-phone" then
+            elseif resource.name == "gks-phone" or resource.name == "gksphone" then
                 return function(sender, subject, message)
                     local MailData = {
                         sender = sender,
@@ -63,6 +84,15 @@ local SelectEmail = function()
                         message = message
                     }
                     exports["gksphone"]:SendNewMail(MailData)
+                end
+            elseif resource.name == "roadphone" then
+                return function(sender, subject, message)
+                    local mailData = { 
+                        sender = sender, 
+                        subject = subject, 
+                        message = message 
+                    }
+                    exports['roadphone']:sendMail(mailData)
                 end
             end
         end
