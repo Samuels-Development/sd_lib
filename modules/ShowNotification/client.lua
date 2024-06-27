@@ -10,6 +10,7 @@ local Notification = function()
         return function(message, type)
             local title = SD.String.CapitalizeFirst(type or 'inform')
             lib.notify({
+                id = math.random(1, 999999),
                 title = title,
                 description = message,
                 type = type or 'inform'
