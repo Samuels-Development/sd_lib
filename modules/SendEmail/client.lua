@@ -10,7 +10,8 @@ local resources = {
     {name = "yflip-phone"}, 
     {name = "gks-phone"}, 
     {name = "gksphone"},
-    {name = "roadphone"}
+    {name = "roadphone"},
+    {name = "okokPhone"}
 }
 
 --- Selects and returns the most appropriate function for sending an email.
@@ -66,7 +67,7 @@ local SelectEmail = function()
                         path = "/email",
                     })
                 end
-            elseif resource.name == "lb-phone" or resource.name == "yseries" or resource.name == "yflip-phone" then
+            elseif resource.name == "lb-phone" or resource.name == "yseries" or resource.name == "yflip-phone" or resource.name == "okokPhone" then
                 return function(sender, subject, message)
                     TriggerServerEvent('sd_lib:sendEmail', {
                         sender = sender,

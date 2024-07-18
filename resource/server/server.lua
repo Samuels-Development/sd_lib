@@ -4,7 +4,7 @@ RegisterNetEvent('sd_lib:doorToggle', function(data)
     SD.Doorlock.UpdateState(data)
 end)
 
--- Event Handler to display emails, specifically from lb-phone and yflip-phone.
+-- Event Handler to display emails, specifically from lb-phone, yflip-phone & okokPhone.
 RegisterNetEvent('sd_lib:sendEmail', function(data)
     local src = source
     if data.resource == 'lb-phone' then
@@ -37,6 +37,17 @@ RegisterNetEvent('sd_lib:sendEmail', function(data)
             senderDisplayName = data.sender,
             content = data.message,
         }, 'phoneNumber', number)
+    elseif data.resource == 'okokPhone' then
+        local email = exports.okokPhone:getEmailAddressFromSource(src)
+        if email then
+            local newEmail = {
+                sender = data.sender,
+                recipients = {email},
+                subject = data.subject,
+                body = data.message,
+            }
+            local emailId = exports.okokPhone:sendEmail(newEmail)
+        end
     end
 end)
 
