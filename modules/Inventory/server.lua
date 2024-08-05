@@ -122,25 +122,37 @@ local RemoveItemFromInventory = RemoveItem()
 
 -- Function to dynamically select the appropriate RegisterUsableItem function based on the current framework.
 local RegisterUsableItem = function()
-    if Framework == 'esx' then
-        -- ESX framework item registration
+    if invState == 'started' then
         return function(item, cb)
-            ESX.RegisterUsableItem(item, cb)
-        end
-    elseif Framework == 'qb' then
-        -- QB-Core framework item registration
-        return function(item, cb)
-            QBCore.Functions.CreateUseableItem(item, cb)
-        end
-    elseif Framework == 'qbx' then
-        -- QBX-Core framework item registration
-        return function(item, cb)
-            exports.qbx_core:CreateUseableItem(item, cb)
+            -- Register the export using the item name as the identifier
+            local exportName = 'use' .. item:gsub("^%l", string.upper)
+            exports(exportName, function(event, item, inventory, slot, data)
+                if event == 'usingItem' then
+                    cb(inventory.id, item, inventory, slot, data)
+                end
+            end)
         end
     else
-        -- Fallback or error for unsupported frameworks
-        return function(item, cb)
-            error("RegisterUsableItem function is not supported in the current framework.")
+        if Framework == 'esx' then
+            -- ESX framework item registration
+            return function(item, cb)
+                ESX.RegisterUsableItem(item, cb)
+            end
+        elseif Framework == 'qb' then
+            -- QB-Core framework item registration
+            return function(item, cb)
+                QBCore.Functions.CreateUseableItem(item, cb)
+            end
+        elseif Framework == 'qbx' then
+            -- QBX-Core framework item registration
+            return function(item, cb)
+                exports.qbx_core:CreateUseableItem(item, cb)
+            end
+        else
+            -- Fallback or error for unsupported frameworks
+            return function(item, cb)
+                error("RegisterUsableItem function is not supported in the current framework.")
+            end
         end
     end
 end
