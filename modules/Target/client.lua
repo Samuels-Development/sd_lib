@@ -6,11 +6,14 @@ local Initialize = function()
     local resources = {"qb-target", "qtarget", "ox_target"}  -- List of potential target resources.
     for _, resource in ipairs(resources) do
         if GetResourceState(resource) == 'started' then
-            target = resource
+            if resource == 'ox_target' then
+                target = 'qtarget'
+            else
+                target = resource
+            end
             break  -- Break the loop once the first active target resource is found.
         end
     end
-
 
     -- Optionally handle the case where none of the resources are started.
     if not target then
