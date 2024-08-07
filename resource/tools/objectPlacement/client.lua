@@ -28,7 +28,7 @@ end
 ---@param distance number The maximum distance for the raycast.
 ---@return boolean, vector3 Whether the raycast hit something and the coordinates of the hit.
 local RayCastGamePlayCamera = function(distance)
-    local cameraRotation = GetGameplayCamRot()
+    local cameraRotation = GetGameplayCamRot(2)
     local cameraCoord = GetGameplayCamCoord()
     local direction = RotationToDirection(cameraRotation)
     local destination = {
@@ -36,7 +36,7 @@ local RayCastGamePlayCamera = function(distance)
         y = cameraCoord.y + direction.y * distance,
         z = cameraCoord.z + direction.z * distance
     }
-    local rayHandle = StartShapeTestRay(cameraCoord.x, cameraCoord.y, cameraCoord.z, destination.x, destination.y, destination.z, 30, PlayerPedId(), 7)
+    local rayHandle = StartShapeTestRay(cameraCoord.x, cameraCoord.y, cameraCoord.z, destination.x, destination.y, destination.z, 1, PlayerPedId(), 7)
     local _, hit, coords, _, _ = GetShapeTestResult(rayHandle)
     return hit, coords
 end
@@ -104,7 +104,7 @@ local SetupScaleform = function(scaleform)
 
     PushScaleformMovieFunction(scaleform, "SET_DATA_SLOT")
     PushScaleformMovieFunctionParameterInt(4)
-    Button(GetControlInstructionalButton(2, 36, true))
+    Button(GetControlInstructionalButton(2, 21, true))
     ButtonMessage("Hold Shift to fine-tune rotation (1 degree)")
     PopScaleformMovieFunctionVoid()
 
@@ -294,3 +294,9 @@ AddEventHandler('onResourceStop', function(resourceName)
         CleanupPlacedObjects()
     end
 end)
+
+-- Command to clear all placed objects
+RegisterCommand('clearprops', function()
+    CleanupPlacedObjects()
+    PlacedObjects = {}
+end, false)
