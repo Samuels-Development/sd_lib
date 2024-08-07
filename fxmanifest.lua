@@ -6,8 +6,8 @@ Description 'A library of functions, that also bridges frameworks and common 3rd
 Version '1.0.33'
 
 client_scripts {
-    'resource/**/client.lua',
-    'devtools/**/client.lua'
+    'resource/client/client.lua',
+    -- 'resource/client/devtools/**/client.lua'
 }
 
 server_scripts {
