@@ -295,6 +295,19 @@ AddEventHandler('onResourceStop', function(resourceName)
     end
 end)
 
+-- Define a callback function for the placeobject command.
+local PlaceObjectCommand = function(source, args, rawCommand)
+    local model = args[1] or 'prop_weed_block_01'
+    local params = {
+        model = model
+    }
+    -- Start the object placement process.
+    TriggerEvent('sd_lib:placeObject', params)
+end
+
+-- Register the placeobject command with ace permission check.
+RegisterCommand("placeobject", PlaceObjectCommand, false)
+
 -- Command to clear all placed objects
 RegisterCommand('clearprops', function()
     CleanupPlacedObjects()

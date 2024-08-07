@@ -7,12 +7,12 @@ Version '1.0.33'
 
 client_scripts {
     'resource/**/client.lua',
+    -- 'resource/**/tools/**/client.lua'
 }
 
 server_scripts {
     'resource/**/server.lua',
 }
-
 
 files {
     'init.lua',
