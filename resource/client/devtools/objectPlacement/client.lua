@@ -153,7 +153,7 @@ end
 
 --- Places the object at the current coordinates.
 -- This function places the object at the current coordinates and prints its information.
-local PlaceObject = function()
+local PlaceObject = function(params)
     local placedObject = CreateObjectNoOffset(CurrentModel, CurrentCoords.x, CurrentCoords.y, CurrentCoords.z, true, false, true)
     SetEntityRotation(placedObject, CurrentRotation.x, CurrentRotation.y, CurrentRotation.z, 2, true)
     FreezeEntityPosition(placedObject, false)
@@ -161,7 +161,30 @@ local PlaceObject = function()
     local placedCoords = GetEntityCoords(placedObject)
     local placedRotation = GetEntityRotation(placedObject, 2)
     if not CurrentModel then return end
-    print(string.format("Model: %s, Coords: (%.2f, %.2f, %.2f), Rotation: (%.2f, %.2f, %.2f)", CurrentModel, placedCoords.x, placedCoords.y, placedCoords.z, placedRotation.x, placedRotation.y, placedRotation.z))
+    
+    local modelString = string.format("Model: %s, Coords: (%.2f, %.2f, %.2f), Rotation: (%.2f, %.2f, %.2f)", 
+    CurrentModel, placedCoords.x, placedCoords.y, placedCoords.z, placedRotation.x, placedRotation.y, placedRotation.z)
+    
+    -- Determine the format for the clipboard
+    local clipboardFormat = params.format or 'string'
+    local clipboardText = ""
+
+    if clipboardFormat == 'table' then
+        clipboardText = string.format("{ x = %.2f, y = %.2f, z = %.2f, w = %.2f }", 
+        placedCoords.x, placedCoords.y, placedCoords.z, placedRotation.z)
+    else
+        clipboardText = string.format("vector4(%.2f, %.2f, %.2f, %.2f)", 
+        placedCoords.x, placedCoords.y, placedCoords.z, placedRotation.z)
+    end
+    
+    -- Copy to clipboard using NUI callback
+    SendNUIMessage({
+        type = 'copyToClipboard',
+        text = clipboardText
+    })
+    
+    print(modelString)
+    print(clipboardText)
 
     -- Clean up
     CancelPlacement()
@@ -265,7 +288,7 @@ SD.ObjectPlacement.Start = function(params)
 
             -- Place object
             if IsControlJustPressed(0, 38) then
-                PlaceObject()
+                PlaceObject(params)
             end
 
             -- Cancel placement
@@ -295,21 +318,6 @@ AddEventHandler('onResourceStop', function(resourceName)
     end
 end)
 
--- Define a callback function for the placeobject command.
-local PlaceObjectCommand = function(source, args, rawCommand)
-    local model = args[1] or 'prop_weed_block_01'
-    local params = {
-        model = model
-    }
-    -- Start the object placement process.
-    TriggerEvent('sd_lib:placeObject', params)
-end
-
--- Register the placeobject command with ace permission check.
-RegisterCommand("placeobject", PlaceObjectCommand, false)
-
--- Command to clear all placed objects
-RegisterCommand('clearprops', function()
+RegisterNetEvent('sd_lib:clearObjects', function()
     CleanupPlacedObjects()
-    PlacedObjects = {}
-end, false)
+end)
