@@ -2,11 +2,11 @@
 local isDead = false
 if Framework == 'esx' then
     AddEventHandler('esx:onPlayerDeath', function(data)
-        IsDead = true
+        isDead = true
     end)
 
     AddEventHandler('playerSpawned', function(spawn)
-        IsDead = false
+        isDead = false
     end)
 end
 
