@@ -22,7 +22,7 @@ files {
     'modules/**/shared.lua',
     'modules/**/client.lua',
     'modules/**/server.lua',
-    -- uncomment to enable dev tools 'resource/client/devtools/clipboard.html'
+    -- 'resource/client/devtools/clipboard.html' -- uncomment to enable dev tools
 }
 
 shared_scripts {
