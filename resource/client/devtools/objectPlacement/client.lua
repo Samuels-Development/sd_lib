@@ -36,7 +36,7 @@ local RayCastGamePlayCamera = function(distance)
         y = cameraCoord.y + direction.y * distance,
         z = cameraCoord.z + direction.z * distance
     }
-    local rayHandle = StartShapeTestRay(cameraCoord.x, cameraCoord.y, cameraCoord.z, destination.x, destination.y, destination.z, 1, PlayerPedId(), 7)
+    local rayHandle = StartShapeTestRay(cameraCoord.x, cameraCoord.y, cameraCoord.z, destination.x, destination.y, destination.z, -1, PlayerPedId(), 7)
     local _, hit, coords, _, _ = GetShapeTestResult(rayHandle)
     return hit, coords
 end
