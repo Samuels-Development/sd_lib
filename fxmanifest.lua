@@ -11,7 +11,7 @@ client_scripts {
 }
 
 server_scripts {
-    'resource/**/server.lua',
+    'resource/server/server.lua',
     -- 'resource/server/devtools/**/server.lua' -- uncomment to enable dev tools
 }
 
