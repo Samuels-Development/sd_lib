@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clipboard</title>
+    <script>
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'copyToClipboard') {
+                copyTextToClipboard(event.data.text);
+            }
+        });
+
+        function copyTextToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>
