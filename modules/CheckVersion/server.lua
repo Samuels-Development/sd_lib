@@ -25,9 +25,10 @@ SD.CheckVersion = function(repo)
                 return
             end
         
-            local latestVersion = response and response.tag_name:match('%d+%.%d+%.%d+')
+            -- Use the release title (name) instead of tag_name for version comparison
+            local latestVersion = response and response.name:match('%d+%.%d+%.%d+')
             if not latestVersion then
-                print('^1Failed to get a valid latest version for ^2' .. resource .. '^1.^0')
+                print('^1Failed to get a valid latest version from the release title for ^2' .. resource .. '^1.^0')
                 return
             end
         
