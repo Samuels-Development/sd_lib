@@ -42,5 +42,5 @@ end, "Place an object at the specified location.", {
 
 -- Register clearprops command
 SD.RegisterCommand("clearprops", "command.clearprops", function(source, args, rawCommand)
-    TriggerClientEvent('sd_lib:clearprops', source)
+    TriggerClientEvent('sd_lib:clearObjects', source)
 end, "Clear all placed objects.", {})
