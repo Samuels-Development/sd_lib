@@ -1,5 +1,5 @@
 -- Register Development Commands
-SD.RegisterCommand("copypos", "command.copypos", function(source, args, rawCommand)
+SD.RegisterCommand("copypos2", "group.admins", function(source, args, rawCommand)
     -- Trigger the client event with the provided arguments
     TriggerClientEvent('sd_lib:copyPos', source, args)
 end, "Copy the player's position or an object's coordinates.", {
@@ -9,7 +9,7 @@ end, "Copy the player's position or an object's coordinates.", {
     {name = "copyObject", help = "Copy object coordinates (true/false)", type = "string", optional = true}
 })
 
-SD.RegisterCommand("getidentifier", "command.getidentifier", function(source, args, rawCommand)
+SD.RegisterCommand("getidentifier", "group.admin", function(source, args, rawCommand)
     -- Determine target source (self if not provided)
     local targetSource = tonumber(args.target) or source
     local identifier = SD.GetIdentifier(targetSource)
@@ -26,7 +26,7 @@ end, "Get the identifier of the target player.", {
 })
 
 -- Register the placeobject command with ace permission check.
-SD.RegisterCommand("placeobject", "command.placeobject", function(source, args, rawCommand)
+SD.RegisterCommand("placeobject", "group.admin", function(source, args, rawCommand)
     local model = args.model or 'prop_weed_block_01'
     local format = args.format or 'string'
     local params = {
@@ -41,6 +41,21 @@ end, "Place an object at the specified location.", {
 })
 
 -- Register clearprops command
-SD.RegisterCommand("clearprops", "command.clearprops", function(source, args, rawCommand)
+SD.RegisterCommand("clearprops", "group.admin", function(source, args, rawCommand)
     TriggerClientEvent('sd_lib:clearObjects', source)
 end, "Clear all placed objects.", {})
+
+lib.addCommand('testperm', {
+	help = 'gamers unite!',
+	params = {
+		{
+			name = 'closest',
+			help = 'gamers unite!',
+			optional = true,
+		},
+	},
+	restricted = 'group.admin'
+}, function(source, args)
+    print('go go')
+	--TriggerClientEvent('ox_doorlock:triggeredCommand', source, args.closest)
+end)
