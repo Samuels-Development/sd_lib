@@ -33,7 +33,6 @@ end
 
 -- Storage for registered commands to send as suggestions.
 local registeredCommands = {}
-local shouldSendCommands = false
 
 -- Initialize chat suggestions on player join.
 AddEventHandler('playerJoining', function()
@@ -41,7 +40,6 @@ AddEventHandler('playerJoining', function()
 end)
 
 SetTimeout(1000, function()
-    shouldSendCommands = true
     TriggerClientEvent('chat:addSuggestions', -1, registeredCommands)
 end)
 
