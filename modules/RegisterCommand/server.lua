@@ -85,7 +85,6 @@ SD.RegisterCommand = function(command, permission, callback, help, params)
     end
 
     -- Register the command, applying restriction only if permission is provided
-    print(permission and true or false)
     RegisterCommand(command, commandHandler, permission and true or false)
 
     -- Add the command to chat suggestions if help text or parameters are provided.
