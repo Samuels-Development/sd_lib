@@ -44,18 +44,3 @@ end, "Place an object at the specified location.", {
 SD.RegisterCommand("clearprops", "group.admin", function(source, args, rawCommand)
     TriggerClientEvent('sd_lib:clearObjects', source)
 end, "Clear all placed objects.", {})
-
-lib.addCommand('testperm', {
-	help = 'gamers unite!',
-	params = {
-		{
-			name = 'closest',
-			help = 'gamers unite!',
-			optional = true,
-		},
-	},
-	restricted = 'group.admin'
-}, function(source, args)
-    print('go go')
-	--TriggerClientEvent('ox_doorlock:triggeredCommand', source, args.closest)
-end)
