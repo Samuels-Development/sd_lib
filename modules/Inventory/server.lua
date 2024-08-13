@@ -8,7 +8,7 @@ local invState = GetResourceState('ox_inventory') -- Check if ox_inventory is st
 local HasItem = function()
     -- If using a custom inventory like 'ox_inventory'.
     if invState == 'started' then
-        return function(player, item)
+        return function(player, item, source)
             -- Direct call to 'ox_inventory' export for item count.
             return exports[ox_inventory]:Search(source, 'count', item)
         end
@@ -42,7 +42,7 @@ local CheckInventory = HasItem()
 local AddItem = function()
     if invState == 'started' then
         -- Integration with ox_inventory
-        return function(player, item, count, metadata, slot)
+        return function(player, item, count, metadata, slot, source)
             return exports[ox_inventory]:AddItem(source, item, count, metadata, slot)
         end
     else
@@ -52,7 +52,7 @@ local AddItem = function()
                 player.addInventoryItem(item, count, metadata, slot)
             end
         elseif Framework == 'qb' or Framework == 'qbx' then
-            return function(player, item, count, metadata, slot)
+            return function(player, item, count, metadata, slot, source)
                 player.Functions.AddItem(item, count, slot, metadata)
                 TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[item], 'add', count)
             end
@@ -94,7 +94,7 @@ local AddWeaponToInventory = AddWeapon()
 local RemoveItem = function()
     if invState == 'started' then
         -- Integration with 'ox_inventory' for removing an item.
-        return function(player, item, count, metadata, slot)
+        return function(player, item, count, metadata, slot, source)
             return exports[ox_inventory]:RemoveItem(source, item, count, metadata, slot)
         end
     else
@@ -104,7 +104,7 @@ local RemoveItem = function()
                 player.removeInventoryItem(item, count, metadata, slot)
             end
         elseif Framework == 'qb' or Framework == 'qbx' then
-            return function(player, item, count, slot, metadata)
+            return function(player, item, count, slot, metadata, source)
                 player.Functions.RemoveItem(item, count, slot, metadata)
                 TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[item], "remove", count)
             end
@@ -174,7 +174,7 @@ end
 SD.Inventory.HasItem = function(source, item)
     local player = SD.GetPlayer(source)
     if player == nil then return 0 end
-    return CheckInventory(player, item)
+    return CheckInventory(player, item, source)
 end
 
 --- Adds an item to a player's inventory.
@@ -186,7 +186,7 @@ end
 SD.Inventory.AddItem = function(source, item, count, slot, metadata)
     local player = SD.GetPlayer(source)
     if player then
-        AddItemToInventory(player, item, count, slot, metadata)
+        AddItemToInventory(player, item, count, slot, metadata, source)
     end
 end
 
@@ -210,7 +210,7 @@ end
 SD.Inventory.RemoveItem = function(source, item, count, slot, metadata)
     local player = SD.GetPlayer(source)
     if player then
-        RemoveItemFromInventory(player, item, count, slot, metadata)
+        RemoveItemFromInventory(player, item, count, slot, metadata, source)
     end
 end
 
