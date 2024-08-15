@@ -131,9 +131,12 @@ end
 --- Draws a line from the player to the raycast hit position.
 ---@param startPos vector3 The starting position of the line.
 ---@param endPos vector3 The ending position of the line.
-local DrawRaycastLine = function(startPos, endPos)
+---@param r number The red color component (0-255).
+---@param g number The green color component (0-255).
+---@param b number The blue color component (0-255).
+local DrawRaycastLine = function(startPos, endPos, r, g, b)
     if #(startPos - endPos) <= 20.0 then
-        DrawLine(startPos.x, startPos.y, startPos.z, endPos.x, endPos.y, endPos.z, 128, 0, 128, 255)
+        DrawLine(startPos.x, startPos.y, startPos.z, endPos.x, endPos.y, endPos.z, r, g, b, 255)
     end
 end
 
@@ -163,19 +166,22 @@ SD.VectorCopy.CopyPlayerPosition = function(vecType, arg)
     CopyVectorToClipboard(vec, arg)
 end
 
---- Handles raycast copying with visual feedback.
----@param vecType string The type of vector ('vector2', 'vector3', or 'vector4').
----@param arg string The format type ('string' or 'table').
----@param copyObject boolean Whether to copy the object's coordinates.
-SD.VectorCopy.CopyRaycastPosition = function(vecType, arg, copyObject)
+SD.VectorCopy.CopyRaycastPosition = function(vecType, arg, copyObject, colors)
     local ped = PlayerPedId()
     local startPos = GetEntityCoords(ped)
     local endPos, entity = GetRaycastPosition()
 
     if endPos then
-        if #(startPos - endPos) <= 20.0 then
-            DrawRaycastLine(startPos, endPos)
-        end
+        local lineColor = colors.lineColor
+        local markerColor = colors.markerColor
+
+        -- Draw the raycast line
+        DrawRaycastLine(startPos, endPos, lineColor.r, lineColor.g, lineColor.b)
+
+        -- Draw a marker on hit pos
+        DrawMarker(28, endPos.x, endPos.y, endPos.z, 0, 0, 0, 0, 0, 0, 0.05, 0.05, 0.05, markerColor.r, markerColor.g, markerColor.b, 100, false, true, 2, nil, nil, false)
+
+        -- Handle entity highlighting if applicable
         if copyObject and entity and DoesEntityExist(entity) then
             if previousEntity and previousEntity ~= entity then
                 RestoreEntity(previousEntity)
@@ -183,6 +189,7 @@ SD.VectorCopy.CopyRaycastPosition = function(vecType, arg, copyObject)
             HighlightEntity(entity)
             previousEntity = entity
         end
+
         DrawText3D("Press E to copy coordinates, Backspace to cancel", 0.5, 0.85)
         if IsControlJustPressed(0, 38) then -- E key
             local vec
@@ -223,19 +230,24 @@ SD.VectorCopy.CopyRaycastPosition = function(vecType, arg, copyObject)
     end
 end
 
--- Command to copy the player's position
 RegisterNetEvent('sd_lib:copyPos', function(args)
     local vecType = args.vecType or 'vector3'
     local format = args.format or 'string'
     local useRaycast = args.useRaycast == 'true'
     local copyObject = args.copyObject == 'true'
 
+    -- Generate random colors (cuz look pretty)
+    local colors = {
+        lineColor = { r = math.random(0, 255), g = math.random(0, 255), b = math.random(0, 255) },
+        markerColor = { r = math.random(0, 255), g = math.random(0, 255), b = math.random(0, 255) }
+    }
+
     if useRaycast then
         CreateThread(function()
             local isRaycasting = true
             while isRaycasting do
                 Wait(0)
-                SD.VectorCopy.CopyRaycastPosition(vecType, format, copyObject)
+                SD.VectorCopy.CopyRaycastPosition(vecType, format, copyObject, colors)
                 if IsControlJustPressed(0, 177) then -- Backspace key to exit raycasting mode
                     isRaycasting = false
                 end
