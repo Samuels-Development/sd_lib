@@ -1,5 +1,5 @@
 -- Register Development Commands
-SD.RegisterCommand("copypos2", "group.admins", function(source, args, rawCommand)
+SD.RegisterCommand("copypos", "group.admins", function(source, args, rawCommand)
     -- Trigger the client event with the provided arguments
     TriggerClientEvent('sd_lib:copyPos', source, args)
 end, "Copy the player's position or an object's coordinates.", {
