@@ -8,10 +8,6 @@ local GetPlayerByIdent = function()
         return function(identifier)
             return SD.GetPlayer(ESX.GetPlayerFromIdentifier(identifier)?.source)
         end
-    elseif Framework == 'qbx' then
-        return function(identifier)
-            return SD.GetPlayer(exports.qbx_core:GetPlayerByCitizenId(identifier)?.PlayerData?.source)
-        end
     else
         -- Fallback for unsupported frameworks
         return function(identifier)

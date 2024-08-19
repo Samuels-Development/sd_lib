@@ -1,19 +1,20 @@
 -- Global variable to store framework details
 local frameworkId, frameworkObj
 
--- Initiliaze a framework and return it's name and object.
+-- Initialize a framework and return its name and object.
 local InitFramework = function(framework)
-    local objectName if framework == 'es_extended' then objectName = 'es_extended' elseif framework == 'qb-core' or framework == 'qbx_core' then objectName = 'qb-core' end
+    local objectName
+    if framework == 'es_extended' then
+        objectName = 'es_extended'
+    elseif framework == 'qb-core' then
+        objectName = 'qb-core'
+    end
 
     if GetResourceState(framework) == 'started' and objectName then
         if objectName == 'es_extended' then
             return 'esx', exports[objectName]:getSharedObject()
         elseif objectName == 'qb-core' then
-            if framework == 'qbx_core' then
-                return 'qbx', exports[objectName]:GetCoreObject()
-            else
-                return 'qb', exports[objectName]:GetCoreObject()
-            end
+            return 'qb', exports[objectName]:GetCoreObject()
         end
     end
     return nil, nil
@@ -21,7 +22,7 @@ end
 
 -- Function to automatically detect a framework and initialize the 'id' and object of said framework.
 local DetectFramework = function()
-    local frameworks = {'es_extended', 'qb-core', 'qbx_core'}
+    local frameworks = {'es_extended', 'qb-core'}
     for _, fw in ipairs(frameworks) do
         local id, obj = InitFramework(fw)
         if id then
@@ -30,6 +31,15 @@ local DetectFramework = function()
     end
     return nil, nil
 end
+
+-- Detect and store the framework at the start
+frameworkId, frameworkObj = DetectFramework()
+if frameworkId == 'qb' then
+    _ENV['QBCore'] = frameworkObj
+elseif frameworkId == 'esx' then
+    _ENV['ESX'] = frameworkObj
+end
+
 
 -- Detect and store the framework at the start
 frameworkId, frameworkObj = DetectFramework()

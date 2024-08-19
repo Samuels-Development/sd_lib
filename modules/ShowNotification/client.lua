@@ -26,10 +26,6 @@ local Notification = function()
             return function(message, type)
                 QBCore.Functions.Notify(message, type or 'info')
             end
-        elseif Framework == 'qbx' then 
-            return function(message, type)
-                exports.qbx_core:Notify(message, type or 'info')
-            end
         end
 
         -- As a fallback, return a function that does nothing or logs a warning/error.

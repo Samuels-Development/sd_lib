@@ -12,10 +12,6 @@ local GetPlayers = function()
         return function()
             return QBCore.Functions.GetPlayers()
         end
-    elseif Framework == 'qbx' then
-        return function()
-            return exports.qbx_core:GetQBPlayers()
-        end
     else
         return function()
             error("Unsupported framework. Unable to retrieve list of online players.")
