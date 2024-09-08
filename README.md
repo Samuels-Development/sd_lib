@@ -1,5 +1,8 @@
 # sd_lib
 
+![GitHub all releases](https://img.shields.io/github/downloads/Samuels-Development/sd_lib/total)
+
+
 This FiveM library/resource enhances native functionalities and facilitates integration between various frameworks and popular resources within the FiveM community. It provides developers with essential tools and modules that improve compatibility and extend the capabilities of standard functions.
 
 Suggestions, improvements (in the form of PRs), and issues can be submitted on this repo! If you give this repo a star, you'll receive a pat on the head (guaranteed).
