@@ -143,11 +143,6 @@ local RegisterUsableItem = function()
             return function(item, cb)
                 QBCore.Functions.CreateUseableItem(item, cb)
             end
-        elseif Framework == 'qbx' then
-            -- QBX-Core framework item registration
-            return function(item, cb)
-                exports.qbx_core:CreateUseableItem(item, cb)
-            end
         else
             -- Fallback or error for unsupported frameworks
             return function(item, cb)
