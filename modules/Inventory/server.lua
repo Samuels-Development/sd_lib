@@ -143,6 +143,11 @@ local RegisterUsableItem = function()
             return function(item, cb)
                 QBCore.Functions.CreateUseableItem(item, cb)
             end
+        elseif Framework == 'qbx' then
+            -- QBX-Core framework item registration
+            return function(item, cb)
+                exports.qbx_core:CreateUseableItem(item, cb)
+            end
         else
             -- Fallback or error for unsupported frameworks
             return function(item, cb)
@@ -154,6 +159,34 @@ end
 
 -- Utilize the dynamically selected function for registering usable items.
 local RegisterUsableItemInInventory = RegisterUsableItem()
+
+-- Function to dynamically select the appropriate GetItemLabel function based on the current configuration.
+local _GetItemLabel = function()
+    if invState == 'started' then
+        -- Integration with 'ox_inventory' for removing an item.
+        return function(item)
+            local itemInfo = exports.ox_inventory:Items(item)
+            return itemInfo and itemInfo.label or nil
+        end
+    else
+        -- Framework-specific item GetItemLabel functions.
+        if Framework == 'esx' then
+            return function(item)
+                return ESX.GetItemLabel(item)
+            end
+        elseif Framework == 'qb' or Framework == 'qbx' then
+            return function(item)
+                return QBCore.Shared.Items[item].label
+            end
+        else
+            -- Fallback or error for unsupported frameworks.
+            return function()
+                error("GetItemLabel function is not supported in the current framework.")
+            end
+        end
+    end
+end
+local GetItemLabel = _GetItemLabel()
 
 --- Registers a function to be called when a player uses an item.
 ---@param item string The item's name.
@@ -207,6 +240,13 @@ SD.Inventory.RemoveItem = function(source, item, count, slot, metadata)
     if player then
         RemoveItemFromInventory(player, item, count, slot, metadata, source)
     end
+end
+
+--- Get the item's label.
+---@param item string The item's name.
+---@return string Label The label of the item.
+SD.Inventory.GetItemLabel = function(item)
+    return GetItemLabel(item)
 end
 
 return SD.Inventory
