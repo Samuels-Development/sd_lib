@@ -49,17 +49,15 @@ SD.Interaction.AddCircleZone = function(interactType, name, coords, radius, opti
     end
 end
 
--- Function to add a target entity
----@param interactType string The interaction type ('textui' or 'target').
----@param entity number The entity to target.
----@param options table The options for interaction.
 SD.Interaction.AddTargetEntity = function(interactType, entity, options)
     if interactType == 'textui' then
+        local opt = options.options and options.options[1] or options
         SD.TextUI.AddTargetEntity(entity, {
-            label = options.options[1].label,
-            action = options.options[1].action or options.options[1].event,
-            canInteract = options.options[1].canInteract,
-            distance = options.distance
+            label = opt.label,
+            action = opt.action or opt.event,
+            canInteract = opt.canInteract,
+            distance = options.distance,
+            data = opt.data
         })
         SD.Entities[entity] = true
     else
