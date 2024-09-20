@@ -224,10 +224,11 @@ CreateThread(function()
                             local currentTime = GetGameTimer()
                             if currentTime - lastInteractionTime >= 5000 then
                                 lastInteractionTime = currentTime
+                                local data = closestEntity.options.data or {}
                                 if type(closestEntity.options.action) == "string" then
-                                    TriggerEvent(closestEntity.options.action)
+                                    TriggerEvent(closestEntity.options.action, data)
                                 elseif type(closestEntity.options.action) == "function" then
-                                    closestEntity.options.action(closestEntity.entity)
+                                    closestEntity.options.action(closestEntity.entity, data)
                                 end
                             end
                         end
