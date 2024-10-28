@@ -6,7 +6,7 @@ Suggestions, improvements (in the form of PRs), and issues can be submitted on t
 
 ## 🔔 Contact
 Author: Samuel#0008  
-Discord: https://discord.gg/samueldev
+Discord: [https://discord.gg/samueldev](https://discord.gg/FzPehMQaBQ)
 
 ## 💾 Installation
 1. Download the latest [release](https://github.com/Samuels-Development/sd_lib/releases).
