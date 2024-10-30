@@ -38,6 +38,38 @@ end
 -- Utilize the dynamically selected function for checking items in the inventory.
 local CheckInventory = HasItem()
 
+-- Function to check if the player can carry the item
+local CanCarryItem = function()
+    if invState == 'started' then
+        return function(player, item, count, metadata)
+            return exports[ox_inventory]:CanCarryItem(source, item, count, metadata)
+        end
+    else
+        if Framework == 'esx' then
+            return function(player, item, count)
+                local currentItem = player.getInventoryItem(item)
+                if currentItem then
+                    local newWeight = player.getWeight() + (currentItem.weight * count)
+                    return newWeight <= player.getMaxWeight()
+                end
+                return false
+            end
+        elseif Framework == 'qb' or Framework == 'qbx' then
+            return function(player, item, count)
+                local totalWeight = player.Functions.GetTotalWeight() + (count * player.Functions.GetItemWeight(item))
+                return totalWeight <= player.Functions.GetMaxWeight()
+            end
+        else
+            return function()
+                error("Unsupported framework for CanCarryItem.")
+            end
+        end
+    end
+end
+
+-- Utilize the dynamically selected function for checking if a player can carry an item.
+local CanCarry = CanCarryItem()
+
 -- Function to dynamically select the appropriate AddItem function based on the current configuration.
 local AddItem = function()
     if invState == 'started' then
@@ -155,34 +187,6 @@ end
 -- Utilize the dynamically selected function for registering usable items.
 local RegisterUsableItemInInventory = RegisterUsableItem()
 
--- Function to dynamically select the appropriate GetItemLabel function based on the current configuration.
-local _GetItemLabel = function()
-    if invState == 'started' then
-        -- Integration with 'ox_inventory' for removing an item.
-        return function(item)
-            local itemInfo = exports.ox_inventory:Items(item)
-            return itemInfo and itemInfo.label or nil
-        end
-    else
-        -- Framework-specific item GetItemLabel functions.
-        if Framework == 'esx' then
-            return function(item)
-                return ESX.GetItemLabel(item)
-            end
-        elseif Framework == 'qb' or Framework == 'qbx' then
-            return function(item)
-                return QBCore.Shared.Items[item].label
-            end
-        else
-            -- Fallback or error for unsupported frameworks.
-            return function()
-                error("GetItemLabel function is not supported in the current framework.")
-            end
-        end
-    end
-end
-local GetItemLabel = _GetItemLabel()
-
 --- Registers a function to be called when a player uses an item.
 ---@param item string The item's name.
 ---@param cb function The callback function to execute when the item is used.
@@ -198,6 +202,19 @@ SD.Inventory.HasItem = function(source, item)
     local player = SD.GetPlayer(source)
     if player == nil then return 0 end
     return CheckInventory(player, item, source)
+end
+
+--- Adds an item to a player's inventory.
+---@param source number The player's server ID.
+---@param item string The item's name.
+---@param count number The amount of the item to add.
+---@param slot number|nil The inventory slot to add the item to, if applicable.
+---@param metadata table|nil Additional metadata for the item, if applicable.
+SD.Inventory.CanCarry = function(source, item, count, slot, metadata)
+    local player = SD.GetPlayer(source)
+    if player then
+        CanCarry(player, item, count, slot)
+    end
 end
 
 --- Adds an item to a player's inventory.
@@ -235,13 +252,6 @@ SD.Inventory.RemoveItem = function(source, item, count, slot, metadata)
     if player then
         RemoveItemFromInventory(player, item, count, slot, metadata, source)
     end
-end
-
---- Get the item's label.
----@param item string The item's name.
----@return string Label The label of the item.
-SD.Inventory.GetItemLabel = function(item)
-    return GetItemLabel(item)
 end
 
 return SD.Inventory
