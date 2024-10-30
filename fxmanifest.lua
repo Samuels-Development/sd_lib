@@ -7,22 +7,17 @@ Version '1.1.0'
 
 client_scripts {
     'resource/client/client.lua',
-    -- 'resource/client/devtools/**/client.lua' -- uncomment to enable dev tools
 }
 
 server_scripts {
     'resource/server/server.lua',
-    -- 'resource/server/devtools/**/server.lua' -- uncomment to enable dev tools
 }
-
--- ui_page 'resource/client/devtools/clipboard.html' -- uncomment to enable dev tools
 
 files {
     'init.lua',
     'modules/**/shared.lua',
     'modules/**/client.lua',
     'modules/**/server.lua',
-    -- 'resource/client/devtools/clipboard.html' -- uncomment to enable dev tools
 }
 
 shared_scripts {
