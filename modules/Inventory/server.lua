@@ -41,12 +41,13 @@ local CheckInventory = HasItem()
 -- Function to check if the player can carry the item
 local CanCarryItem = function()
     if invState == 'started' then
-        return function(player, item, count, metadata)
+        return function(player, item, count, metadata, source)
+            print(source, item, count, metadata)
             return exports[ox_inventory]:CanCarryItem(source, item, count, metadata)
         end
     else
         if Framework == 'esx' then
-            return function(player, item, count)
+            return function(player, item, count, source)
                 local currentItem = player.getInventoryItem(item)
                 if currentItem then
                     local newWeight = player.getWeight() + (currentItem.weight * count)
@@ -55,7 +56,7 @@ local CanCarryItem = function()
                 return false
             end
         elseif Framework == 'qb' or Framework == 'qbx' then
-            return function(player, item, count)
+            return function(player, item, count, source)
                 local totalWeight = player.Functions.GetTotalWeight() + (count * player.Functions.GetItemWeight(item))
                 return totalWeight <= player.Functions.GetMaxWeight()
             end
@@ -213,7 +214,7 @@ end
 SD.Inventory.CanCarry = function(source, item, count, slot, metadata)
     local player = SD.GetPlayer(source)
     if player then
-        CanCarry(player, item, count, slot)
+        return CanCarry(player, item, count, slot, source)
     end
 end
 
