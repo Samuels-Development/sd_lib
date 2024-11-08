@@ -57,8 +57,7 @@ local CanCarryItem = function()
             end
         elseif Framework == 'qb' or Framework == 'qbx' then
             return function(player, item, count, source)
-                local totalWeight = player.Functions.GetTotalWeight() + (count * player.Functions.GetItemWeight(item))
-                return totalWeight <= player.Functions.GetMaxWeight()
+                return true
             end
         else
             return function()
