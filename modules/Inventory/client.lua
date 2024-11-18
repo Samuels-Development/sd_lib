@@ -15,7 +15,7 @@ end
 local HasItem = function()
     if inventorySystem == 'codem' then
         return function(items)
-            local playerInventory = exports['codem-inventory']:getUserInventory()
+            local playerInventory = exports[codemInv]:getUserInventory()
             local result = {}
 
             if type(items) == 'table' then
@@ -46,14 +46,14 @@ local HasItem = function()
                 for k in pairs(items) do
                     itemArray[#itemArray + 1] = k
                 end
-                local returnedItems = exports.ox_inventory:Search('count', itemArray)
+                local returnedItems = exports[oxInv]:Search('count', itemArray)
                 local result = {}
                 for k, v in pairs(items) do
                     result[k] = returnedItems[k] or 0
                 end
                 return result
             else
-                return exports.ox_inventory:Search('count', items)
+                return exports[oxInv]:Search('count', items)
             end
         end
     elseif Framework == 'esx' then
