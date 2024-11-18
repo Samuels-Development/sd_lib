@@ -1,12 +1,45 @@
 --- @class SD.Inventory
 SD.Inventory = {}
 
-local invState = GetResourceState('ox_inventory') -- Check if ox_inventory is started.
+local inventorySystem
+local codemInv = 'codem-inventory' -- Variable to store the string name codem-inventory
+local oxInv = 'ox_inventory' -- Variable to store the string name ox_inventory
+
+if GetResourceState(codemInv) == 'started' then
+    inventorySystem = 'codem'
+elseif GetResourceState(oxInv) == 'started' then
+    inventorySystem = 'ox'
+end
 
 -- Dynamic selection function to determine how to check for item existence.
 local HasItem = function()
-    if invState == 'started' then
-        -- 'ox_inventory' system.
+    if inventorySystem == 'codem' then
+        return function(items)
+            local playerInventory = exports['codem-inventory']:getUserInventory()
+            local result = {}
+
+            if type(items) == 'table' then
+                for k in pairs(items) do
+                    result[k] = 0
+                end
+                for _, itemData in pairs(playerInventory) do
+                    local itemName = tostring(itemData.name)
+                    if items[itemName] then
+                        result[itemName] = result[itemName] + (itemData.amount or 0)
+                    end
+                end
+                return result
+            else
+                local itemCount = 0
+                for _, itemData in pairs(playerInventory) do
+                    if tostring(itemData.name) == items then
+                        itemCount = itemCount + (itemData.amount or 0)
+                    end
+                end
+                return itemCount
+            end
+        end
+    elseif inventorySystem == 'ox' then
         return function(items)
             if type(items) == 'table' then
                 local itemArray = {}
@@ -24,7 +57,6 @@ local HasItem = function()
             end
         end
     elseif Framework == 'esx' then
-        -- ESX system.
         return function(items)
             local PlayerData = ESX.GetPlayerData() or {}
             local inventory = PlayerData.inventory or {}
@@ -48,8 +80,7 @@ local HasItem = function()
             end
             return 0
         end
-    elseif Framework == 'qb' or Framework == 'qbx' then
-        -- QBCore system.
+    elseif Framework == 'qb' then
         return function(items)
             local PlayerData = QBCore.Functions.GetPlayerData()
             local inventory = PlayerData and PlayerData.items or {}
@@ -74,7 +105,6 @@ local HasItem = function()
             return 0
         end
     else
-        -- Fallback for unsupported inventory systems.
         return function() return 0 end
     end
 end
