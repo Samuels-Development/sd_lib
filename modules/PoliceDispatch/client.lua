@@ -123,6 +123,22 @@ local SelectDispatch = function()
                         job = 'police',
                     })
                 end
+            elseif resource.name == "codem-dispatch" then
+                return function(data, playerCoords, locationInfo, gender)
+                    local Text = data.message .. ' on ' .. locationInfo
+                    local Type = 'Illegal'
+                    local Header = data.title
+                    local Code = data.displayCode
+
+                    local DispatchData = {
+                        type = Type,
+                        header = Header,
+                        text = Text,
+                        code = Code,
+                    }
+
+                    exports['codem-dispatch']:CustomDispatch(DispatchData)
+                end
             elseif resource.name == "custom" then
                 -- Custom dispatch system implementation placeholder
                 return function(data, playerCoords, locationInfo, gender)
