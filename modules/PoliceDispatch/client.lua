@@ -1,5 +1,5 @@
 --- Table of resources for dispatch systems. (custom is a placeholder for your application)
-local resources = { {name = "linden_outlawalert"}, {name = "cd_dispatch"}, {name = "ps-dispatch"}, {name = "qs-dispatch"}, {name = "core_dispatch"}, {name = "origen_police"}, {name = "custom"} }
+local resources = { {name = "linden_outlawalert"}, {name = "cd_dispatch"}, {name = "ps-dispatch"}, {name = "qs-dispatch"}, {name = "core_dispatch"}, {name = "origen_police"}, {name = "codem-dispatch"}, {name = "custom"} }
 
 -- Common tables for jobs and job types in the case of ps-dispatch.
 local jobs = { 'police' }
