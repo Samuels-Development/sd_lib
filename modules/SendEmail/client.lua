@@ -2,7 +2,7 @@
 local resources = { 
     {name = "qb-phone"}, 
     {name = "qs-smartphone"}, 
-    {name = "qs-smartphonepro"}, 
+    {name = "qs-smartphone-pro"}, 
     {name = "high-phone"}, 
     {name = "npwd-phone"}, 
     {name = "lb-phone"}, 
@@ -37,7 +37,7 @@ local SelectEmail = function()
                         button = {}
                     })
                 end
-            elseif resource.name == "qs-smartphonepro" then
+            elseif resource.name == "qs-smartphone-pro" then
                 return function(sender, subject, message)
                     local mailData = { 
                         sender = sender, 
