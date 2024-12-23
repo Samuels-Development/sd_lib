@@ -1,14 +1,20 @@
 --- @class SD.Inventory
 SD.Inventory = {}
 
-local inventorySystem
-local codemInv = 'codem-inventory' -- Variable to store the string name codem-inventory
-local oxInv = 'ox_inventory' -- Variable to store the string name ox_inventory
+local codemInv = 'codem-inventory'
+local oxInv = 'ox_inventory'
+local qbInv = 'qb-inventory'
+local qsInv = 'qs-inventory'
 
+local inventorySystem
 if GetResourceState(codemInv) == 'started' then
     inventorySystem = 'codem'
 elseif GetResourceState(oxInv) == 'started' then
     inventorySystem = 'ox'
+elseif GetResourceState(qbInv) == 'started' then
+    inventorySystem = 'qb'
+elseif GetResourceState(qsInv) == 'started' then
+    inventorySystem = 'qs'
 end
 
 --- Dynamically selects the appropriate function to check if a player has an item.
@@ -21,6 +27,17 @@ local HasItem = function()
     elseif inventorySystem == 'ox' then
         return function(player, item, source)
             return exports[oxInv]:Search(source, 'count', item)
+        end
+    elseif inventorySystem == 'qb' then
+        return function(player, item, source)
+            local itemAmount = exports[qbInv]:GetItemCount(source, item)
+            return itemAmount or 0
+        end
+    elseif inventorySystem == 'qs' then
+        return function(player, item, source)
+            local itemData = exports[qsInv]:GetItemByName(source, item)
+            if not itemData then return 0 end
+            return itemData.amount or itemData.count or 0
         end
     else
         if Framework == 'esx' then
@@ -54,6 +71,15 @@ local CanCarryItem = function()
         return function(player, item, count, metadata, source)
             return exports[oxInv]:CanCarryItem(source, item, count, metadata)
         end
+    elseif inventorySystem == 'qb' then
+        return function(player, item, count, slot, source)
+            local canAdd = exports[qbInv]:CanAddItem(source, item, count)
+            return canAdd
+        end
+    elseif inventorySystem == 'qs' then
+        return function(player, item, count, metadata, slot, source)
+            return exports[qsInv]:CanCarryItem(source, item, count)
+        end
     else
         if Framework == 'esx' then
             return function(player, item, count)
@@ -73,7 +99,7 @@ local CanCarryItem = function()
                 if (totalWeight + (itemInfo['weight'] * count)) <= 120000 then
                     return true
                 end
-                return false 
+                return false
             end
         else
             return function()
@@ -95,6 +121,14 @@ local AddItem = function()
     elseif inventorySystem == 'ox' then
         return function(player, item, count, metadata, slot, source)
             return exports[oxInv]:AddItem(source, item, count, metadata, slot)
+        end
+    elseif inventorySystem == 'qb' then
+        return function(player, item, count, metadata, slot, source)
+            exports[qbInv]:AddItem(source, item, count, slot or false, metadata or false,'sd-inventory:AddItem')
+        end
+    elseif inventorySystem == 'qs' then
+        return function(player, item, count, metadata, slot, source)
+            return exports[qsInv]:AddItem(source, item, count, slot, metadata)
         end
     else
         if Framework == 'esx' then
@@ -127,6 +161,14 @@ local RemoveItem = function()
         return function(player, item, count, metadata, slot, source)
             return exports[oxInv]:RemoveItem(source, item, count, metadata, slot)
         end
+    elseif inventorySystem == 'qb' then
+        return function(player, item, count, metadata, slot, source)
+            exports[qbInv]:RemoveItem(source, item, count, slot or false, 'sd-inventory:RemoveItem')
+        end
+    elseif inventorySystem == 'qs' then
+        return function(player, item, count, metadata, slot, source)
+            return exports[qsInv]:RemoveItem(source, item, count, slot, metadata)
+        end
     else
         if Framework == 'esx' then
             return function(player, item, count, metadata, slot)
@@ -158,6 +200,10 @@ local RegisterUsableItem = function()
                     cb(inventory.id, item, inventory, slot, data)
                 end
             end)
+        end
+    elseif inventorySystem == 'qb' then
+        return function(item, cb)
+            QBCore.Functions.CreateUseableItem(item, cb)
         end
     else
         if Framework == 'esx' then
@@ -200,9 +246,8 @@ end
 --- @param item string The item's name.
 --- @param count number The amount of the item to check.
 --- @param slot number|nil The inventory slot, if applicable.
---- @param metadata table|nil Additional metadata for the item, if applicable.
 --- @return boolean True if the player can carry the item, false otherwise.
-SD.Inventory.CanCarry = function(source, item, count, slot, metadata)
+SD.Inventory.CanCarry = function(source, item, count, slot)
     local player = SD.GetPlayer(source)
     if player then
         return CanCarry(player, item, count, slot, source)
@@ -216,7 +261,7 @@ end
 --- @param count number The amount of the item to add.
 --- @param slot number|nil The inventory slot to add the item to, if applicable.
 --- @param metadata table|nil Additional metadata for the item, if applicable.
-SD.Inventory.AddItem = function(source, item, count, slot, metadata)
+SD.Inventory.AddItem = function(source, item, count, metadata, slot)
     local player = SD.GetPlayer(source)
     if player then
         AddItemToInventory(player, item, count, metadata, slot, source)
@@ -229,7 +274,7 @@ end
 --- @param count number The amount of the item to remove.
 --- @param slot number|nil The inventory slot to remove the item from, if applicable.
 --- @param metadata table|nil Additional metadata for the item, if applicable.
-SD.Inventory.RemoveItem = function(source, item, count, slot, metadata)
+SD.Inventory.RemoveItem = function(source, item, count, metadata, slot)
     local player = SD.GetPlayer(source)
     if player then
         RemoveItemFromInventory(player, item, count, metadata, slot, source)
