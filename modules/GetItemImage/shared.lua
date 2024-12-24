@@ -1,5 +1,5 @@
 --- Table of supported inventory systems.
-local inventories = { {name = "ox_inventory"}, {name = "qs-inventory"}, {name = "qb-inventory"}, {name = "ps-inventory"}, {name = "lj-inventory"} }
+local inventories = { {name = "ox_inventory"}, {name = "qs-inventory"}, {name = "qb-inventory"}, {name = "ps-inventory"}, {name = "lj-inventory"}, {name = "inventory_images"}}
 
 --- Selects and returns the most appropriate function for retrieving item image paths
 -- based on the configured inventory system. This approach abstracts inventory-specific paths
@@ -17,6 +17,12 @@ local SelectInventoryImagePath = function()
                 return function(item)
                     return string.format("nui://%s/html/images/%s.png", resource.name, item)
                 end
+            end
+            elseif resource.name == "inventory_images" then
+            -- For tgiann-inventory, use relative path for images
+            -- Assuming images are located in the 'resources/[tgianns]/inventory_images/images/' folder.
+            return function(item)
+                return string.format("nui://%s/images/%s.png", resource.name, item)
             end
         end
     end

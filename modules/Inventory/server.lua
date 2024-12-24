@@ -5,6 +5,8 @@ local codemInv = 'codem-inventory'
 local oxInv = 'ox_inventory'
 local qbInv = 'qb-inventory'
 local qsInv = 'qs-inventory'
+local tgiannInv = 'tgiann-inventory' -- Variable to store the string name tgiann-inventory
+
 
 local inventorySystem
 if GetResourceState(codemInv) == 'started' then
@@ -15,6 +17,8 @@ elseif GetResourceState(qbInv) == 'started' then
     inventorySystem = 'qb'
 elseif GetResourceState(qsInv) == 'started' then
     inventorySystem = 'qs'
+elseif GetResourceState(tgiannInv) == 'started' then
+    inventorySystem = 'tgiann'
 end
 
 --- Dynamically selects the appropriate function to check if a player has an item.
@@ -38,6 +42,11 @@ local HasItem = function()
             local itemData = exports[qsInv]:GetItemByName(source, item)
             if not itemData then return 0 end
             return itemData.amount or itemData.count or 0
+        end
+    elseif inventorySystem == 'tgiann' then
+        return function(player, item)
+            local itemData = player.Functions.GetItemByName(item)
+            if itemData then return itemData.amount or itemData.count else return 0 end
         end
     else
         if Framework == 'esx' then
@@ -79,6 +88,10 @@ local CanCarryItem = function()
     elseif inventorySystem == 'qs' then
         return function(player, item, count, metadata, slot, source)
             return exports[qsInv]:CanCarryItem(source, item, count)
+        end
+    elseif inventorySystem == 'tgiann' then
+        return function(player, item, count, metadata, source)
+            return exports["tgiann-inventory"]:CanCarryItem(source, item, count)
         end
     else
         if Framework == 'esx' then
@@ -130,6 +143,11 @@ local AddItem = function()
         return function(player, item, count, metadata, slot, source)
             return exports[qsInv]:AddItem(source, item, count, slot, metadata)
         end
+    elseif inventorySystem == 'tgiann' then
+        -- Case for tgiann-inventory system
+        return function(player, item, count, metadata, slot, source, isClotheSlot)
+            return exports["tgiann-inventory"]:AddItem(source, item, count, slot, metadata, isClotheSlot)
+        end
     else
         if Framework == 'esx' then
             return function(player, item, count, metadata, slot)
@@ -168,6 +186,11 @@ local RemoveItem = function()
     elseif inventorySystem == 'qs' then
         return function(player, item, count, metadata, slot, source)
             return exports[qsInv]:RemoveItem(source, item, count, slot, metadata)
+        end
+    elseif inventorySystem == 'tgiann' then
+        -- Case for tgiann-inventory system
+        return function(player, item, count, metadata, slot, source)
+            return exports["tgiann-inventory"]:RemoveItem(source, item, count, slot, metadata)
         end
     else
         if Framework == 'esx' then

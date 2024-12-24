@@ -1,4 +1,4 @@
---- @class SD.Inventory
+---@class SD.Inventory
 SD.Inventory = {}
 
 local inventorySystem
@@ -95,6 +95,8 @@ local HasItem = function()
                 return itemCount
             end
         end
+        
+        
     elseif Framework == 'esx' then
         return function(items)
             local PlayerData = ESX.GetPlayerData() or {}
