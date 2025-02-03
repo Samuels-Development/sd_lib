@@ -116,11 +116,11 @@ local CanCarry = CanCarryItem()
 local AddItem = function()
     if inventorySystem == 'codem' then
         return function(player, item, count, metadata, slot, source)
-            return exports[codemInv]:AddItem(source, item, count, slot, metadata)
+            return exports[codemInv]:AddItem(source, item, count, slot or nil, metadata or nil)
         end
     elseif inventorySystem == 'ox' then
         return function(player, item, count, metadata, slot, source)
-            return exports[oxInv]:AddItem(source, item, count, metadata, slot)
+            return exports[oxInv]:AddItem(source, item, count, metadata or nil, slot or nil)
         end
     elseif inventorySystem == 'qb' then
         return function(player, item, count, metadata, slot, source)
@@ -128,7 +128,7 @@ local AddItem = function()
         end
     elseif inventorySystem == 'qs' then
         return function(player, item, count, metadata, slot, source)
-            return exports[qsInv]:AddItem(source, item, count, slot, metadata)
+            return exports[qsInv]:AddItem(source, item, count, slot or nil, metadata or nil)
         end
     else
         if Framework == 'esx' then
