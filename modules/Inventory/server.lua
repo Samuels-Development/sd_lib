@@ -116,11 +116,11 @@ local CanCarry = CanCarryItem()
 local AddItem = function()
     if inventorySystem == 'codem' then
         return function(player, item, count, metadata, slot, source)
-            return exports[codemInv]:AddItem(source, item, count, slot or nil, metadata or nil)
+            return exports[codemInv]:AddItem(source, item, count, slot or false, metadata or false)
         end
     elseif inventorySystem == 'ox' then
         return function(player, item, count, metadata, slot, source)
-            return exports[oxInv]:AddItem(source, item, count, metadata or nil, slot or nil)
+            return exports[oxInv]:AddItem(source, item, count, metadata or false, slot or false)
         end
     elseif inventorySystem == 'qb' then
         return function(player, item, count, metadata, slot, source)
@@ -128,7 +128,7 @@ local AddItem = function()
         end
     elseif inventorySystem == 'qs' then
         return function(player, item, count, metadata, slot, source)
-            return exports[qsInv]:AddItem(source, item, count, slot or nil, metadata or nil)
+            return exports[qsInv]:AddItem(source, item, count, slot or false, metadata or false)
         end
     else
         if Framework == 'esx' then
@@ -155,11 +155,11 @@ local AddItemToInventory = AddItem()
 local RemoveItem = function()
     if inventorySystem == 'codem' then
         return function(player, item, count, metadata, slot, source)
-            return exports[codemInv]:RemoveItem(source, item, count, slot)
+            return exports[codemInv]:RemoveItem(source, item, count, slot or false)
         end
     elseif inventorySystem == 'ox' then
         return function(player, item, count, metadata, slot, source)
-            return exports[oxInv]:RemoveItem(source, item, count, metadata, slot)
+            return exports[oxInv]:RemoveItem(source, item, count, metadata or false, slot or false)
         end
     elseif inventorySystem == 'qb' then
         return function(player, item, count, metadata, slot, source)
@@ -167,16 +167,16 @@ local RemoveItem = function()
         end
     elseif inventorySystem == 'qs' then
         return function(player, item, count, metadata, slot, source)
-            return exports[qsInv]:RemoveItem(source, item, count, slot, metadata)
+            return exports[qsInv]:RemoveItem(source, item, count, slot or false, metadata or false)
         end
     else
         if Framework == 'esx' then
             return function(player, item, count, metadata, slot)
-                player.removeInventoryItem(item, count, metadata, slot)
+                player.removeInventoryItem(item, count, metadata or false, slot or false)
             end
         elseif Framework == 'qb' then
             return function(player, item, count, slot, metadata, source)
-                player.Functions.RemoveItem(item, count, slot, metadata)
+                player.Functions.RemoveItem(item, count, slot, metadata or false)
                 TriggerClientEvent('inventory:client:ItemBox', source, QBCore.Shared.Items[item], "remove", count)
             end
         else
