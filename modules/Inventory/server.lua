@@ -125,6 +125,7 @@ local AddItem = function()
     elseif inventorySystem == 'qb' then
         return function(player, item, count, metadata, slot, source)
             exports[qbInv]:AddItem(source, item, count, slot or false, metadata or false,'sd-inventory:AddItem')
+            TriggerClientEvent('qb-inventory:client:ItemBox', source, QBCore.Shared.Items[item], 'add', count)
         end
     elseif inventorySystem == 'qs' then
         return function(player, item, count, metadata, slot, source)
@@ -164,6 +165,7 @@ local RemoveItem = function()
     elseif inventorySystem == 'qb' then
         return function(player, item, count, metadata, slot, source)
             exports[qbInv]:RemoveItem(source, item, count, slot or false, 'sd-inventory:RemoveItem')
+            TriggerClientEvent('qb-inventory:client:ItemBox', source, QBCore.Shared.Items[item], 'remove', count)
         end
     elseif inventorySystem == 'qs' then
         return function(player, item, count, metadata, slot, source)
