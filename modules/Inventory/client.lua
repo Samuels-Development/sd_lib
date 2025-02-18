@@ -2,13 +2,16 @@
 SD.Inventory = {}
 
 local inventorySystem
-local codemInv = 'codem-inventory' -- Variable to store the string name codem-inventory
-local oxInv = 'ox_inventory' -- Variable to store the string name ox_inventory
+local codemInv = 'codem-inventory'
+local oxInv = 'ox_inventory'
+local origenInv = 'origen_inventory'
 
 if GetResourceState(codemInv) == 'started' then
     inventorySystem = 'codem'
 elseif GetResourceState(oxInv) == 'started' then
     inventorySystem = 'ox'
+elseif GetResourceState(origenInv) == 'started' then
+    inventorySystem = 'origen'
 end
 
 -- Dynamic selection function to determine how to check for item existence.
@@ -17,7 +20,6 @@ local HasItem = function()
         return function(items)
             local playerInventory = exports[codemInv]:getUserInventory()
             local result = {}
-
             if type(items) == 'table' then
                 for k in pairs(items) do
                     result[k] = 0
@@ -48,12 +50,37 @@ local HasItem = function()
                 end
                 local returnedItems = exports[oxInv]:Search('count', itemArray)
                 local result = {}
-                for k, v in pairs(items) do
+                for k, _ in pairs(items) do
                     result[k] = returnedItems[k] or 0
                 end
                 return result
             else
                 return exports[oxInv]:Search('count', items)
+            end
+        end
+    elseif inventorySystem == 'origen' then
+        return function(items)
+            local playerInventory = exports[origenInv]:GetInventory()
+            if type(items) == 'table' then
+                local result = {}
+                for k in pairs(items) do
+                    result[k] = 0
+                end
+                for _, itemData in pairs(playerInventory) do
+                    local itemName = tostring(itemData.name)
+                    if items[itemName] then
+                        result[itemName] = result[itemName] + (itemData.amount or 0)
+                    end
+                end
+                return result
+            else
+                local itemCount = 0
+                for _, itemData in pairs(playerInventory) do
+                    if tostring(itemData.name) == items then
+                        itemCount = itemCount + (itemData.amount or 0)
+                    end
+                end
+                return itemCount
             end
         end
     elseif Framework == 'esx' then
