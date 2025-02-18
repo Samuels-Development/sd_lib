@@ -77,7 +77,7 @@ local CanCarryItem = function()
             return canAdd
         end
     elseif inventorySystem == 'qs' then
-        return function(player, item, count, metadata, slot, source)
+        return function(player, item, count, slot, source)
             return exports[qsInv]:CanCarryItem(source, item, count)
         end
     else
