@@ -29,6 +29,7 @@ SD.StartHack = function(type, callback, ...)
         ['rm-buttonmashing'] = function(cb, ...) cb(exports['rm_minigames']:buttonMashing(...)) end,
         ['rm-angledlockpick'] = function(cb, ...) cb(exports['rm_minigames']:angledLockpick(...)) end,
         ['rm-fingerprint'] = function(cb, ...) cb(exports['rm_minigames']:fingerPrint(...)) end,
+        ['rm-circleClick'] = function(cb, ...) cb(exports['rm_minigames']:circleClick(...)) end,
         ['rm-hotwirehack'] = function(cb, ...) cb(exports['rm_minigames']:hotwireHack(...)) end,
         ['rm-hackerminigame'] = function(cb, ...) cb(exports['rm_minigames']:hackerMinigame(...)) end,
         ['rm-safecrack'] = function(cb, ...) cb(exports['rm_minigames']:safeCrack(...)) end,
