@@ -1,3 +1,14 @@
+--[[
+    Code originally sourced from ox_lib (https://github.com/overextended/ox_lib).
+    This code has been modified and adapted for use in this project.
+    
+    This file is licensed under LGPL-3.0 or higher 
+    (<https://www.gnu.org/licenses/lgpl-3.0.en.html>).
+    
+    Copyright (c) 2025 Linden 
+    (<https://github.com/thelindat/fivem>).
+]]
+
 -- Global variable to store framework details
 local frameworkId, frameworkObj
 

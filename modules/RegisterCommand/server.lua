@@ -1,3 +1,14 @@
+--[[
+    Code originally sourced from ox_lib (https://github.com/overextended/ox_lib).
+    This code has been modified and adapted for use in this project.
+    
+    This file is licensed under LGPL-3.0 or higher 
+    (<https://www.gnu.org/licenses/lgpl-3.0.en.html>).
+    
+    Copyright (c) 2025 Linden 
+    (<https://github.com/thelindat/fivem>).
+]]
+
 -- Function to parse command arguments based on defined parameters.
 ---@param args table The arguments provided to the command.
 ---@param params table The parameters definitions for the command.
