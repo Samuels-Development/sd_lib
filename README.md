@@ -24,7 +24,7 @@ This project is licensed under the Lesser General Public License v3.0 (LGPLv3). 
 This project includes code derived from the following LGPLv3-licensed project:
 - [Overextended Library](https://github.com/overextended/ox_lib)
 
-The initialization code (e.g., `init.lua` and `resource/init.lua`) contains code derived from ox_lib components that perform similar functions. Certain modules, such as the Callback, Points, and RegisterCommand modules, to name a few, also contain code derived from ox_lib. The coding styles and safe practices of the Overextended team have been, to my project's betterment, applied throughout the project.
+The initialization code (e.g., `init.lua` and `resource/init.lua`) and specific modules—such as the Callback, Points, and RegisterCommand modules—contain code derived from ox_lib. These files include a notice acknowledging this. Furthermore, the Overextended team’s coding style and best practices have been adopted throughout the project for it's betterment.
 
 ### Credits
 Special thanks to Linden and the exceptional team at [@overextended](https://github.com/overextended), the developers of [ox_lib](https://github.com/overextended/ox_lib).
