@@ -33,6 +33,8 @@ SD.StartHack = function(type, callback, ...)
         ['rm-hotwirehack'] = function(cb, ...) cb(exports['rm_minigames']:hotwireHack(...)) end,
         ['rm-hackerminigame'] = function(cb, ...) cb(exports['rm_minigames']:hackerMinigame(...)) end,
         ['rm-safecrack'] = function(cb, ...) cb(exports['rm_minigames']:safeCrack(...)) end,
+        ['glitch-circuit'] = function(cb, ...) cb(exports['glitch-minigames']:StartCircuitRhythm(lanes, keys, noteSpeed, noteSpawnRate, requiredNotes, difficulty, maxWrongKeys, maxMissedNotes))end,
+        ['glitch-varhack'] = function(cb, ...) cb(exports['glitch-minigames']:StartVarHack(blocks, speed))end,
     }
 
     if minigameFunctions[type] then
