@@ -202,7 +202,7 @@ SD.Logger.Log = function(source, title, message)
         return
     elseif cfg.service == 'discord' then
         SendDiscordLog(title, message)
-    elseif cfg.service == 'fivemmanage' then
+    elseif cfg.service == 'fivemanage' then
         SendFiveMManageLog(source, title, message)
     elseif cfg.service == 'fivemerr' then
         SendFiveMErrLog(source, title, message)
