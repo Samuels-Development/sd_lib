@@ -2,17 +2,21 @@
 SD.Logger = {}
 
 local cfg = {
-    service     = 'none',
-    screenshots = false,
-    events      = {},
-    discord     = {},
-    loki        = {},
-    grafana     = {}
+    service        = 'none',
+    screenshots    = false,
+    events         = {},
+    discord        = {},
+    loki           = {},
+    grafana        = {}
 }
 
 -- Internal buffers for Loki/Grafana
-local logBuffers    = {}
+local logBuffers     = {}
 local flushScheduled = false
+
+-- Internal buffer for Discord logs
+local discordLogBuffer      = {}
+local discordFlushScheduled = false
 
 --- Base64-encodes a string.
 ---@param data string The string to encode.
@@ -57,25 +61,80 @@ local ScheduleFlush = function()
                 end
                 local body = json.encode({ streams = streams })
                 PerformHttpRequest(conf.endpoint, function(status)
-                    if (name == 'loki' and status ~= 204)
-                    or (name == 'grafana' and (status < 200 or status >= 300)) then
+                    if (name == 'loki'   and status ~= 204)
+                    or   (name == 'grafana' and (status < 200 or status >= 300)) then
                         print(('SD.Logger: %s push failed (status %d)'):format(name, status))
                     end
                 end, 'POST', body, conf.headers)
             end
         end
-        logBuffers = {}
+        logBuffers     = {}
         flushScheduled = false
     end)
+end
+
+--- Sends a log entry via Discord webhook.
+---@param title string The title of the log message.
+---@param message string The log message content.
+local SendDiscordLog = function(title, message)
+    local d = cfg.discord
+    assert(d.link and d.link ~= '', 'SD.Logger: discord.link must be set')
+    local resourceName = GetCurrentResourceName()
+    local fullTitle    = string.format('%s - %s', resourceName, title)
+    local embed = {{
+        color       = d.color       or 14423100,
+        title       = '**' .. fullTitle .. '**',
+        description = message,
+        footer      = { text = os.date('%a %b %d, %I:%M %p'), icon_url = d.footer }
+    }}
+    local payload = {
+        username   = d.name,
+        avatar_url = d.image,
+        embeds     = embed
+    }
+    if d.tagEveryone then payload.content = '@everyone' end
+    PerformHttpRequest(d.link, function() end, 'POST', json.encode(payload), {
+        ['Content-Type'] = 'application/json'
+    })
+end
+
+--- Schedules a one-minute flush of buffered Discord logs.
+local ScheduleDiscordFlush = function()
+    if discordFlushScheduled then return end
+    discordFlushScheduled = true
+    local interval = (cfg.discord.flushInterval and cfg.discord.flushInterval * 1000) or (60 * 1000)
+
+    SetTimeout(interval, function()
+        for _, entry in ipairs(discordLogBuffer) do
+            SendDiscordLog(entry.title, entry.message)
+        end
+        discordLogBuffer      = {}
+        discordFlushScheduled = false
+    end)
+end
+
+--- Buffers a Discord log entry and schedules flush.
+---@param title string The title of the log message.
+---@param message string The log message content.
+local BufferDiscordLog = function(title, message)
+    discordLogBuffer[#discordLogBuffer + 1] = {
+        title   = title,
+        message = message
+    }
+    ScheduleDiscordFlush()
 end
 
 --- Initializes the logger with your `logs` config table.
 ---@param logsConfig table The `logs` table from your resource config.
 SD.Logger.Setup = function(logsConfig)
-    cfg.service     = logsConfig.service     or cfg.service
-    cfg.screenshots = logsConfig.screenshots or cfg.screenshots
-    cfg.events      = logsConfig.events      or cfg.events
-    cfg.discord     = logsConfig.discord     or cfg.discord
+    cfg.service        = logsConfig.service     or cfg.service
+    cfg.screenshots    = logsConfig.screenshots or cfg.screenshots
+    cfg.events         = logsConfig.events      or cfg.events
+    cfg.discord        = logsConfig.discord     or cfg.discord
+
+    if logsConfig.discord and logsConfig.discord.flushInterval then
+        cfg.discord.flushInterval = logsConfig.discord.flushInterval
+    end
 
     if logsConfig.loki then
         local l = logsConfig.loki
@@ -84,7 +143,7 @@ SD.Logger.Setup = function(logsConfig)
             cfg.loki.endpoint = 'https://' .. cfg.loki.endpoint
         end
         cfg.loki.endpoint = cfg.loki.endpoint:gsub('/+$','') .. '/loki/api/v1/push'
-        cfg.loki.headers = { ['Content-Type'] = 'application/json' }
+        cfg.loki.headers  = { ['Content-Type'] = 'application/json' }
         if l.user and l.password then
             cfg.loki.headers['Authorization'] = GetAuthHeader(l.user, l.password)
         end
@@ -100,7 +159,7 @@ SD.Logger.Setup = function(logsConfig)
             cfg.grafana.endpoint = 'https://' .. cfg.grafana.endpoint
         end
         cfg.grafana.endpoint = cfg.grafana.endpoint:gsub('/+$','') .. '/loki/api/v1/push'
-        cfg.grafana.headers = { ['Content-Type'] = 'application/json' }
+        cfg.grafana.headers  = { ['Content-Type'] = 'application/json' }
         if g.apiKey then
             cfg.grafana.headers['Authorization'] = 'Bearer ' .. g.apiKey
         end
@@ -108,29 +167,6 @@ SD.Logger.Setup = function(logsConfig)
             cfg.grafana.headers['X-Scope-OrgID'] = g.tenant
         end
     end
-end
-
---- Sends a log entry via Discord webhook.
----@param title string The title of the log message.
----@param message string The log message content.
-local SendDiscordLog = function(title, message)
-    local d = cfg.discord
-    assert(d.link and d.link ~= '', 'SD.Logger: discord.link must be set')
-    local resourceName = GetCurrentResourceName()
-    local fullTitle = string.format('%s - %s', resourceName, title)
-    local embed = {{
-        color       = d.color       or 14423100,
-        title       = '**' .. fullTitle .. '**',
-        description = message,
-        footer      = { text = os.date('%a %b %d, %I:%M %p'), icon_url = d.footer }
-    }}
-    local payload = {
-        username   = d.name,
-        avatar_url = d.image,
-        embeds     = embed
-    }
-    if d.tagEveryone then payload.content = '@everyone' end
-    PerformHttpRequest(d.link, function() end, 'POST', json.encode(payload), { ['Content-Type'] = 'application/json' })
 end
 
 --- Sends a log entry via FiveM-Manage.
@@ -164,9 +200,9 @@ end
 
 --- Buffers a log stream for Loki/Grafana.
 ---@param serviceName string 'loki' or 'grafana'.
----@param source number The player's server ID.
----@param event string The event name.
----@param message string The log message content.
+---@param source      number The player's server ID.
+---@param event       string The event name.
+---@param message     string The log message content.
 local BufferStream = function(serviceName, source, event, message)
     local conf = cfg[serviceName]
     if conf.endpoint == '' then return end
@@ -176,8 +212,8 @@ local BufferStream = function(serviceName, source, event, message)
     if not logBuffers[serviceName][event] then
         logBuffers[serviceName][event] = {
             stream = {
-                server   = conf.server or GetConvar('sv_projectName', 'fxserver'),
-                resource = cfg.resource or GetCurrentResourceName(),
+                server   = conf.server   or GetConvar('sv_projectName', 'fxserver'),
+                resource = cfg.resource   or GetCurrentResourceName(),
                 event    = event
             },
             values = {}
@@ -194,14 +230,14 @@ local BufferStream = function(serviceName, source, event, message)
 end
 
 --- Logs an event using the configured service.
----@param source number|null The player's server ID (nil for Discord-only logs).
----@param title string  The title or event name of the log.
+---@param source number? The player's server ID (nil for Discord-only logs).
+---@param title  string The title or event name of the log.
 ---@param message string The log message content.
 SD.Logger.Log = function(source, title, message)
     if cfg.service == 'none' then
         return
     elseif cfg.service == 'discord' then
-        SendDiscordLog(title, message)
+        BufferDiscordLog(title, message)
     elseif cfg.service == 'fivemanage' then
         SendFiveMManageLog(source, title, message)
     elseif cfg.service == 'fivemerr' then
