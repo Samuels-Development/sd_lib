@@ -33,6 +33,23 @@ SD.StartHack = function(type, callback, ...)
         ['rm-hotwirehack'] = function(cb, ...) cb(exports['rm_minigames']:hotwireHack(...)) end,
         ['rm-hackerminigame'] = function(cb, ...) cb(exports['rm_minigames']:hackerMinigame(...)) end,
         ['rm-safecrack'] = function(cb, ...) cb(exports['rm_minigames']:safeCrack(...)) end,
+        ['bl-circlesum']    = function(cb, ...) cb(exports['bl_ui']:CircleSum(...)) end,
+        ['bl-digitdazzle']  = function(cb, ...) cb(exports['bl_ui']:DigitDazzle(...)) end,
+        ['bl-lightsout']    = function(cb, ...) cb(exports['bl_ui']:LightsOut(...)) end,
+        ['bl-minesweeper']  = function(cb, ...) cb(exports['bl_ui']:MineSweeper(...)) end,
+        ['bl-pathfind']     = function(cb, ...) cb(exports['bl_ui']:PathFind(...)) end,
+        ['bl-printlock']    = function(cb, ...) cb(exports['bl_ui']:PrintLock(...)) end,
+        ['bl-untangle']     = function(cb, ...) cb(exports['bl_ui']:Untangle(...)) end,
+        ['bl-wavematch']    = function(cb, ...) cb(exports['bl_ui']:WaveMatch(...)) end,
+        ['bl-wordwiz']      = function(cb, ...) cb(exports['bl_ui']:WordWiz(...)) end,
+        ['gl-firewall-pulse']    = function(cb, ...) cb(exports['glitch-minigames']:StartFirewallPulse(...)) end,
+        ['gl-backdoor-sequence'] = function(cb, ...) cb(exports['glitch-minigames']:StartBackdoorSequence(...)) end,
+        ['gl-circuit-rhythm']    = function(cb, ...) cb(exports['glitch-minigames']:StartCircuitRhythm(...)) end,
+        ['gl-surge-override']    = function(cb, ...) cb(exports['glitch-minigames']:StartSurgeOverride(...)) end,
+        ['gl-circuit-breaker']   = function(cb, ...) cb(exports['glitch-minigames']:StartCircuitBreaker(...)) end,
+        ['gl-data-crack']        = function(cb, ...) cb(exports['glitch-minigames']:StartDataCrack(...)) end,
+        ['gl-brute-force']       = function(cb, ...) cb(exports['glitch-minigames']:StartBruteForce(...)) end,
+        ['gl-var-hack']          = function(cb, ...) cb(exports['glitch-minigames']:StartVarHack(...)) end,
     }
 
     if minigameFunctions[type] then
