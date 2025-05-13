@@ -94,4 +94,21 @@ SD.HasGroup = function(source, filter)
     return PlayerHasGroup(player, filter)
 end
 
+--- Like SD.HasGroup, but ignores the duty flag check.
+-- @param source any
+-- @param filter string|table
+-- @return string|nil, number|nil
+SD.HasGroupIgnoreDuty = function(source, filter)
+    local player = SD.GetPlayer(source)
+    if not player then return nil end
+
+    local oldFlag = CheckForDuty
+    CheckForDuty = false
+
+    local name, grade = PlayerHasGroup(player, filter)
+
+    CheckForDuty = oldFlag
+    return name, grade
+end
+
 return SD.HasGroup
