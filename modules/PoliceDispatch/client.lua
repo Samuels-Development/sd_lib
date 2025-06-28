@@ -139,6 +139,23 @@ local SelectDispatch = function()
 
                     exports['codem-dispatch']:CustomDispatch(DispatchData)
                 end
+            elseif resource.name == "tk_dispatch" then
+                return function(data, playerCoords, locationInfo, gender)
+                    exports.tk_dispatch:addCall({
+                        title = data.title,
+                        code = data.displayCode,
+                        message = data.message,
+                        coords = data.coords or playerCoords,
+                        jobs = jobs,
+                        blip = {
+                            sprite = data.sprite,
+                            scale = data.scale,
+                            colour = data.colour,
+                            text = data.blipText,
+                        },
+                        playSound = data.playSound,
+                    })
+                end
             elseif resource.name == "custom" then
                 -- Custom dispatch system implementation placeholder
                 return function(data, playerCoords, locationInfo, gender)
