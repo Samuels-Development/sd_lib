@@ -2,28 +2,28 @@
 SD.Target = {}
 
 --- Initialize the target system by checking available resources and setting the target module.
-CreateThread(function()
-    local resources = { "qb-target", "qtarget", "ox_target" }
-    local target
-
+local Initialize = function()
+    local resources = {"qb-target", "qtarget", "ox_target"}  -- List of potential target resources.
     for _, resource in ipairs(resources) do
-        if GetResourceState(resource) == "started" then
-            if resource == "ox_target" then
-                target = "qtarget"
+        if GetResourceState(resource) == 'started' then
+            if resource == 'ox_target' then
+                target = 'qtarget'
             else
                 target = resource
             end
-            break
+            break  -- Break the loop once the first active target resource is found.
         end
     end
 
+    -- Optionally handle the case where none of the resources are started.
     if not target then
         error("No target resource found or started.")
-        return false
+        return false  -- Indicate unsuccessful initialization.
     end
+    return true  -- Indicate successful initialization.
+end
 
-    return true
-end)
+Initialize() -- Initialize the target system
 
 --- Add a box zone.
 ---@param identifier string The identifier for the zone.
