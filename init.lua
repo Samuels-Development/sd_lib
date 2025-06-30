@@ -51,11 +51,6 @@ elseif frameworkId == 'esx' then
     _ENV['ESX'] = frameworkObj
 end
 
-
--- Detect and store the framework at the start
-frameworkId, frameworkObj = DetectFramework()
-if frameworkId == 'qb' then _ENV['QBCore'] = frameworkObj elseif frameworkId == 'esx' then _ENV['ESX'] = frameworkObj end
-
 local sd_lib = 'sd_lib'
 
 -- Initialize export from 'sd_lib' resource
