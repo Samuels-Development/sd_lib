@@ -48,7 +48,7 @@ SD.Ped.CreatePed = function(data)
     SD.LoadModel(pedModel)
 
     local coords = type(data.coords) == "table"
-        and vector3(data.coords.x, data.coords.y, data.coords.z, data.coords.w or 0)
+        and vector4(data.coords.x, data.coords.y, data.coords.z, data.coords.w or 0)
         or data.coords
 
     local ped = CreatePedInternal(
