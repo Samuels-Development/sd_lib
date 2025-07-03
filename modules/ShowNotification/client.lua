@@ -1,4 +1,5 @@
 local EnableOX = false -- Enable use of ox_lib for notifications if available
+local EnableLation = false -- Enable use of lation_ui for notifications if available
 
 --- Selects and returns the most appropriate notification function based on the current game setup.
 -- This function checks the available libraries and configurations to determine which notification method to use.
@@ -14,6 +15,15 @@ local Notification = function()
                 title = title,
                 description = message,
                 type = type or 'inform'
+            })
+        end
+    elseif EnableLation then
+        return function(message, type)
+            local title = SD.String.CapitalizeFirst(type or 'inform')
+            exports.lation_ui:notify({
+                title = title,
+                message = message,
+                type = type or 'info',
             })
         end
     else

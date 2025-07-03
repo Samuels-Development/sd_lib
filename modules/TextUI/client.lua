@@ -2,6 +2,7 @@
 SD.TextUI = {}
 
 local EnableOX = true -- Enable use of ox_lib for TextUI if available
+local EnableLation = false -- Enable use of lation_ui for TextUI if available
 local lastInteractionTime = 0
 
 -- Function to dynamically select the appropriate show and hide functions based on the current configuration.
@@ -11,6 +12,16 @@ local TextUI = function()
             lib.showTextUI(text, options)
         end, function()
             lib.hideTextUI()
+        end
+    elseif EnableLation then
+        return function(text, options)
+            exports.lation_ui:showText({
+                description = text,
+                icon = options.icon or nil,
+                position = options.position or nil,
+            })
+        end, function()
+            exports.lation_ui:hideText()
         end
     elseif GetResourceState('cd_drawtextui') == 'started' then
         return function(text)
