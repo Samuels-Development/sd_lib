@@ -1,4 +1,5 @@
 local EnableOX = false -- Enable use of ox_lib for progressbars if available
+local EnableLation = false -- Enable use of lation_ui for progressbars if available
 
 --- Selects and returns the most appropriate function for starting a progress bar.
 -- This function determines the best method for displaying progress bars based on the current game setup
@@ -18,6 +19,21 @@ local ProgressBar = function()
             }) then 
                 completed()
             else 
+                notfinished()
+            end
+        end
+    elseif EnableLation then
+        return function(identifier, label, duration, completed, notfinished)
+            if exports.lation_ui:progressBar({
+                label = label,
+                duration = duration,
+                useWhileDead = false,
+                allowSwimming = true,
+                canCancel = true,
+                disable = { move = true }
+            }) then
+                completed()
+            else
                 notfinished()
             end
         end
