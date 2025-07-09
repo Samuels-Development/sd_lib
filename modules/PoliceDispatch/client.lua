@@ -1,5 +1,5 @@
 --- Table of resources for dispatch systems. (custom is a placeholder for your application)
-local resources = { {name = "linden_outlawalert"}, {name = "cd_dispatch"}, {name = "ps-dispatch"}, {name = "qs-dispatch"}, {name = "core_dispatch"}, {name = "origen_police"}, {name = "codem-dispatch"}, {name = "custom"} }
+local resources = { {name = "linden_outlawalert"}, {name = "cd_dispatch"}, {name = "fd_dispatch"}, {name = "ps-dispatch"}, {name = "qs-dispatch"}, {name = "core_dispatch"}, {name = "origen_police"}, {name = "codem-dispatch"}, {name = "custom"} }
 
 -- Common tables for jobs and job types in the case of ps-dispatch.
 local jobs = { 'police' }
@@ -155,6 +155,34 @@ local SelectDispatch = function()
                         },
                         playSound = data.playSound,
                     })
+                end
+            elseif resource.name == "fd_dispatch" then
+                return function(data, playerCoords, locationInfo, gender)
+                    local metadata = {}
+                    if gender then
+                        table.insert(metadata, {
+                            content = gender,
+                            icon = 'fas fa-user'
+                        })
+                    end
+
+                    local alertData = {
+                        title = data.title or "Alert",
+                        description = data.description or (data.message .. ' on ' .. locationInfo),
+                        blip = {
+                            sprite = data.sprite or 52,
+                            color = data.colour or 1,
+                            scale = data.scale or 1.0,
+                            time = (data.blipTime or 15 * 1000)
+                        },
+                        groups = data.groups or jobs,
+                        priority = data.priority or 1,
+                        code = data.displayCode or data.code or "10-99",
+                        location = locationInfo,
+                        metadata = metadata,
+                        isEmergency = data.isEmergency or false
+                    }
+                    TriggerServerEvent('fd_dispatch:events:addAlert', alertData)
                 end
             elseif resource.name == "custom" then
                 -- Custom dispatch system implementation placeholder
