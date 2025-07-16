@@ -16,6 +16,47 @@ RegisterNetEvent('sd_lib:sendEmail', function(data)
             subject = data.subject,
             message = data.message,
         })
+    elseif data.resource == 'high-phone' then
+        ---@class Media
+        ---@field type '"image"' | '"video"'   -- Type of media content
+        ---@field url string                   -- Media URL
+
+        ---@class Contact
+        ---@field number string                -- Contact's phone number
+        ---@field name string                  -- Contact's name
+        ---@field photo string                 -- Contact's photo URL
+
+        ---@class Note
+        ---@field title string                 -- Note title
+        ---@field content string               -- Note content
+
+        ---@class Attachment
+        ---@field type '"media"' | '"contact"' | '"note"'  -- Attachment type
+        ---@field content Media | Contact | Note           -- Content depends on the type 
+
+        ---@class MessageData
+        ---@field sender string              -- Sender phone number
+        ---@field recipients string | string[] -- One or more recipient numbers
+        ---@field subject string | nil             -- (Optional) Mail subject, if applicable
+        ---@field content string             -- Message content
+        ---@field attachments Attachment[] | nil  -- (Optional) List of attachments
+
+        ---Sending Mail https://docs.high-scripts.com/phone/exports/server#sendmail
+        ---@info data MessageData           -- Message data
+        ---@info source? number             -- (Optional) Player's ID, only needed if sending on behalf of a player
+        ---@info exports['high-phone']:sendMail(data, source)
+
+        local account = exports['high-phone']:getPlayerMailAccount(src)
+        if account and account.address then
+            local emailData = {
+                sender = data.sender,   -- 	Sender phone number
+                recipients = { account.address },
+                subject = data.subject,
+                content = data.message,
+                attachments = {} -- Optional attachments
+            }
+            exports['high-phone']:sendMail(emailData)
+        end
     elseif data.resource == 'yseries' then
         local emailData = {
             title = data.subject,

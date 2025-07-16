@@ -46,15 +46,6 @@ local SelectEmail = function()
                     }
                     TriggerServerEvent('phone:sendNewMail', mailData)
                 end
-            elseif resource.name == "high-phone" then
-                return function(sender, subject, message)
-                    local senderData = {
-                        address = sender.address or "",
-                        name = sender,
-                        photo = sender.photo or ""
-                    }
-                    TriggerServerEvent("high_phone:sendMailFromServer", senderData, subject, message, {})
-                end
             elseif resource.name == "npwd-phone" then
                 return function(sender, subject, message)
                     exports["npwd"]:createNotification({
@@ -67,7 +58,7 @@ local SelectEmail = function()
                         path = "/email",
                     })
                 end
-            elseif resource.name == "lb-phone" or resource.name == "yseries" or resource.name == "yflip-phone" or resource.name == "okokPhone" then
+            elseif resource.name == "lb-phone" or resource.name == "yseries" or resource.name == "yflip-phone" or resource.name == "okokPhone" or resource.name == "high-phone" then
                 return function(sender, subject, message)
                     TriggerServerEvent('sd_lib:sendEmail', {
                         sender = sender,
