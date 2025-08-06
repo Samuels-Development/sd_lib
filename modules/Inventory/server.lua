@@ -45,9 +45,9 @@ local HasItem = function()
         end
     elseif inventorySystem == 'qs' then
         return function(player, item, source)
-            local itemData = exports[qsInv]:GetItemTotalAmount(source, item)
-            if not itemData then return 0 end
-            return itemData.amount or itemData.count or 0
+            local itemAmount = exports[qsInv]:GetItemTotalAmount(source, item)
+            if not itemAmount then return 0 end
+            return itemAmount or 0
         end
     elseif inventorySystem == 'origen' then
         return function(player, item, source)
