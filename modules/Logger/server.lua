@@ -7,7 +7,8 @@ local cfg = {
     events         = {},
     discord        = {},
     loki           = {},
-    grafana        = {}
+    grafana        = {},
+    fmsdk          = {}
 }
 
 -- Internal buffers for Loki/Grafana
@@ -167,19 +168,33 @@ SD.Logger.Setup = function(logsConfig)
             cfg.grafana.headers['X-Scope-OrgID'] = g.tenant
         end
     end
+
+    if logsConfig.dataset then
+        cfg.fmsdk.dataset = logsConfig.dataset
+    end
 end
 
 --- Sends a log entry via FiveM-Manage.
 ---@param source number The player's server ID.
 ---@param title string  The title of the log message.
 ---@param message string The log message content.
-local SendFiveMManageLog = function(source, title, message)
-    local sdk = cfg.fmsdk or exports.fmsdk
+---@param dataset string? The dataset ID to log to.
+---@param metadata table? Optional metadata to include with the log.
+local SendFiveMManageLog = function(source, title, message, dataset, metadata)
+    local sdk = exports.fmsdk
     if not sdk then return end
+
+    local datasetId = dataset or cfg.fmsdk.dataset or 'default'
+    local logMetadata = metadata or {}
+
+    if source then
+        logMetadata.playerSource = source
+    end
+
     if cfg.screenshots then
         sdk:takeServerImage(source, { name = title, description = message })
     else
-        sdk:LogMessage('info', message)
+        sdk:Log(datasetId, 'info', message, logMetadata)
     end
 end
 
@@ -233,13 +248,15 @@ end
 ---@param source number? The player's server ID (nil for Discord-only logs).
 ---@param title  string The title or event name of the log.
 ---@param message string The log message content.
-SD.Logger.Log = function(source, title, message)
+---@param dataset string? The dataset ID (fivemanage only).
+---@param metadata table? Optional metadata (fivemanage only).
+SD.Logger.Log = function(source, title, message, dataset, metadata)
     if cfg.service == 'none' then
         return
     elseif cfg.service == 'discord' then
         BufferDiscordLog(title, message)
     elseif cfg.service == 'fivemanage' then
-        SendFiveMManageLog(source, title, message)
+        SendFiveMManageLog(source, title, message, dataset, metadata)
     elseif cfg.service == 'fivemerr' then
         SendFiveMErrLog(source, title, message)
     elseif cfg.service == 'loki' then
