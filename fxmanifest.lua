@@ -3,7 +3,7 @@ game 'gta5'
 
 Author 'Samuel#0008'
 Description 'A library of functions, that also bridges frameworks and common 3rd party resources.'
-Version '1.1.9'
+Version '1.2.0'
 
 client_scripts {
     'resource/client/client.lua',
@@ -26,3 +26,4 @@ shared_scripts {
 } 
 
 lua54 'yes'
+
